@@ -1,0 +1,20 @@
+#! /bin/bash
+#SBATCH -A PHY20010
+#SBATCH -p development
+#SBATCH -t 02:00:00
+#SBATCH -N 1 -n 1
+#SBATCH -J Plot_dev
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=lorenzo.ennoggi@gmail.com
+#SBATCH -o /scratch1/07825/lennoggi/Plot_dev.out
+#SBATCH -e /scratch1/07825/lennoggi/Plot_dev.err
+
+# Activate TACC I/O manager
+# (see https://portal.tacc.utexas.edu/tutorials/managingio)
+ml ooops
+set_io_param_batch $SLURM_JOBID 0 low
+
+cd /home1/07825/lennoggi/Git_repositories/Plotting
+python3 Plot_HDF5_2D_PostCactus.py3
+echo "Done"
+date 

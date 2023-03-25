@@ -54,74 +54,79 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # Directories containing the files to be opened
 # ---------------------------------------------
 data_dirs = [
-##    "/scratch1/07825/lennoggi/CBD_handoff_IGM_McLachlan_GridTest_Magnetized_6_3_0.5/",
-    "/scratch1/07825/lennoggi/CBD_handoff_IGM_McLachlan_Spinning_aligned07/"
+    "/scratch1/07825/lennoggi/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M",
+    "/scratch1/07825/lennoggi/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M"
 ]
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
-plots_dir = "/scratch1/07825/lennoggi/Snapshots/" ##CBD_handoff_IGM_McLachlan_NonSpinning_vs_Spin0.7aligned/"
+plots_dir = "/scratch1/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/rho_xy_smallb2_xy"
 
 
 # File extension for the plots
 # ----------------------------
-fig_ext = ".pdf" ##".png"
+fig_ext = ".png"
 
 
 # Which grid functions to plot
 # ----------------------------
 grid_functions = [
-##    "rho_b",
-    "rho_b"
+    "rho_b",
+    "smallb2"
 ]
 
 
 # Plot absolute values?
 # ---------------------
 abs_vals = [
-##    False,
+    False,
     False
 ]
 
 
 # Which 2D slices to plot: xy, xz or yz plane
+# -------------------------------------------
 planes = [
-##    "xz",
+    "xy",
     "xy"
 ]
 
 
 # Plot extent; give it as [xmin, xmax, ymin, ymax]
-# ----------------------------------------------------
+# ------------------------------------------------
 plot_extents = [
+    [-40., 40., -40., 40.],
     [-40., 40., -40., 40.]
-##    [-120., 120., -120., 120.]
-##    [-892., 892., -892., 892.],
-##    [-892., 892., -892., 892.]
 ]
 
 
 # Which iterations to plot
 # ------------------------
-first_it    = 51712 ##0
-last_it     = 51713 ##1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 256
+first_it    = 0 
+last_it     = 1000000000  # Set this to a huge number to plot all iterations
+out2D_every = 512
 
 
 # Apparent horizon
 # ----------------
 draw_AH = [
-##    True,
+    True,
     True
 ]
 
-AH_dirs = [
-##    "/scratch1/07825/lennoggi/Snapshots/AH_data/CBD_handoff_IGM_McLachlan_GridTest_Magnetized_6_3_0.5/",
-    "/scratch1/07825/lennoggi/Snapshots/AH_data/CBD_handoff_IGM_McLachlan_Spinning_aligned07/"
-]
-
+# How many files per AH are there, i.e. the maximum value of 'AH_number' in
+# 'h.t<iteration>.ah<AH_number>'
 N_AH_files = 2
+
+# **IMPORTANT**
+# Make sure all AH files ('h.t<iteration>.ah<AH_number>') are in the same
+# directory. In case they live under different 'output-xxxx' directories, copy
+# them to a common directory
+AH_dirs = [
+    "/scratch1/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/rho_xy_smallb2_xy/AH_data",
+    "/scratch1/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/rho_xy_smallb2_xy/AH_data"
+]
 
 
 
@@ -141,16 +146,16 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 # Names of the variables to be put close to the colorbar
 # ------------------------------------------------------
 varnames = [
-##    "       $\\rho$",
-    "$\\rho$"
+    "       $\\rho$",
+    "       $b^2$"
 ]
 
 
 # Titles for each subplot
 # -----------------------
 titles = [
-##    "Non-spinning",
-   "" ##"Spinning 0.7 aligned"
+    "",
+    ""
 ]
 
 
@@ -163,47 +168,45 @@ myfontstyle  = "normal"
 ##myfontname   = "Ubuntu"
 
 
-# Coordinates of the axes of each subplot
-# ---------------------------------------
+# Coordinates of the axes of each subplot and colorbar
+# ----------------------------------------------------
 # ***** Suggested options *****
-# 1. Single plot with colorbar
+# 1. Single plot with small colorbar on the left
 #    axplots = [
 #        [0.15, 0.09, 0.83, 0.83]
 #    ]
-# 2. Two plots with one colorbar each
+#    axclbs = [
+#        [0.03, 0.6, 0.03, 0.32]
+#    ]
+#
+# 2. Single plot with large colorbar on the right (set figsize = 20., 17], dpi = 200)
+#    axplots = [
+#        [0.08, 0.12, 0.8, 0.8]
+#    ]
+#    axclbs = [
+#        [0.84, 0.12, 0.04, 0.8]
+#    ]
+#
+# 3. Two plots with one colorbar each
 #    axplots = [
 #        [-0.115, 0.13, 0.78, 0.78],
 #        [0.405, 0.13, 0.78, 0.78]
 #    ]
-# 3. Two plots with a single colorbar
-#    TODO
-# 4. TODO
-axplots = [
-    [0.08, 0.12, 0.8, 0.8]
-##    [-0.115, 0.13, 0.78, 0.78],
-##    [0.405, 0.13, 0.78, 0.78]
-]
-
-
-# Coordinates of the axis of each colorbar
-# ----------------------------------------
-# ***** Suggested options *****
-# 1. Single plot with colorbar
-#    axclbs = [
-#        [0.04, 0.6, 0.03, 0.32]
-#    ]
-# 2. Two plots with one colorbar each
 #    axclbs = [
 #        [0.005, 0.13, 0.015, 0.78],
 #        [0.525, 0.13, 0.015, 0.78]
 #    ]
-# 3. Two plots with a single colorbar
+# 4. Two plots with a single colorbar
 #    TODO
-# 4. TODO
+# 5. TODO
+axplots = [
+    [-0.115, 0.13, 0.78, 0.78],
+    [0.405, 0.13, 0.78, 0.78]
+]
+
 axclbs = [
-    [0.84, 0.12, 0.04, 0.8]
-##    [0.005, 0.13, 0.015, 0.78],
-##    [0.525, 0.13, 0.015, 0.78]
+    [0.005, 0.13, 0.015, 0.78],
+    [0.525, 0.13, 0.015, 0.78]
 ]
 
 
@@ -211,15 +214,15 @@ axclbs = [
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -----------------------------------------------------------------------
 colorbar_extents = [
-##    [1.e-08, 1.25e-02],
-    [1.e-08, 1.25e-02]
+    [1.e-08, 1.5e-02],
+    [4.e-15, 4.e-7]
 ]
 
 
 # Logarithmic scale
 # -----------------
 logscale = [
-##    True,
+    True,
     True
 ]
 
@@ -229,8 +232,8 @@ logscale = [
 # minimum in the colorbar
 # -----------------------------------------------------------------------------
 symlogscale = [
-##    False,
-    False
+    False,
+    True
 ]
 
 
@@ -238,7 +241,7 @@ symlogscale = [
 # is not in use)
 # -----------------------------------------------------------------------------
 linscale_norm = [
-##    True,
+    True,
     True
 ]
 
@@ -246,33 +249,25 @@ linscale_norm = [
 # Colormap
 # --------
 cmaps = [
-##    "plasma",
-    "plasma"
+    "plasma",
+    "viridis"
 ]
 
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
 # "both")
 clb_extend = [
-##    "max",
-    "max"
+    "max",
+    "both"
 ]
 
 
-
-# FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
 # Choose if you want to find max and min in the data for every iteration
-# available (this may take some time) or not. If not, then the max and min in
-# the data for every iteration will be read from file 'minvals1.txt'; if this
-# file does not exist, the script will crash, but if it exists and does not
-# contain the appropriate values (for example, because you have plotted some
-# other quantity before), then you will get NO WARNING AT ALL and just have
-# inconsistent min and max values plotted near the legend. Moreover, setting
-# compute_min_max_1 = "no" will cause the max and min over all available
-# iterations NOT to be computed, so you won't have any info on how to set the
-# scale in the legend of your plot.
-compute_min_max_1 = "no"  # "yes" or "no"
-# FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
+# available or not (this may take some time)
+compute_min_max = [
+    False,
+    False
+]
 
 ################################################################################
 
@@ -308,6 +303,7 @@ assert(len(symlogscale)      == N_datasets)
 assert(len(linscale_norm)    == N_datasets)
 assert(len(cmaps)            == N_datasets)
 assert(len(clb_extend)       == N_datasets)
+assert(len(compute_min_max)  == N_datasets)
 
 ################################################################################
 
@@ -425,7 +421,7 @@ else: raise RuntimeError("Unrecognized units \"" + units + "\"")
 ############################## PLOT SETUP ######################################
 
 # Initialize the template filename for the plots
-figname = plots_dir
+figname = plots_dir + "/"
 
 # Initialize some needed lists
 simdirs     = []
@@ -512,8 +508,8 @@ for n in range(N_datasets):
     last_valid_g.append(None)
 
 
-# Small, "toy" grid used to check whether an iteration is available for a
-# given dataset
+# Small "toy" grid used to check whether an iteration is available for a given
+# dataset
 g_toy = gd.RegGeom([2, 2], [0., 0.], x1 = [1., 1.])
 
 
@@ -522,8 +518,7 @@ g_toy = gd.RegGeom([2, 2], [0., 0.], x1 = [1., 1.])
 for it in range(first_it, last_it, out2D_every):
     print("***** Iteration " + str(it) + " *****\n")
 
-    # 2000×1000 2:1 frame
-    fig = plt.figure(figsize = [20., 17.], dpi = 200)
+    fig = plt.figure(figsize = [20., 10.], dpi = 100)  ##[10., 10.], dpi = 200  ##[20., 17.], dpi = 200)
 
     for n in range(N_datasets):
         # Configure axes
@@ -531,9 +526,9 @@ for it in range(first_it, last_it, out2D_every):
         axplot.set_title(titles[n], y = 1.01, fontsize = 30., fontweight = "bold",
                          fontfamily = myfontfamily, fontstyle = myfontstyle, ##fontname = myfontname,
                          color = titlecolor)
-        axplot.set_xlabel(xlabels[n], fontsize = 70., labelpad = 5.)
-        axplot.set_ylabel(ylabels[n], fontsize = 70., labelpad = -80.)
-        axplot.tick_params(labelsize = 70.)
+        axplot.set_xlabel(xlabels[n], fontsize = 20., labelpad = 8.)
+        axplot.set_ylabel(ylabels[n], fontsize = 20., labelpad = -6.)
+        ##axplot.tick_params(labelsize = 70.)
 
         # Try to read data on a small, "toy" grid just to make sure the current
         # iteration is available for the current dataset
@@ -595,6 +590,7 @@ for it in range(first_it, last_it, out2D_every):
                     if (dx < delta_min): delta_min = dx
                     if (dy < delta_min): delta_min = dy
 
+            delta_min = 0.25  # FIXME: remove
             print("Dataset " + str(n) + ": smallest grid spacing is " + str(delta_min))
 
 
@@ -617,19 +613,6 @@ for it in range(first_it, last_it, out2D_every):
                                       order          = 0,
                                       outside_val    = 0.,
                                       level_fill     = False)
-            """
-            # Time and iteration info
-            it_str   = "It = " + str(it)
-            time_str = "t  $\hspace{0.08}$= " + str("{:.2e}".format(patch_plot.time*conv_fac_time))
-
-            fig.text(0.3, 0.03, it_str, color = "red", fontsize = 35.,
-                     fontweight = "bold", fontstyle = myfontstyle,
-                     fontfamily = myfontfamily) ##, fontname = myfontname)
-            fig.text(0.55, 0.03, time_str + unit_time_str, color = "red",
-                     fontsize = 35., fontweight = "bold",
-                     fontstyle = myfontstyle,
-                     fontfamily = myfontfamily) ##, fontname = myfontname)
-            """
 
 
         # Build the image to plot
@@ -645,15 +628,15 @@ for it in range(first_it, last_it, out2D_every):
 
         # Add a colorbar
         axclb = fig.add_axes(axclbs[n])
-        axclb.tick_params(labelsize = 70.)
+        ##axclb.tick_params(labelsize = 70.)
         clb = fig.colorbar(im, cax = axclb, extend = clb_extend[n],
                            orientation = "vertical")
-        clb.ax.set_title(varnames[n] + unit_gf_str, fontsize  = 70.,
+        clb.ax.set_title(varnames[n] + unit_gf_str, fontsize  = 20., ##70.,
                          fontweight = myfontweight, fontstyle = myfontstyle,
-                         fontfamily = myfontfamily, pad = 30.) ##, fontname   = myfontname)
+                         fontfamily = myfontfamily, pad = 10.) ##, fontname   = myfontname)
 
 
-        # Plot apparent horizon by finding the convex hull of the projection of
+        # Plot apparent horizons by finding the convex hull of the projection of
         # the points defining it (as found by AHFinderDirect) in the xy plane
         if (draw_AH[n]):
             print("Dataset " + str(n) + ": trying to draw apparent horizon(s)...")
@@ -661,9 +644,9 @@ for it in range(first_it, last_it, out2D_every):
 
             for r in range(1, N_AH_files + 1):
                 if (there_are_iters_avail[n]):
-                    AH_file = AH_dirs[n] + "h.t" + str(it)               + ".ah" + str(r) + ".gp"
+                    AH_file = AH_dirs[n] + "/h.t" + str(it)               + ".ah" + str(r) + ".gp"
                 else:
-                    AH_file = AH_dirs[n] + "h.t" + str(int(last_valid_it[n])) + ".ah" + str(r) + ".gp"
+                    AH_file = AH_dirs[n] + "/h.t" + str(int(last_valid_it[n])) + ".ah" + str(r) + ".gp"
 
                 # In case there are multiple files available for the same
                 # horizon, the following overrides the previous data
@@ -685,10 +668,47 @@ for it in range(first_it, last_it, out2D_every):
                 warnings.warn("Dataset " + str(n) + ": no AH data found")
 
 
+        # Compute the min and max value in the plotted data if requested
+        if (compute_min_max[n]):
+            if (abs_vals[n]):
+                abs_data = np.absolute(patch_plot.data)
+                minval = abs_data.min()
+                maxval = abs_data.max()
+            else:
+                minval = patch_plot.data.min()
+                maxval = patch_plot.data.max()
+
+            print("Dataset " + str(n) + ": min = " + str(minval) + ", max = " + str(maxval))
+
+            # FIXME: fix the position of the min/max
+            fig.text(0.2, 0.2, "Min: " + str(minval),
+                     fontsize = 25., fontweight = "bold",
+                     fontstyle = myfontstyle,
+                     fontfamily = myfontfamily) ##, fontname = myfontname)
+            fig.text(0.2, 0.17, "Max: " + str(maxval),
+                     fontsize = 25., fontweight = "bold",
+                     fontstyle = myfontstyle,
+                     fontfamily = myfontfamily) ##, fontname = myfontname)
+
+
+
         # Reset the last valid iteration and the geometry if needed
         if (there_are_iters_avail[n]):
             last_valid_it[n] = it
             last_valid_g[n]  = g
+
+
+        # Time and iteration info
+        it_str   = "It = " + str(it)
+        time_str = "t = " + str("{:.2e}".format(patch_plot.time*conv_fac_time))
+
+        fig.text(0.35, 0.03, it_str, color = "red", fontsize = 25.,
+                 fontweight = "bold", fontstyle = myfontstyle,
+                 fontfamily = myfontfamily) ##, fontname = myfontname)
+        fig.text(0.6, 0.03, time_str + unit_time_str, color = "red",
+                 fontsize = 25., fontweight = "bold",
+                 fontstyle = myfontstyle,
+                 fontfamily = myfontfamily) ##, fontname = myfontname)
 
 
     # Get ready for the next iteration
