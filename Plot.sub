@@ -15,6 +15,7 @@ ml ooops
 set_io_param_batch $SLURM_JOBID 0 low
 
 cd /home1/07825/lennoggi/Git_repositories/Plotting
+ml phdf5
 python3 Plot_HDF5_2D_PostCactus.py3
 echo "Done"
 date 
