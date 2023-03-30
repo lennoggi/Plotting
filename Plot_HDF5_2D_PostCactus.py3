@@ -55,13 +55,13 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # ---------------------------------------------
 data_dirs = [
     "/scratch1/07825/lennoggi/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M",
-    "/scratch1/07825/lennoggi/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M"
+    "/scratch3/07825/lennoggi/CBD_HydroDiskID_IGM_McLachlan_Spinning_aligned08_OrbSep10M"
 ]
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
-plots_dir = "/scratch1/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/rho_xy_smallb2_xy"
+plots_dir = "/scratch1/07825/lennoggi/Snapshots/Comparisons/CBD_SpinningAligned08_EqDiskVsHydroDiskID_OrbSep10M/radcool_gf_xy"
 
 
 # File extension for the plots
@@ -72,8 +72,8 @@ fig_ext = ".png"
 # Which grid functions to plot
 # ----------------------------
 grid_functions = [
-    "rho_b",
-    "smallb2"
+    "radcool_gf", ##"rho_b",
+    "radcool_gf"  ##"rho_b"  ##"smallb2"
 ]
 
 
@@ -105,7 +105,7 @@ plot_extents = [
 # ------------------------
 first_it    = 0 
 last_it     = 1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 512
+out2D_every = 1024
 
 
 # Apparent horizon
@@ -124,8 +124,8 @@ N_AH_files = 2
 # directory. In case they live under different 'output-xxxx' directories, copy
 # them to a common directory
 AH_dirs = [
-    "/scratch1/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/rho_xy_smallb2_xy/AH_data",
-    "/scratch1/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/rho_xy_smallb2_xy/AH_data"
+    "/scratch1/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
+    "/scratch1/07825/lennoggi/Snapshots/CBD_HydroDiskID_IGM_McLachlan_Spinning_aligned08_OrbSep10M/AH_data"
 ]
 
 
@@ -147,15 +147,15 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 # ------------------------------------------------------
 varnames = [
     "       $\\rho$",
-    "       $b^2$"
+    "       $\\rho$"  ##"       b^2"
 ]
 
 
 # Titles for each subplot
 # -----------------------
 titles = [
-    "",
-    ""
+    "Steadily accreting CBD",
+    "Torus"
 ]
 
 
@@ -214,8 +214,8 @@ axclbs = [
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -----------------------------------------------------------------------
 colorbar_extents = [
-    [1.e-08, 1.5e-02],
-    [4.e-15, 4.e-7]
+    [1.e-15, 1.e-07], ##[1.e-08, 1.5e-02],
+    [1.e-15, 1.e-07]  ##[1.e-08, 1.5e-02] ##[4.e-15, 4.e-7]
 ]
 
 
@@ -232,7 +232,7 @@ logscale = [
 # minimum in the colorbar
 # -----------------------------------------------------------------------------
 symlogscale = [
-    False,
+    True,
     True
 ]
 
@@ -250,15 +250,15 @@ linscale_norm = [
 # --------
 cmaps = [
     "plasma",
-    "viridis"
+    "plasma" ##viridis"
 ]
 
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
 # "both")
 clb_extend = [
-    "max",
-    "both"
+    "both", ##"max""
+    "both"  ##"max""
 ]
 
 
