@@ -61,7 +61,8 @@ data_dirs = [
 
 # Directory where the plots will be placed
 # ----------------------------------------
-plots_dir = "/lagoon/lennoggi/Snapshots/Comparisons/CBD_handoff_IGM_McLachlan_Spinning_aligned08_vs_PlusMinus08/rho_b_xy_rho_b_xy_ZoomOut"
+##plots_dir = "/lagoon/lennoggi/Snapshots/Comparisons/CBD_handoff_IGM_McLachlan_Spinning_aligned08_vs_PlusMinus08/rho_b_xy_rho_b_xy_ZoomOut"
+plots_dir = "/lagoon/lennoggi/Snapshots"
 
 
 # File extension for the plots
@@ -146,8 +147,8 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 # Names of the variables to be put close to the colorbar
 # ------------------------------------------------------
 varnames = [
-    "       $\\rho$",
-    "       $\\rho$"
+    "$\\rho$",
+    "$\\rho$"
     ##"$b^2$",                ##"       $b^2$",
     ##"$\mathcal{L}_{cool}$"  ##"       $\mathcal{L}_{cool}$"
 ]
@@ -156,95 +157,54 @@ varnames = [
 # Titles for each subplot
 # -----------------------
 titles = [
-    "$\chi_1$ = 0.8, $\chi_2$ = 0.8",
-    "$\chi_1$ = 0.8, $\chi_2$ = -0.8",
+    "$\chi_1$ = 0.8,   $\chi_2$ = 0.8",
+    "$\chi_1$ = 0.8,   $\chi_2$ = -0.8",
+]
+
+
+# Add colorbars?
+# --------------
+add_colorbar = [
+    False,
+    True
 ]
 
 
 # Title and other text options
 # ----------------------------
-titlecolor   = "midnightblue"
-myfontweight = "bold"
-myfontfamily = "sans-serif"
-myfontstyle  = "normal"
-##myfontname   = "Ubuntu"
+titlecolor       = "midnightblue"
+titlepad         = 1.02
+title_fontsize   = 35.
+title_fontweight = "bold"
+title_fontstyle  = "normal"
+title_fontname   = "Ubuntu"
+
+labelsize  = 25.
+labelpad_x = 3.
+labelpad_y = -5.
+ticksize   = 20.
+
+clb_ticksize        = 20.
+clblabel_pad        = 3.
+clb_fraction        = 0.05
+clblabel_fontsize   = 25.
+clblabel_fontweight = "bold"
+clblabel_fontstyle  = "normal"
+
+it_pos             = [0.35, 0.015]
+time_pos           = [0.55, 0.015]
+it_time_fontsize   = 25.
+it_time_fontweight = "bold"
+it_time_fontstyle  = "normal"
 
 
-# Coordinates of the axes of each subplot and colorbar
-# ----------------------------------------------------
-# ***** Suggested options *****
-# 1. Single plot with small colorbar on the left
-#    axplots = [
-#        [0.15, 0.09, 0.83, 0.83]
-#    ]
-#    axclbs = [
-#        [0.03, 0.6, 0.03, 0.32]
-#    ]
-#    myfigsize   = [10., 10.]
-#    mydpi       = 200
-#    mylabelsize = TODO
-#    mylabelpadx = TODO
-#    mylabelpady = TODO
-#
-# 2. Single plot with large colorbar on the right
-#    axplots = [
-#        [0.08, 0.12, 0.8, 0.8]
-#    ]
-#    axclbs = [
-#        [0.84, 0.12, 0.04, 0.8]
-#    ]
-#    myfigsize   = [20., 17.]
-#    mydpi       = 200
-#    mylabelsize = TODO
-#    mylabelpadx = TODO
-#    mylabelpady = TODO
-#
-# 3. Two plots with one colorbar each
-#    axplots = [
-#        [-0.115, 0.13, 0.78, 0.78],
-#        [0.405, 0.13, 0.78, 0.78]
-#    ]
-#    axclbs = [
-#        [0.005, 0.13, 0.015, 0.78],
-#        [0.525, 0.13, 0.015, 0.78]
-#    ]
-#    myfigsize   = [20., 10.]
-#    mydpi       = 100
-#    mylabelsize = 20.
-#    mylabelpadx  = 8.
-#    mylabelpady  = -6.
-#
-# 4. Two plots with a single colorbar
-#    TODO
-# 5. Three plots with one colorbar each
-#    axplots = [
-#        [0.065, 0.07, 0.25, 0.85],
-#        [0.402, 0.07, 0.25, 0.85],
-#        [0.74,  0.07, 0.25, 0.85]
-#    ]
-#    axclbs = [
-#        [0.005, 0.08, 0.01, 0.85],
-#        [0.337, 0.08, 0.01, 0.85],
-#        [0.675, 0.08, 0.01, 0.85]
-#    ]
-#    myfigsize   = [18., 6.]
-#    mydpi       = 100
-#    mylabelsize = 12.
-#    mylabelpadx = 0.
-#    mylabelpady = -12.
-axplots = [
-    [-0.115, 0.13, 0.78, 0.78],
-    [0.405, 0.13, 0.78, 0.78]
-]
-axclbs = [
-    [0.005, 0.13, 0.015, 0.78],
-    [0.525, 0.13, 0.015, 0.78]
-]
-myfigsize   = [20., 10.]
-mydpi       = 100
-mylabelsize = 20.
-mylabelpadx  = 8.
-mylabelpady  = -6.
+# Subplots layout
+nsubplots_x = 2
+nsubplots_y = 1
+
+# Figure size and resolution
+figsize = [22., 10.]
+dpi     = 100
 
 
 # Extent of the color scales (note that the actual scale may extend below
@@ -329,6 +289,7 @@ assert(first_it >= 0)
 assert(last_it  >= first_it)
 
 N_datasets = len(data_dirs)
+assert(nsubplots_x*nsubplots_y == N_datasets)
 
 assert(len(grid_functions)   == N_datasets)
 assert(len(abs_vals)         == N_datasets)
@@ -338,8 +299,8 @@ assert(len(draw_AH)          == N_datasets)
 assert(len(AH_dirs)          == N_datasets)
 assert(len(varnames)         == N_datasets)
 assert(len(titles)           == N_datasets)
-assert(len(axplots)          == N_datasets)
-assert(len(axclbs)           == N_datasets)
+##assert(len(axplots)          == N_datasets)
+##assert(len(axclbs)           == N_datasets)
 assert(len(colorbar_extents) == N_datasets)
 assert(len(logscale)         == N_datasets)
 assert(len(symlogscale)      == N_datasets)
@@ -561,17 +522,21 @@ g_toy = gd.RegGeom([2, 2], [0., 0.], x1 = [1., 1.])
 for it in range(first_it, last_it, out2D_every):
     print("***** Iteration " + str(it) + " *****\n")
 
-    fig = plt.figure(figsize = myfigsize, dpi = mydpi)  ##[10., 10.], dpi = 200  ##[20., 17.], dpi = 200)
+    fig, axes = plt.subplots(nsubplots_y, nsubplots_x,
+                             figsize = figsize, dpi = dpi)
+    fig.set_tight_layout(True)
 
     for n in range(N_datasets):
         # Configure axes
-        axplot = fig.add_axes(axplots[n])
-        axplot.set_title(titles[n], y = 1.01, fontsize = 30., fontweight = "bold",
-                         fontfamily = myfontfamily, fontstyle = myfontstyle, ##fontname = myfontname,
-                         color = titlecolor)
-        axplot.set_xlabel(xlabels[n], fontsize = mylabelsize, labelpad = mylabelpadx)
-        axplot.set_ylabel(ylabels[n], fontsize = mylabelsize, labelpad = mylabelpady)
-        ##axplot.tick_params(labelsize = 70.)
+        axes[n].set_box_aspect(1)  # Square snapshots
+        axes[n].set_title(titles[n], color = titlecolor, y = titlepad,
+                          fontsize   = title_fontsize,
+                          fontweight = title_fontweight,
+                          fontstyle  = title_fontstyle,
+                          fontname   = title_fontname)
+        axes[n].set_xlabel(xlabels[n], fontsize = labelsize, labelpad = labelpad_x)
+        axes[n].set_ylabel(ylabels[n], fontsize = labelsize, labelpad = labelpad_y)
+        axes[n].tick_params(labelsize = ticksize)
 
         # Try to read data on a small, "toy" grid just to make sure the current
         # iteration is available for the current dataset
@@ -627,24 +592,26 @@ for it in range(first_it, last_it, out2D_every):
                 dx     = deltas[0]
                 dy     = deltas[1]
 
-                if (i == 0): delta_min = min(dx, dy)
-
+                if (i == 0):
+                    deltax_min = dx
+                    deltay_min = dy
                 else:
-                    if (dx < delta_min): delta_min = dx
-                    if (dy < delta_min): delta_min = dy
+                    if (dx < deltax_min): deltax_min = dx
+                    if (dy < deltay_min): deltay_min = dy
 
-            print("Dataset " + str(n) + ": finest grid spacing is " + str(delta_min))
+            print("Dataset " + str(n) + ": finest grid spacing is ("
+                  + str(deltax_min) + ", " + str(deltay_min) + ")")
 
 
             # Set the geometry of the grid to be plotted
-            min1 = plot_extents[n][0]
-            max1 = plot_extents[n][1]
-            min2 = plot_extents[n][2]
-            max2 = plot_extents[n][3]
+            xmin = plot_extents[n][0]
+            xmax = plot_extents[n][1]
+            ymin = plot_extents[n][2]
+            ymax = plot_extents[n][3]
 
-            N1 = int(max1 - min1)/delta_min
-            N2 = int(max2 - min2)/delta_min
-            g  = gd.RegGeom([N1, N2], [min1, min2], x1 = [max1, max2])
+            Nx = int((xmax - xmin)/deltax_min)
+            Ny = int((ymax - ymin)/deltay_min)
+            g  = gd.RegGeom([Nx, Ny], [xmin, ymin], x1 = [xmax, ymax])
 
 
             # Build the patch to be plotted, which is resampled to a uniform grid
@@ -656,26 +623,40 @@ for it in range(first_it, last_it, out2D_every):
                                       outside_val    = 0.,
                                       level_fill     = False)
 
+        # Build the mesh for pcolormesh
+        # NOTE: there are Nx cells => Nx+1 edges (and the same for Ny)
+        # TODO: put numerical coordinates here if desired
+        xcoords = np.linspace(xmin, xmax, Nx + 1)
+        ycoords = np.linspace(ymin, ymax, Ny + 1)
+        mxcoords, mycoords = np.meshgrid(xcoords, ycoords)
 
         # Build the image to plot
+        # NOTE: since mxcoords, mycoords and np.transpose(patch_plot.data) all
+        #       have the same shape, shading = "auto" should produce
+        #       shading = "nearest", meaning that data are cell-centered. On the
+        #       other hand, if mxcoords and mycoords had one point more than
+        #       np.transpose(patch_plot.data) in each direction, than the data
+        #       would be placed on cell vertices and shading = "auto" should
+        #       produce shading = "flat".
         if (abs_vals[n]):
-            im = axplot.imshow(np.transpose(np.absolute(patch_plot.data*conv_fac_gf)),
-                               cmap   = cmaps[n],        origin = "lower",
-                               extent = plot_extents[n], norm   = norms[n])
+            im = axes[n].pcolormesh(mxcoords, mycoords,
+                                    np.transpose(np.absolute(patch_plot.data*conv_fac_gf)),
+                                    shading = "auto", cmap = cmaps[n], norm = norms[n])
         else:
-            im = axplot.imshow(np.transpose(patch_plot.data*conv_fac_gf),
-                               cmap   = cmaps[n],        origin = "lower",
-                               extent = plot_extents[n], norm   = norms[n])
+            im = axes[n].pcolormesh(mxcoords, mycoords,
+                                    np.transpose(patch_plot.data*conv_fac_gf),
+                                    shading = "auto", cmap = cmaps[n], norm = norms[n])
 
 
         # Add a colorbar
-        axclb = fig.add_axes(axclbs[n])
-        ##axclb.tick_params(labelsize = 70.)
-        clb = fig.colorbar(im, cax = axclb, extend = clb_extend[n],
-                           orientation = "vertical")
-        clb.ax.set_title(varnames[n] + unit_gf_str, fontsize  = 20., ##70.,
-                         fontweight = myfontweight, fontstyle = myfontstyle,
-                         fontfamily = myfontfamily, pad = 7.) ##, fontname   = myfontname)
+        if (add_colorbar[n]):
+            clb = fig.colorbar(im, ax = axes[n], extend = clb_extend[n],
+                               fraction = clb_fraction)
+            clb.ax.set_title(varnames[n] + unit_gf_str, pad = clblabel_pad,
+                             fontsize   = clblabel_fontsize,
+                             fontweight = clblabel_fontweight,
+                             fontstyle  = clblabel_fontstyle)
+            clb.ax.tick_params(labelsize = clb_ticksize)
 
 
         # Plot apparent horizons by finding the convex hull of the projection of
@@ -699,8 +680,8 @@ for it in range(first_it, last_it, out2D_every):
                     xhull         = AH_data[:, column_1][hull.vertices]
                     yhull         = AH_data[:, column_2][hull.vertices]
 
-                    axplot.fill(xhull*conv_fac_space, yhull*conv_fac_space,
-                                linewidth = 0., facecolor = "black")
+                    axes[n].fill(xhull*conv_fac_space, yhull*conv_fac_space,
+                                 linewidth = 0., facecolor = "black")
 
                     print("Dataset " + str(n) + ": apparent horizon " + str(r) + " drawn from AH file " + str(r))
 
@@ -711,6 +692,7 @@ for it in range(first_it, last_it, out2D_every):
 
 
         # Compute the min and max value in the plotted data if requested
+        """
         if (compute_min_max[n]):
             if (abs_vals[n]):
                 abs_data = np.absolute(patch_plot.data)
@@ -722,16 +704,16 @@ for it in range(first_it, last_it, out2D_every):
 
             print("Dataset " + str(n) + ": min = " + str(minval) + ", max = " + str(maxval))
 
-            # FIXME: fix the position of the min/max
+            # FIXME FIXME FIXME FIXME FIXME FIXME
+            # Fix the position of the min/max
+            # FIXME FIXME FIXME FIXME FIXME FIXME
             fig.text(0.15, 0.2, "Min: " + str(minval),
                      fontsize = 17., fontweight = "bold",
-                     fontstyle = myfontstyle,
-                     fontfamily = myfontfamily) ##, fontname = myfontname)
+                     fontstyle = myfontstyle)
             fig.text(0.15, 0.17, "Max: " + str(maxval),
                      fontsize = 17., fontweight = "bold",
-                     fontstyle = myfontstyle,
-                     fontfamily = myfontfamily) ##, fontname = myfontname)
-
+                     fontstyle = myfontstyle)
+        """
 
 
         # Reset the last valid iteration and the geometry if needed
@@ -744,13 +726,12 @@ for it in range(first_it, last_it, out2D_every):
     it_str   = "It = " + str(it)
     time_str = "t = " + str("{:.2e}".format(patch_plot.time*conv_fac_time))
 
-    fig.text(0.35, 0.02, it_str, color = "red", fontsize = 20.,
-             fontweight = "bold", fontstyle = myfontstyle,
-             fontfamily = myfontfamily) ##, fontname = myfontname)
-    fig.text(0.6, 0.02, time_str + unit_time_str, color = "red",
-             fontsize = 20., fontweight = "bold",
-             fontstyle = myfontstyle,
-             fontfamily = myfontfamily) ##, fontname = myfontname)
+    fig.text(it_pos[0], it_pos[1], it_str, color = "red",
+             fontsize  = it_time_fontsize,  fontweight = it_time_fontweight,
+             fontstyle = it_time_fontstyle)
+    fig.text(time_pos[0], time_pos[1], time_str + unit_time_str, color = "red",
+             fontsize  = it_time_fontsize,  fontweight = it_time_fontweight,
+             fontstyle = it_time_fontstyle)
 
 
     # Get ready for the next iteration
