@@ -54,14 +54,14 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # Directories containing the files to be opened
 # ---------------------------------------------
 data_dirs = [
-    "/scratch1/07825/lennoggi/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M",
-    "/scratch3/07825/lennoggi/CBD_HydroDiskID_IGM_McLachlan_Spinning_aligned08_OrbSep10M"
+    "/lagoon/bbhdisk/BBHDiskMerger/FAILED_SmallDomain_NoLorenzGaugeDamping/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool",
+    "/lagoon/bbhdisk/BBHDiskMerger/FAILED_SmallDomain_NoLorenzGaugeDamping/CBD_handoff_IGM_McLachlan_Spinning_PlusMinus08_RadCool"
 ]
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
-plots_dir = "/scratch1/07825/lennoggi/Snapshots/Comparisons/CBD_SpinningAligned08_EqDiskVsHydroDiskID_OrbSep10M/radcool_gf_xy"
+plots_dir = "/lagoon/lennoggi/Snapshots/Comparisons/CBD_handoff_IGM_McLachlan_Spinning_aligned08_vs_PlusMinus08/rho_b_xy_rho_b_xy_ZoomOut"
 
 
 # File extension for the plots
@@ -72,8 +72,8 @@ fig_ext = ".png"
 # Which grid functions to plot
 # ----------------------------
 grid_functions = [
-    "radcool_gf", ##"rho_b",
-    "radcool_gf"  ##"rho_b"  ##"smallb2"
+    "rho_b",
+    "rho_b"
 ]
 
 
@@ -105,7 +105,7 @@ plot_extents = [
 # ------------------------
 first_it    = 0 
 last_it     = 1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 1024
+out2D_every = 256
 
 
 # Apparent horizon
@@ -124,8 +124,8 @@ N_AH_files = 2
 # directory. In case they live under different 'output-xxxx' directories, copy
 # them to a common directory
 AH_dirs = [
-    "/scratch1/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/scratch1/07825/lennoggi/Snapshots/CBD_HydroDiskID_IGM_McLachlan_Spinning_aligned08_OrbSep10M/AH_data"
+    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_OLD/AH_data",
+    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_PlusMinus08_OLD/AH_data",
 ]
 
 
@@ -147,15 +147,17 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 # ------------------------------------------------------
 varnames = [
     "       $\\rho$",
-    "       $\\rho$"  ##"       b^2"
+    "       $\\rho$"
+    ##"$b^2$",                ##"       $b^2$",
+    ##"$\mathcal{L}_{cool}$"  ##"       $\mathcal{L}_{cool}$"
 ]
 
 
 # Titles for each subplot
 # -----------------------
 titles = [
-    "Steadily accreting CBD",
-    "Torus"
+    "$\chi_1$ = 0.8, $\chi_2$ = 0.8",
+    "$\chi_1$ = 0.8, $\chi_2$ = -0.8",
 ]
 
 
@@ -178,14 +180,24 @@ myfontstyle  = "normal"
 #    axclbs = [
 #        [0.03, 0.6, 0.03, 0.32]
 #    ]
+#    myfigsize   = [10., 10.]
+#    mydpi       = 200
+#    mylabelsize = TODO
+#    mylabelpadx = TODO
+#    mylabelpady = TODO
 #
-# 2. Single plot with large colorbar on the right (set figsize = 20., 17], dpi = 200)
+# 2. Single plot with large colorbar on the right
 #    axplots = [
 #        [0.08, 0.12, 0.8, 0.8]
 #    ]
 #    axclbs = [
 #        [0.84, 0.12, 0.04, 0.8]
 #    ]
+#    myfigsize   = [20., 17.]
+#    mydpi       = 200
+#    mylabelsize = TODO
+#    mylabelpadx = TODO
+#    mylabelpady = TODO
 #
 # 3. Two plots with one colorbar each
 #    axplots = [
@@ -196,26 +208,53 @@ myfontstyle  = "normal"
 #        [0.005, 0.13, 0.015, 0.78],
 #        [0.525, 0.13, 0.015, 0.78]
 #    ]
+#    myfigsize   = [20., 10.]
+#    mydpi       = 100
+#    mylabelsize = 20.
+#    mylabelpadx  = 8.
+#    mylabelpady  = -6.
+#
 # 4. Two plots with a single colorbar
 #    TODO
-# 5. TODO
+# 5. Three plots with one colorbar each
+#    axplots = [
+#        [0.065, 0.07, 0.25, 0.85],
+#        [0.402, 0.07, 0.25, 0.85],
+#        [0.74,  0.07, 0.25, 0.85]
+#    ]
+#    axclbs = [
+#        [0.005, 0.08, 0.01, 0.85],
+#        [0.337, 0.08, 0.01, 0.85],
+#        [0.675, 0.08, 0.01, 0.85]
+#    ]
+#    myfigsize   = [18., 6.]
+#    mydpi       = 100
+#    mylabelsize = 12.
+#    mylabelpadx = 0.
+#    mylabelpady = -12.
 axplots = [
     [-0.115, 0.13, 0.78, 0.78],
     [0.405, 0.13, 0.78, 0.78]
 ]
-
 axclbs = [
     [0.005, 0.13, 0.015, 0.78],
     [0.525, 0.13, 0.015, 0.78]
 ]
+myfigsize   = [20., 10.]
+mydpi       = 100
+mylabelsize = 20.
+mylabelpadx  = 8.
+mylabelpady  = -6.
 
 
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -----------------------------------------------------------------------
 colorbar_extents = [
-    [1.e-15, 1.e-07], ##[1.e-08, 1.5e-02],
-    [1.e-15, 1.e-07]  ##[1.e-08, 1.5e-02] ##[4.e-15, 4.e-7]
+    [1.e-08, 1.5e-02],
+    [1.e-08, 1.5e-02]
+##    [4.e-15, 4.e-7],
+##    [1.e-15, 1.e-07]
 ]
 
 
@@ -232,8 +271,8 @@ logscale = [
 # minimum in the colorbar
 # -----------------------------------------------------------------------------
 symlogscale = [
-    True,
-    True
+    False,
+    False
 ]
 
 
@@ -250,15 +289,19 @@ linscale_norm = [
 # --------
 cmaps = [
     "plasma",
-    "plasma" ##viridis"
+    "plasma"
+    ##"viridis",
+    ##"inferno"
 ]
 
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
 # "both")
 clb_extend = [
-    "both", ##"max""
-    "both"  ##"max""
+    "max",
+    "max"
+    ##"both",
+    ##"both"
 ]
 
 
@@ -518,7 +561,7 @@ g_toy = gd.RegGeom([2, 2], [0., 0.], x1 = [1., 1.])
 for it in range(first_it, last_it, out2D_every):
     print("***** Iteration " + str(it) + " *****\n")
 
-    fig = plt.figure(figsize = [20., 10.], dpi = 100)  ##[10., 10.], dpi = 200  ##[20., 17.], dpi = 200)
+    fig = plt.figure(figsize = myfigsize, dpi = mydpi)  ##[10., 10.], dpi = 200  ##[20., 17.], dpi = 200)
 
     for n in range(N_datasets):
         # Configure axes
@@ -526,8 +569,8 @@ for it in range(first_it, last_it, out2D_every):
         axplot.set_title(titles[n], y = 1.01, fontsize = 30., fontweight = "bold",
                          fontfamily = myfontfamily, fontstyle = myfontstyle, ##fontname = myfontname,
                          color = titlecolor)
-        axplot.set_xlabel(xlabels[n], fontsize = 20., labelpad = 8.)
-        axplot.set_ylabel(ylabels[n], fontsize = 20., labelpad = -6.)
+        axplot.set_xlabel(xlabels[n], fontsize = mylabelsize, labelpad = mylabelpadx)
+        axplot.set_ylabel(ylabels[n], fontsize = mylabelsize, labelpad = mylabelpady)
         ##axplot.tick_params(labelsize = 70.)
 
         # Try to read data on a small, "toy" grid just to make sure the current
@@ -590,7 +633,6 @@ for it in range(first_it, last_it, out2D_every):
                     if (dx < delta_min): delta_min = dx
                     if (dy < delta_min): delta_min = dy
 
-            delta_min = 0.25  # FIXME: remove
             print("Dataset " + str(n) + ": smallest grid spacing is " + str(delta_min))
 
 
@@ -633,7 +675,7 @@ for it in range(first_it, last_it, out2D_every):
                            orientation = "vertical")
         clb.ax.set_title(varnames[n] + unit_gf_str, fontsize  = 20., ##70.,
                          fontweight = myfontweight, fontstyle = myfontstyle,
-                         fontfamily = myfontfamily, pad = 10.) ##, fontname   = myfontname)
+                         fontfamily = myfontfamily, pad = 7.) ##, fontname   = myfontname)
 
 
         # Plot apparent horizons by finding the convex hull of the projection of
@@ -681,12 +723,12 @@ for it in range(first_it, last_it, out2D_every):
             print("Dataset " + str(n) + ": min = " + str(minval) + ", max = " + str(maxval))
 
             # FIXME: fix the position of the min/max
-            fig.text(0.2, 0.2, "Min: " + str(minval),
-                     fontsize = 25., fontweight = "bold",
+            fig.text(0.15, 0.2, "Min: " + str(minval),
+                     fontsize = 17., fontweight = "bold",
                      fontstyle = myfontstyle,
                      fontfamily = myfontfamily) ##, fontname = myfontname)
-            fig.text(0.2, 0.17, "Max: " + str(maxval),
-                     fontsize = 25., fontweight = "bold",
+            fig.text(0.15, 0.17, "Max: " + str(maxval),
+                     fontsize = 17., fontweight = "bold",
                      fontstyle = myfontstyle,
                      fontfamily = myfontfamily) ##, fontname = myfontname)
 
@@ -698,17 +740,17 @@ for it in range(first_it, last_it, out2D_every):
             last_valid_g[n]  = g
 
 
-        # Time and iteration info
-        it_str   = "It = " + str(it)
-        time_str = "t = " + str("{:.2e}".format(patch_plot.time*conv_fac_time))
+    # Time and iteration info
+    it_str   = "It = " + str(it)
+    time_str = "t = " + str("{:.2e}".format(patch_plot.time*conv_fac_time))
 
-        fig.text(0.35, 0.03, it_str, color = "red", fontsize = 25.,
-                 fontweight = "bold", fontstyle = myfontstyle,
-                 fontfamily = myfontfamily) ##, fontname = myfontname)
-        fig.text(0.6, 0.03, time_str + unit_time_str, color = "red",
-                 fontsize = 25., fontweight = "bold",
-                 fontstyle = myfontstyle,
-                 fontfamily = myfontfamily) ##, fontname = myfontname)
+    fig.text(0.35, 0.02, it_str, color = "red", fontsize = 20.,
+             fontweight = "bold", fontstyle = myfontstyle,
+             fontfamily = myfontfamily) ##, fontname = myfontname)
+    fig.text(0.6, 0.02, time_str + unit_time_str, color = "red",
+             fontsize = 20., fontweight = "bold",
+             fontstyle = myfontstyle,
+             fontfamily = myfontfamily) ##, fontname = myfontname)
 
 
     # Get ready for the next iteration
