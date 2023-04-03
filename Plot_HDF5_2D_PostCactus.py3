@@ -633,7 +633,7 @@ for it in range(first_it, last_it, out2D_every):
                     if (dx < delta_min): delta_min = dx
                     if (dy < delta_min): delta_min = dy
 
-            print("Dataset " + str(n) + ": smallest grid spacing is " + str(delta_min))
+            print("Dataset " + str(n) + ": finest grid spacing is " + str(delta_min))
 
 
             # Set the geometry of the grid to be plotted
