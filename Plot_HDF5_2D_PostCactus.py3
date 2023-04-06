@@ -117,12 +117,14 @@ draw_AH = [
 
 # How many files per AH are there, i.e. the maximum value of 'AH_number' in
 # 'h.t<iteration>.ah<AH_number>'
+# -------------------------------------------------------------------------
 N_AH_files = 2
 
 # **IMPORTANT**
 # Make sure all AH files ('h.t<iteration>.ah<AH_number>') are in the same
 # directory. In case they live under different 'output-xxxx' directories, copy
 # them to a common directory
+# # --------------------------------------------------------------------------
 AH_dirs = [
     "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
     "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data"
@@ -196,17 +198,19 @@ it_time_fontstyle  = "normal"
 
 
 # Subplots layout
+# ---------------
 nsubplots_x = 2
 nsubplots_y = 1
 
 # Figure size and resolution
+# --------------------------
 figsize = [22., 10.]
 dpi     = 100
 
 
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
-# -----------------------------------------------------------------------
+# -------------------------------------------------------------------------
 colorbar_extents = [
     [1.e-08, 1.5e-02],
     [1.e-08, 1.5e-02]
@@ -250,6 +254,7 @@ cmaps = [
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
 # "both")
+# -------------------------------------------------------------------------
 clb_extend = [
     "max",
     "max"
@@ -258,6 +263,7 @@ clb_extend = [
 
 # Choose if you want to find max and min in the data for every iteration
 # available or not (this may take some time)
+# ----------------------------------------------------------------------
 compute_min_max = [
     False,
     False
