@@ -53,9 +53,9 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 
 # Directories containing the files to be opened
 # ---------------------------------------------
-data_dirs = [
+data_dirs = np.array([
     "/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-]
+])
 
 
 # Directory where the plots will be placed
@@ -70,9 +70,9 @@ fig_ext = ".png"
 
 # Which grid functions to plot
 # ----------------------------
-grid_functions = [
+grid_functions = np.array([
     "rho"
-]
+])
 
 
 # Input coordinates
@@ -82,23 +82,35 @@ input_coords = "Exponential fisheye"
 
 # Plot absolute values?
 # ---------------------
-abs_vals = [
+abs_vals = np.array([
     False
-]
+])
 
 
-# Which 2D slices to plot: xy, xz or yz plane
-# -------------------------------------------
-planes = [
+# Which 2D slices to plot
+# Cartesian coordinates: xy, xz or yz plane
+# Spherical coordinates: r-theta, r-phi or theta-phi plane
+# --------------------------------------------------------
+planes = np.array([
     "xz"
-]
+])
 
 
-# Plot extent in Cartesian coordinates; give it as [xmin, xmax, ymin, ymax]
-# -------------------------------------------------------------------------
-plot_extents = [
-     [np.log(15.), np.log(2000.), 0., 2.*np.pi]
-]
+# Plot extent **IN NUMERICAL COORDINATES**; provide it as
+# [xmin, xmax, ymin, ymax]. Used to build the PostCactus geometry.
+# ----------------------------------------------------------------
+plot_extents = np.array([
+     np.array([np.log(15.), np.log(2000.), 0., 2.*np.pi])
+])
+
+
+# Actual plot extent if the input coordinates are not Cartesian, i.e., what you
+# will actually see in the snapshot(s)
+# NOTE: set to None if you want to keep the original grid dimensions when using
+#       non-Cartesian coordinate systems
+actual_plot_extent = np.array([
+    np.array([-300., 300., -300., 300.])
+])
 
 
 # Which iterations to plot
@@ -110,9 +122,9 @@ out2D_every = 400 ##512
 
 # Apparent horizon
 # ----------------
-draw_AH = [
+draw_AH = np.array([
     False
-]
+])
 
 # How many files per AH are there, i.e. the maximum value of 'AH_number' in
 # 'h.t<iteration>.ah<AH_number>'
@@ -124,10 +136,10 @@ N_AH_files = 2
 # directory. In case they live under different 'output-xxxx' directories, copy
 # them to a common directory
 # # --------------------------------------------------------------------------
-AH_dirs = [
+AH_dirs = np.array([
 ##    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
     "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data"
-]
+])
 
 
 
@@ -146,23 +158,23 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 
 # Names of the variables to be put close to the colorbar
 # ------------------------------------------------------
-varnames = [
+varnames = np.array([
     "$\\rho$"
-]
+])
 
 
 # Titles for each subplot
 # -----------------------
-titles = [
+titles = np.array([
     ""
-]
+])
 
 
 # Add colorbars?
 # --------------
-add_colorbar = [
+add_colorbar = np.array([
     True
-]
+])
 
 
 # Title and other text options
@@ -180,14 +192,14 @@ labelpad_y = -5.
 ticksize   = 20.
 
 clb_ticksize        = 20.
-clblabel_pad        = 5.
+clblabel_pad        = 8.
 clb_fraction        = 0.05
 clblabel_fontsize   = 25.
 clblabel_fontweight = "bold"
 clblabel_fontstyle  = "normal"
 
-it_pos             = [0.15, 0.015]
-time_pos           = [0.6, 0.015]
+it_pos             = np.array([0.15, 0.015])
+time_pos           = np.array([0.6, 0.015])
 it_time_fontsize   = 25.
 it_time_fontweight = "bold"
 it_time_fontstyle  = "normal"
@@ -207,56 +219,56 @@ dpi     = 200
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -------------------------------------------------------------------------
-colorbar_extents = [
-    [1.e-08, 1.5e-02]
-]
+colorbar_extents = np.array([
+    np.array([1.e-08, 1.5e-02])
+])
 
 
 # Logarithmic scale
 # -----------------
-logscale = [
+logscale = np.array([
     True
-]
+])
 
 
 # Symmetric logarithmic scale: if a logarithmic scale is in use and data values
 # extend down to zero, then a linear scale is used from zero to the desired
 # minimum in the colorbar
 # -----------------------------------------------------------------------------
-symlogscale = [
+symlogscale = np.array([
     False
-]
+])
 
 
 # Normalize the linear color scale between 0 and 1 (only if a logarithmic scale
 # is not in use)
 # -----------------------------------------------------------------------------
-linscale_norm = [
+linscale_norm = np.array([
     True
-]
+])
 
 
 # Colormap
 # --------
-cmaps = [
+cmaps = np.array([
     "plasma"
-]
+])
 
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
 # "both")
 # -------------------------------------------------------------------------
-clb_extend = [
+clb_extend = np.array([
     "max"
-]
+])
 
 
 # Choose if you want to find max and min in the data for every iteration
 # available or not (this may take some time)
 # ----------------------------------------------------------------------
-compute_min_max = [
+compute_min_max = np.array([
     False
-]
+])
 
 ################################################################################
 
@@ -276,6 +288,9 @@ assert(last_it  >= first_it)
 
 N_datasets = len(data_dirs)
 assert(nsubplots_x*nsubplots_y == N_datasets)
+
+assert(input_coords == "Cartesian" or
+       input_coords == "Exponential fisheye")
 
 assert(len(grid_functions)   == N_datasets)
 assert(len(abs_vals)         == N_datasets)
@@ -411,14 +426,17 @@ else: raise RuntimeError("Unrecognized units \"" + units + "\"")
 # Initialize the template filename for the plots
 figname = plots_dir + "/"
 
-# Initialize some needed lists
-simdirs      = []
-read_data    = []
-AHfile_cols1 = []
-AHfile_cols2 = []
-norms        = []
-xlabels      = []
-ylabels      = []
+# Initialize some needed arrays
+simdirs               = []
+read_data             = []
+AHfile_cols1          = []
+AHfile_cols2          = []
+xlabels               = []
+ylabels               = []
+norms                 = []
+there_are_iters_avail = []
+last_valid_it         = []
+last_valid_g          = []
 
 
 for n in range(N_datasets):
@@ -426,24 +444,52 @@ for n in range(N_datasets):
     figname += grid_functions[n] + "_" + planes[n] + "_"
 
     # Build a SimDir object
-    sd = SimDir(data_dirs[n])
-    simdirs.append(sd)
+    simdirs.append(SimDir(data_dirs[n]))
 
-    # Get the correct PostCactus method to read the data on the desired plane
-    # and the correct columns in the AHFinderDirect files to read data from 
+
+    # Get the correct PostCactus method to read the data on the desired plane,
+    # get the correct columns in the AHFinderDirect files to read data from and
+    # set the axes' labels
     if (planes[n] == "xy"):
-        read_data.append(sd.grid.xy.read)
+        read_data.append(simdirs[n].grid.xy.read)
         AHfile_cols1.append(3)
         AHfile_cols2.append(4)
+
+        if (input_coords == "Cartesian"):
+            xlabels.append("x$\,$" + unit_space_str)
+            ylabels.append("y$\,$" + unit_space_str)
+        elif (input_coords == "Exponential fisheye"):
+            xlabels.append("x$\,$" + unit_space_str)
+            ylabels.append("z$\,$" + unit_space_str)
+
     elif (planes[n] == "xz"):
-        read_data.append(sd.grid.xz.read)
+        read_data.append(simdirs[n].grid.xz.read)
         AHfile_cols1.append(3)
         AHfile_cols2.append(5)
+
+        if (input_coords == "Cartesian"):
+            xlabels.append("x$\,$" + unit_space_str)
+            ylabels.append("z$\,$" + unit_space_str)
+        elif (input_coords == "Exponential fisheye"):
+            xlabels.append("x$\,$" + unit_space_str)
+            ylabels.append("y$\,$" + unit_space_str)
+
     elif (planes[n] == "yz"):
-        read_data.append(sd.grid.yz.read)
+        read_data.append(simdirs[n].grid.yz.read)
         AHfile_cols1.append(4)
         AHfile_cols2.append(5)
-    else: raise RuntimeError("Unrecognized plane \"" + planes[n] + "\"")
+
+        if (input_coords == "Cartesian"):
+            xlabels.append("y$\,$" + unit_space_str)
+            ylabels.append("z$\,$" + unit_space_str)
+        # FIXME FIXME FIXME FIXME FIXME FIXME FIXME
+        elif (input_coords == "Exponential fisheye"):
+            xlabels.append("$\\theta$")
+            ylabels.append("$\phi$")
+        # FIXME FIXME FIXME FIXME FIXME FIXME FIXME
+
+    else:
+        raise RuntimeError("Unrecognized plane \"" + planes[n] + "\"")
 
 
     # Set up the plot scale
@@ -457,6 +503,7 @@ for n in range(N_datasets):
                                         vmax = colorbar_extents[n][1]))
         else:
             raise RuntimeError("Please set symlogscale[" + str(n) + "] to either 'True' or 'False'")
+
     elif (logscale[n] == False):
         if (linscale_norm[n] == "yes"):
             norms.append(colors.Normalize(vmin = colorbar_extents[n][0],
@@ -469,9 +516,10 @@ for n in range(N_datasets):
         raise RuntimeError("Please set logscale[" + str(n) + "] to either 'True' or 'False'")
 
 
-    # Set axes labels
-    xlabels.append(planes[n][0] + "$\,$" + unit_space_str)
-    ylabels.append(planes[n][1] + "$\,$" + unit_space_str)
+    # Flags to check iteration availability
+    there_are_iters_avail.append(True)
+    last_valid_it.append(first_it)
+    last_valid_g.append(None)
 
 ################################################################################
 
@@ -489,28 +537,13 @@ for n in range(N_datasets):
 # Initialize the frame number
 nframe = int(first_it/out2D_every)
 
-
-# Flags to tell whether there are still iterations available for plotting and
-# last valid iterations to which the plots are reset in case there are no more
-# iterations to plot
-there_are_iters_avail = np.empty(N_datasets)
-last_valid_it         = np.empty(N_datasets)
-last_valid_g          = []
-
-for n in range(N_datasets):
-    there_are_iters_avail[n]  = True
-    last_valid_it[n]          = first_it
-    last_valid_g.append(None)
-
-
-# Small "toy" grid used to check whether an iteration is available for a given
-# dataset
-xmin  = plot_extents[n][0]
-xmax  = plot_extents[n][1]
-ymin  = plot_extents[n][2]
-ymax  = plot_extents[n][3]
-g_toy = gd.RegGeom([2, 2], [xmin, ymin], x1 = [xmax, ymax])
-
+# Toy grid used to check whether an iteration is available for a given dataset
+xmin_largest = plot_extents[:, 0].max()
+xmax_largest = plot_extents[:, 1].max()
+ymin_largest = plot_extents[:, 2].max()
+ymax_largest = plot_extents[:, 3].max()
+g_toy = gd.RegGeom([2, 2], [xmin_largest, ymin_largest],
+                      x1 = [xmax_largest, ymax_largest])
 
 
 # ***** Actually plot the data *****
@@ -609,9 +642,15 @@ for it in range(first_it, last_it, out2D_every):
 
 
             # Set the geometry of the grid to be plotted
+            xmin  = plot_extents[n][0]
+            xmax  = plot_extents[n][1]
+            ymin  = plot_extents[n][2]
+            ymax  = plot_extents[n][3]
+
             Nx = int((xmax - xmin)/deltax_min)
             Ny = int((ymax - ymin)/deltay_min)
-            g  = gd.RegGeom([Nx, Ny], [xmin, ymin], x1 = [xmax, ymax])
+
+            g = gd.RegGeom([Nx, Ny], [xmin, ymin], x1 = [xmax, ymax])
 
 
             # Build the patch to be plotted, which is resampled to a uniform grid
@@ -744,6 +783,13 @@ for it in range(first_it, last_it, out2D_every):
                      fontsize = 17., fontweight = "bold",
                      fontstyle = myfontstyle)
         """
+
+
+        # Reset the plot dimensions if the coordinates are not Cartesian and if
+        # desired
+        if (input_coords != "Cartesian" and actual_plot_extent is not None):
+            ax.set_xlim(actual_plot_extent[n][0], actual_plot_extent[n][1])
+            ax.set_ylim(actual_plot_extent[n][2], actual_plot_extent[n][3])
 
 
         # Reset the last valid iteration and the geometry if needed
