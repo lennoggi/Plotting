@@ -661,9 +661,6 @@ for it in range(first_it, last_it, out2D_every):
         else:
             raise RuntimeError("Invalid input coordinates")
 
-        print(mx[0])
-        print(my[:, 0])
-
 
         # Build the image to plot
         # NOTE: since mxcoords, mycoords and np.transpose(plot_data) all have
