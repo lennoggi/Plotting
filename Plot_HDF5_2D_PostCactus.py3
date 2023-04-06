@@ -635,28 +635,44 @@ for it in range(first_it, last_it, out2D_every):
                                       outside_val    = 0.,
                                       level_fill     = False)
 
+        # The option 'adjust_spacing = True' above may reshape patch_plot.data
+        # in order to snap to the finest resolution available, so that
+        # np.transpose(patch_plot.data) may not have dimensions (Nx, Ny)
+        # anymore. However, (almost) no reshaping shoud happen here because Nx
+        # and Ny were determined by the finest resolution to begin with. In any
+        # event, reset Nx and Ny to their new values.
+        # NOTE: alternatively, one could specify 'adjust_spacing = False' and
+        # PostCactus wouldn't snap to the finest available resolution, leaving
+        # the shape of patch_plot untouched.
+        plot_data = np.transpose(patch_plot.data)*conv_fac_gf
+
+        Nx_new = plot_data.shape[0]
+        Ny_new = plot_data.shape[1]
+
+        if (Nx_new != Nx or Ny_new != Ny):
+            print("Dataset " + str(n) + ": grid reshaped from (" + str(Nx) + ", " + str(Ny) + ") to (" + str(Nx_new) + ", " + str(Ny_new) + ")")
+
+
         # Build the mesh for pcolormesh
         # NOTE: there are Nx cells => Nx+1 edges (and the same for Ny)
         # TODO: put numerical coordinates here if desired
-        xcoords = np.linspace(xmin, xmax, Nx + 1)
-        ycoords = np.linspace(ymin, ymax, Ny + 1)
+        xcoords = np.linspace(xmin, xmax, Nx_new)
+        ycoords = np.linspace(ymin, ymax, Ny_new)
         mxcoords, mycoords = np.meshgrid(xcoords, ycoords)
 
         # Build the image to plot
-        # NOTE: since mxcoords, mycoords and np.transpose(patch_plot.data) all
-        #       have the same shape, shading = "auto" should produce
+        # NOTE: since mxcoords, mycoords and np.transpose(plot_data) all have
+        #       the same shape, shading = "auto" should produce
         #       shading = "nearest", meaning that data are cell-centered. On the
         #       other hand, if mxcoords and mycoords had one point more than
-        #       np.transpose(patch_plot.data) in each direction, than the data
-        #       would be placed on cell vertices and shading = "auto" should
-        #       produce shading = "flat".
+        #       np.transpose(plot_data) in each direction, than the data would
+        #       be placed on cell vertices and shading = "auto" should produce
+        #       shading = "flat".
         if (abs_vals[n]):
-            im = ax.pcolormesh(mxcoords, mycoords,
-                               np.transpose(np.absolute(patch_plot.data*conv_fac_gf)),
+            im = ax.pcolormesh(mxcoords, mycoords, np.absolute(plot_data),
                                shading = "auto", cmap = cmaps[n], norm = norms[n])
         else:
-            im = ax.pcolormesh(mxcoords, mycoords,
-                               np.transpose(patch_plot.data*conv_fac_gf),
+            im = ax.pcolormesh(mxcoords, mycoords, plot_data,
                                shading = "auto", cmap = cmaps[n], norm = norms[n])
 
 
