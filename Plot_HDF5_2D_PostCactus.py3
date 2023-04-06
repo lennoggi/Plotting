@@ -54,14 +54,13 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # Directories containing the files to be opened
 # ---------------------------------------------
 data_dirs = [
-##    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M",
-    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M"
+    "/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
 ]
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
-plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/rho_xy_rho_xz"
+plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
 
 
 # File extension for the plots
@@ -72,15 +71,18 @@ fig_ext = ".png"
 # Which grid functions to plot
 # ----------------------------
 grid_functions = [
-##    "rho_b",
-    "rho_b"
+    "rho"
 ]
+
+
+# Input coordinates
+# -----------------
+input_coords = "Exponential fisheye"
 
 
 # Plot absolute values?
 # ---------------------
 abs_vals = [
-##    False,
     False
 ]
 
@@ -88,31 +90,28 @@ abs_vals = [
 # Which 2D slices to plot: xy, xz or yz plane
 # -------------------------------------------
 planes = [
-##    "xy",
     "xz"
 ]
 
 
-# Plot extent; give it as [xmin, xmax, ymin, ymax]
-# ------------------------------------------------
+# Plot extent in Cartesian coordinates; give it as [xmin, xmax, ymin, ymax]
+# -------------------------------------------------------------------------
 plot_extents = [
-##    [-20., 20., -20., 20.],
-    [-40., 40., -40., 40.]
+     [np.log(15.), np.log(2000.), 0., 2.*np.pi]
 ]
 
 
 # Which iterations to plot
 # ------------------------
 first_it    = 0
-last_it     = 1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 512
+last_it     = 1 ##1000000000  # Set this to a huge number to plot all iterations
+out2D_every = 400 ##512
 
 
 # Apparent horizon
 # ----------------
 draw_AH = [
-##    True,
-    True
+    False
 ]
 
 # How many files per AH are there, i.e. the maximum value of 'AH_number' in
@@ -148,7 +147,6 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 # Names of the variables to be put close to the colorbar
 # ------------------------------------------------------
 varnames = [
-##    "$\\rho$",
     "$\\rho$"
 ]
 
@@ -156,7 +154,6 @@ varnames = [
 # Titles for each subplot
 # -----------------------
 titles = [
-##    "",
     ""
 ]
 
@@ -164,7 +161,6 @@ titles = [
 # Add colorbars?
 # --------------
 add_colorbar = [
-##    False,
     True
 ]
 
@@ -190,8 +186,8 @@ clblabel_fontsize   = 25.
 clblabel_fontweight = "bold"
 clblabel_fontstyle  = "normal"
 
-it_pos             = [0.35, 0.015]
-time_pos           = [0.55, 0.015]
+it_pos             = [0.15, 0.015]
+time_pos           = [0.6, 0.015]
 it_time_fontsize   = 25.
 it_time_fontweight = "bold"
 it_time_fontstyle  = "normal"
@@ -199,20 +195,19 @@ it_time_fontstyle  = "normal"
 
 # Subplots layout
 # ---------------
-nsubplots_x = 1 ##2
+nsubplots_x = 1
 nsubplots_y = 1
 
 # Figure size and resolution
 # --------------------------
-figsize = [22., 10.]
-dpi     = 100
+figsize = [12., 10.]
+dpi     = 200
 
 
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -------------------------------------------------------------------------
 colorbar_extents = [
-##    [1.e-08, 1.5e-02],
     [1.e-08, 1.5e-02]
 ]
 
@@ -220,7 +215,6 @@ colorbar_extents = [
 # Logarithmic scale
 # -----------------
 logscale = [
-##    True,
     True
 ]
 
@@ -230,7 +224,6 @@ logscale = [
 # minimum in the colorbar
 # -----------------------------------------------------------------------------
 symlogscale = [
-##    False,
     False
 ]
 
@@ -239,7 +232,6 @@ symlogscale = [
 # is not in use)
 # -----------------------------------------------------------------------------
 linscale_norm = [
-##    True,
     True
 ]
 
@@ -247,7 +239,6 @@ linscale_norm = [
 # Colormap
 # --------
 cmaps = [
-##    "plasma",
     "plasma"
 ]
 
@@ -256,7 +247,6 @@ cmaps = [
 # "both")
 # -------------------------------------------------------------------------
 clb_extend = [
-##    "max",
     "max"
 ]
 
@@ -265,7 +255,6 @@ clb_extend = [
 # available or not (this may take some time)
 # ----------------------------------------------------------------------
 compute_min_max = [
-##    False,
     False
 ]
 
@@ -516,7 +505,11 @@ for n in range(N_datasets):
 
 # Small "toy" grid used to check whether an iteration is available for a given
 # dataset
-g_toy = gd.RegGeom([2, 2], [0., 0.], x1 = [1., 1.])
+xmin  = plot_extents[n][0]
+xmax  = plot_extents[n][1]
+ymin  = plot_extents[n][2]
+ymax  = plot_extents[n][3]
+g_toy = gd.RegGeom([2, 2], [xmin, ymin], x1 = [xmax, ymax])
 
 
 
@@ -616,11 +609,6 @@ for it in range(first_it, last_it, out2D_every):
 
 
             # Set the geometry of the grid to be plotted
-            xmin = plot_extents[n][0]
-            xmax = plot_extents[n][1]
-            ymin = plot_extents[n][2]
-            ymax = plot_extents[n][3]
-
             Nx = int((xmax - xmin)/deltax_min)
             Ny = int((ymax - ymin)/deltay_min)
             g  = gd.RegGeom([Nx, Ny], [xmin, ymin], x1 = [xmax, ymax])
@@ -644,7 +632,7 @@ for it in range(first_it, last_it, out2D_every):
         # NOTE: alternatively, one could specify 'adjust_spacing = False' and
         # PostCactus wouldn't snap to the finest available resolution, leaving
         # the shape of patch_plot untouched.
-        plot_data = np.transpose(patch_plot.data)*conv_fac_gf
+        plot_data = patch_plot.data*conv_fac_gf
 
         Nx_new = plot_data.shape[0]
         Ny_new = plot_data.shape[1]
@@ -653,12 +641,29 @@ for it in range(first_it, last_it, out2D_every):
             print("Dataset " + str(n) + ": grid reshaped from (" + str(Nx) + ", " + str(Ny) + ") to (" + str(Nx_new) + ", " + str(Ny_new) + ")")
 
 
-        # Build the mesh for pcolormesh
+        # Build the mesh for pcolormesh and transform to Cartesian coordinates
+        # if needed
         # NOTE: there are Nx cells => Nx+1 edges (and the same for Ny)
-        # TODO: put numerical coordinates here if desired
-        xcoords = np.linspace(xmin, xmax, Nx_new)
-        ycoords = np.linspace(ymin, ymax, Ny_new)
-        mxcoords, mycoords = np.meshgrid(xcoords, ycoords)
+        if (input_coords == "Cartesian"):
+            x       = np.linspace(xmin, xmax, Nx_new)
+            y       = np.linspace(ymin, ymax, Ny_new)
+            mx, my  = np.meshgrid(x, y)
+            mx_plot = mx
+            my_plot = my
+        elif (input_coords == "Exponential fisheye"):
+            logr        = np.linspace(xmin, xmax, Nx_new)
+            phi         = np.linspace(ymin, ymax, Ny_new)
+            mlogr, mphi = np.meshgrid(logr, phi)
+            mx          = np.exp(mlogr)*np.cos(mphi)
+            my          = np.exp(mlogr)*np.sin(mphi)
+            mx_plot     = mx
+            my_plot     = my
+        else:
+            raise RuntimeError("Invalid input coordinates")
+
+        print(mx[0])
+        print(my[:, 0])
+
 
         # Build the image to plot
         # NOTE: since mxcoords, mycoords and np.transpose(plot_data) all have
@@ -669,12 +674,11 @@ for it in range(first_it, last_it, out2D_every):
         #       be placed on cell vertices and shading = "auto" should produce
         #       shading = "flat".
         if (abs_vals[n]):
-            im = ax.pcolormesh(mxcoords, mycoords, np.absolute(plot_data),
+            im = ax.pcolormesh(mx, my, np.absolute(np.transpose(plot_data)),
                                shading = "auto", cmap = cmaps[n], norm = norms[n])
         else:
-            im = ax.pcolormesh(mxcoords, mycoords, plot_data,
+            im = ax.pcolormesh(mx, my, np.transpose(plot_data),
                                shading = "auto", cmap = cmaps[n], norm = norms[n])
-
 
         # Add a colorbar
         if (add_colorbar[n]):
