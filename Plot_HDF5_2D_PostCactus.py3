@@ -54,7 +54,7 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # Directories containing the files to be opened
 # ---------------------------------------------
 data_dirs = [
-    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M",
+##    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M",
     "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M"
 ]
 
@@ -72,7 +72,7 @@ fig_ext = ".png"
 # Which grid functions to plot
 # ----------------------------
 grid_functions = [
-    "rho_b",
+##    "rho_b",
     "rho_b"
 ]
 
@@ -80,7 +80,7 @@ grid_functions = [
 # Plot absolute values?
 # ---------------------
 abs_vals = [
-    False,
+##    False,
     False
 ]
 
@@ -88,7 +88,7 @@ abs_vals = [
 # Which 2D slices to plot: xy, xz or yz plane
 # -------------------------------------------
 planes = [
-    "xy",
+##    "xy",
     "xz"
 ]
 
@@ -96,7 +96,7 @@ planes = [
 # Plot extent; give it as [xmin, xmax, ymin, ymax]
 # ------------------------------------------------
 plot_extents = [
-    [-20., 20., -20., 20.],
+##    [-20., 20., -20., 20.],
     [-40., 40., -40., 40.]
 ]
 
@@ -111,7 +111,7 @@ out2D_every = 512
 # Apparent horizon
 # ----------------
 draw_AH = [
-    True,
+##    True,
     True
 ]
 
@@ -126,7 +126,7 @@ N_AH_files = 2
 # them to a common directory
 # # --------------------------------------------------------------------------
 AH_dirs = [
-    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
+##    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
     "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data"
 ]
 
@@ -148,7 +148,7 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 # Names of the variables to be put close to the colorbar
 # ------------------------------------------------------
 varnames = [
-    "$\\rho$",
+##    "$\\rho$",
     "$\\rho$"
 ]
 
@@ -156,7 +156,7 @@ varnames = [
 # Titles for each subplot
 # -----------------------
 titles = [
-    "",
+##    "",
     ""
 ]
 
@@ -164,7 +164,7 @@ titles = [
 # Add colorbars?
 # --------------
 add_colorbar = [
-    False,
+##    False,
     True
 ]
 
@@ -199,7 +199,7 @@ it_time_fontstyle  = "normal"
 
 # Subplots layout
 # ---------------
-nsubplots_x = 2
+nsubplots_x = 1 ##2
 nsubplots_y = 1
 
 # Figure size and resolution
@@ -212,7 +212,7 @@ dpi     = 100
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -------------------------------------------------------------------------
 colorbar_extents = [
-    [1.e-08, 1.5e-02],
+##    [1.e-08, 1.5e-02],
     [1.e-08, 1.5e-02]
 ]
 
@@ -220,7 +220,7 @@ colorbar_extents = [
 # Logarithmic scale
 # -----------------
 logscale = [
-    True,
+##    True,
     True
 ]
 
@@ -230,7 +230,7 @@ logscale = [
 # minimum in the colorbar
 # -----------------------------------------------------------------------------
 symlogscale = [
-    False,
+##    False,
     False
 ]
 
@@ -239,7 +239,7 @@ symlogscale = [
 # is not in use)
 # -----------------------------------------------------------------------------
 linscale_norm = [
-    True,
+##    True,
     True
 ]
 
@@ -247,7 +247,7 @@ linscale_norm = [
 # Colormap
 # --------
 cmaps = [
-    "plasma",
+##    "plasma",
     "plasma"
 ]
 
@@ -256,7 +256,7 @@ cmaps = [
 # "both")
 # -------------------------------------------------------------------------
 clb_extend = [
-    "max",
+##    "max",
     "max"
 ]
 
@@ -265,7 +265,7 @@ clb_extend = [
 # available or not (this may take some time)
 # ----------------------------------------------------------------------
 compute_min_max = [
-    False,
+##    False,
     False
 ]
 
@@ -524,21 +524,31 @@ g_toy = gd.RegGeom([2, 2], [0., 0.], x1 = [1., 1.])
 for it in range(first_it, last_it, out2D_every):
     print("***** Iteration " + str(it) + " *****\n")
 
-    fig, axes = plt.subplots(nsubplots_y, nsubplots_x,
-                             figsize = figsize, dpi = dpi)
+    # Can't have 'plt.subplots(1, 1)'
+    if (N_datasets > 1):
+        fig, axes = plt.subplots(nsubplots_y, nsubplots_x,
+                                 figsize = figsize, dpi = dpi)
+    else:  # Single subplot -> No arguments
+        fig, ax = plt.subplots(figsize = figsize, dpi = dpi)
+
     fig.set_tight_layout(True)
 
     for n in range(N_datasets):
+        # The axis object returned by plt.subplots() when there's only one
+        # subplot is not subscriptable
+        if (N_datasets > 1):
+            ax = axes[n]
+
         # Configure axes
-        axes[n].set_box_aspect(1)  # Square snapshots
-        axes[n].set_title(titles[n], color = titlecolor, y = titlepad,
-                          fontsize   = title_fontsize,
-                          fontweight = title_fontweight,
-                          fontstyle  = title_fontstyle,
-                          fontname   = title_fontname)
-        axes[n].set_xlabel(xlabels[n], fontsize = labelsize, labelpad = labelpad_x)
-        axes[n].set_ylabel(ylabels[n], fontsize = labelsize, labelpad = labelpad_y)
-        axes[n].tick_params(labelsize = ticksize)
+        ax.set_box_aspect(1)  # Square snapshots
+        ax.set_title(titles[n], color = titlecolor, y = titlepad,
+                     fontsize   = title_fontsize,
+                     fontweight = title_fontweight,
+                     fontstyle  = title_fontstyle,
+                     fontname   = title_fontname)
+        ax.set_xlabel(xlabels[n], fontsize = labelsize, labelpad = labelpad_x)
+        ax.set_ylabel(ylabels[n], fontsize = labelsize, labelpad = labelpad_y)
+        ax.tick_params(labelsize = ticksize)
 
         # Try to read data on a small, "toy" grid just to make sure the current
         # iteration is available for the current dataset
@@ -641,18 +651,18 @@ for it in range(first_it, last_it, out2D_every):
         #       would be placed on cell vertices and shading = "auto" should
         #       produce shading = "flat".
         if (abs_vals[n]):
-            im = axes[n].pcolormesh(mxcoords, mycoords,
-                                    np.transpose(np.absolute(patch_plot.data*conv_fac_gf)),
-                                    shading = "auto", cmap = cmaps[n], norm = norms[n])
+            im = ax.pcolormesh(mxcoords, mycoords,
+                               np.transpose(np.absolute(patch_plot.data*conv_fac_gf)),
+                               shading = "auto", cmap = cmaps[n], norm = norms[n])
         else:
-            im = axes[n].pcolormesh(mxcoords, mycoords,
-                                    np.transpose(patch_plot.data*conv_fac_gf),
-                                    shading = "auto", cmap = cmaps[n], norm = norms[n])
+            im = ax.pcolormesh(mxcoords, mycoords,
+                               np.transpose(patch_plot.data*conv_fac_gf),
+                               shading = "auto", cmap = cmaps[n], norm = norms[n])
 
 
         # Add a colorbar
         if (add_colorbar[n]):
-            clb = fig.colorbar(im, ax = axes[n], extend = clb_extend[n],
+            clb = fig.colorbar(im, ax = ax, extend = clb_extend[n],
                                fraction = clb_fraction)
             clb.ax.set_title(varnames[n] + unit_gf_str, pad = clblabel_pad,
                              fontsize   = clblabel_fontsize,
@@ -670,7 +680,7 @@ for it in range(first_it, last_it, out2D_every):
 
             for r in range(1, N_AH_files + 1):
                 if (there_are_iters_avail[n]):
-                    AH_file = AH_dirs[n] + "/h.t" + str(it)               + ".ah" + str(r) + ".gp"
+                    AH_file = AH_dirs[n] + "/h.t" + str(it) + ".ah" + str(r) + ".gp"
                 else:
                     AH_file = AH_dirs[n] + "/h.t" + str(int(last_valid_it[n])) + ".ah" + str(r) + ".gp"
 
@@ -683,8 +693,8 @@ for it in range(first_it, last_it, out2D_every):
                     xhull         = AH_data[:, AHfile_cols1[n]][hull.vertices]
                     yhull         = AH_data[:, AHfile_cols2[n]][hull.vertices]
 
-                    axes[n].fill(xhull*conv_fac_space, yhull*conv_fac_space,
-                                 linewidth = 0., facecolor = "black")
+                    ax.fill(xhull*conv_fac_space, yhull*conv_fac_space,
+                            linewidth = 0., facecolor = "black")
 
                     print("Dataset " + str(n) + ": apparent horizon " + str(r) + " drawn from AH file " + str(r))
 
