@@ -54,15 +54,14 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # Directories containing the files to be opened
 # ---------------------------------------------
 data_dirs = [
-    "/lagoon/bbhdisk/BBHDiskMerger/FAILED_SmallDomain_NoLorenzGaugeDamping/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool",
-    "/lagoon/bbhdisk/BBHDiskMerger/FAILED_SmallDomain_NoLorenzGaugeDamping/CBD_handoff_IGM_McLachlan_Spinning_PlusMinus08_RadCool"
+    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M",
+    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M"
 ]
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
-##plots_dir = "/lagoon/lennoggi/Snapshots/Comparisons/CBD_handoff_IGM_McLachlan_Spinning_aligned08_vs_PlusMinus08/rho_b_xy_rho_b_xy_ZoomOut"
-plots_dir = "/lagoon/lennoggi/Snapshots"
+plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/rho_xy_rho_xz"
 
 
 # File extension for the plots
@@ -90,23 +89,23 @@ abs_vals = [
 # -------------------------------------------
 planes = [
     "xy",
-    "xy"
+    "xz"
 ]
 
 
 # Plot extent; give it as [xmin, xmax, ymin, ymax]
 # ------------------------------------------------
 plot_extents = [
-    [-40., 40., -40., 40.],
+    [-20., 20., -20., 20.],
     [-40., 40., -40., 40.]
 ]
 
 
 # Which iterations to plot
 # ------------------------
-first_it    = 0 
+first_it    = 0
 last_it     = 1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 256
+out2D_every = 512
 
 
 # Apparent horizon
@@ -125,8 +124,8 @@ N_AH_files = 2
 # directory. In case they live under different 'output-xxxx' directories, copy
 # them to a common directory
 AH_dirs = [
-    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_OLD/AH_data",
-    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_PlusMinus08_OLD/AH_data",
+    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
+    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data"
 ]
 
 
@@ -149,16 +148,14 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 varnames = [
     "$\\rho$",
     "$\\rho$"
-    ##"$b^2$",                ##"       $b^2$",
-    ##"$\mathcal{L}_{cool}$"  ##"       $\mathcal{L}_{cool}$"
 ]
 
 
 # Titles for each subplot
 # -----------------------
 titles = [
-    "$\chi_1$ = 0.8,   $\chi_2$ = 0.8",
-    "$\chi_1$ = 0.8,   $\chi_2$ = -0.8",
+    "",
+    ""
 ]
 
 
@@ -185,7 +182,7 @@ labelpad_y = -5.
 ticksize   = 20.
 
 clb_ticksize        = 20.
-clblabel_pad        = 3.
+clblabel_pad        = 5.
 clb_fraction        = 0.05
 clblabel_fontsize   = 25.
 clblabel_fontweight = "bold"
@@ -213,8 +210,6 @@ dpi     = 100
 colorbar_extents = [
     [1.e-08, 1.5e-02],
     [1.e-08, 1.5e-02]
-##    [4.e-15, 4.e-7],
-##    [1.e-15, 1.e-07]
 ]
 
 
@@ -250,8 +245,6 @@ linscale_norm = [
 cmaps = [
     "plasma",
     "plasma"
-    ##"viridis",
-    ##"inferno"
 ]
 
 
@@ -260,8 +253,6 @@ cmaps = [
 clb_extend = [
     "max",
     "max"
-    ##"both",
-    ##"both"
 ]
 
 
@@ -428,12 +419,13 @@ else: raise RuntimeError("Unrecognized units \"" + units + "\"")
 figname = plots_dir + "/"
 
 # Initialize some needed lists
-simdirs     = []
-read_data   = []
-plot_extent = []
-norms       = []
-xlabels     = []
-ylabels     = []
+simdirs      = []
+read_data    = []
+AHfile_cols1 = []
+AHfile_cols2 = []
+norms        = []
+xlabels      = []
+ylabels      = []
 
 
 for n in range(N_datasets):
@@ -445,19 +437,19 @@ for n in range(N_datasets):
     simdirs.append(sd)
 
     # Get the correct PostCactus method to read the data on the desired plane
-    # and the correct columns in the AHFinderDirect fils to read data from 
+    # and the correct columns in the AHFinderDirect files to read data from 
     if (planes[n] == "xy"):
         read_data.append(sd.grid.xy.read)
-        column_1 = 3
-        column_2 = 4
+        AHfile_cols1.append(3)
+        AHfile_cols2.append(4)
     elif (planes[n] == "xz"):
         read_data.append(sd.grid.xz.read)
-        column_1 = 3
-        column_2 = 5
+        AHfile_cols1.append(3)
+        AHfile_cols2.append(5)
     elif (planes[n] == "yz"):
         read_data.append(sd.grid.yz.read)
-        column_1 = 4
-        column_2 = 5
+        AHfile_cols1.append(4)
+        AHfile_cols2.append(5)
     else: raise RuntimeError("Unrecognized plane \"" + planes[n] + "\"")
 
 
@@ -660,7 +652,8 @@ for it in range(first_it, last_it, out2D_every):
 
 
         # Plot apparent horizons by finding the convex hull of the projection of
-        # the points defining it (as found by AHFinderDirect) in the xy plane
+        # the points defining it (as found by AHFinderDirect) in the desired
+        # plane
         if (draw_AH[n]):
             print("Dataset " + str(n) + ": trying to draw apparent horizon(s)...")
             found_AH_data = False
@@ -676,9 +669,9 @@ for it in range(first_it, last_it, out2D_every):
                 if (path.exists(AH_file)):
                     found_AH_data = True
                     AH_data       = np.loadtxt(AH_file)
-                    hull          = ConvexHull(AH_data[:, [column_1, column_2]])
-                    xhull         = AH_data[:, column_1][hull.vertices]
-                    yhull         = AH_data[:, column_2][hull.vertices]
+                    hull          = ConvexHull(AH_data[:, [AHfile_cols1[n], AHfile_cols2[n]]])
+                    xhull         = AH_data[:, AHfile_cols1[n]][hull.vertices]
+                    yhull         = AH_data[:, AHfile_cols2[n]][hull.vertices]
 
                     axes[n].fill(xhull*conv_fac_space, yhull*conv_fac_space,
                                  linewidth = 0., facecolor = "black")
