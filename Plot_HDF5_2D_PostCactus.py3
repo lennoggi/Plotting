@@ -463,15 +463,21 @@ for n in range(N_datasets):
             norms.append(colors.SymLogNorm(vmin      = colorbar_extents[n][0],
                                            vmax      = colorbar_extents[n][1],
                                            linthresh = colorbar_extents[n][0]))
-        else:
+        elif (symlogscale[n] == False):
             norms.append(colors.LogNorm(vmin = colorbar_extents[n][0],
                                         vmax = colorbar_extents[n][1]))
-    else:
+        else:
+            raise RuntimeError("Please set symlogscale[" + str(n) + "] to either 'True' or 'False'")
+    elif (logscale[n] == False):
         if (linscale_norm[n] == "yes"):
             norms.append(colors.Normalize(vmin = colorbar_extents[n][0],
                                           vmax = colorbar_extents[n][1]))
-        else:
+        elif (linscale_norm[n] == False):
             norms.append(None)
+        else:
+            raise RuntimeError("Please set linscale_norm[" + str(n) + "] to either 'True' or 'False'")
+    else:
+        raise RuntimeError("Please set logscale[" + str(n) + "] to either 'True' or 'False'")
 
 
     # Set axes labels
