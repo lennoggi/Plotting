@@ -1,0 +1,16 @@
+#! /bin/bash
+#PBS -A NO_ALLOCATION
+#PBS -q prairies
+#PBS -r n
+#PBS -l walltime=02:00:00
+#PBS -l select=1:ncpus=1:mpiprocs=1:ompthreads=1
+#PBS -N Plot
+#PBS -o /lagoon/lennoggi/Plot.out
+#PBS -o /lagoon/lennoggi/Plot.err
+#PBS -M lorenzo.ennoggi@gmail.com
+#PBS -m abe
+
+cd /home/lennoggi/Git_repositories/Plotting
+python3 Plot_HDF5_2D_PostCactus.py3
+echo "Done"
+date 
