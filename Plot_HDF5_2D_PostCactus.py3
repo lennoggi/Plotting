@@ -116,7 +116,7 @@ actual_plot_extent = np.array([
 # Which iterations to plot
 # ------------------------
 first_it    = 0
-last_it     = 1 ##1000000000  # Set this to a huge number to plot all iterations
+last_it     = 1000000000  # Set this to a huge number to plot all iterations
 out2D_every = 400 ##512
 
 
