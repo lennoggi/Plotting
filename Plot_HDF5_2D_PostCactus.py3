@@ -95,12 +95,12 @@ abs_vals = np.array([
 ])
 
 
-# Which iterations to plot
-# ------------------------
+# Iterations and initial time info
+# --------------------------------
 first_it    = 187392  ##151552  ##115712
-last_it     = 222208  ##186368  ##150528  ##1000000000  # Set this to a huge number to plot all iterations
+last_it     = 191488 #222208  ##186368  ##150528  ##1000000000  # Set this to a huge number to plot all iterations
 out2D_every = 1024    ##400
-
+t0          = 119977.65  ##0.
 
 # Do you want to find the max and min in the data for every available
 # iteration?
@@ -246,7 +246,7 @@ titles = np.array([
 
 # Add colorbar(s)?
 # ----------------
-add_colorbar = np.array([
+add_clb = np.array([
     True
 ])
 
@@ -254,7 +254,7 @@ add_colorbar = np.array([
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -------------------------------------------------------------------------
-colorbar_extents = np.array([
+clb_extents = np.array([
     np.array([1.e-08, 1.5e-02])
 ])
 
@@ -262,7 +262,7 @@ colorbar_extents = np.array([
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
 # "both")
 # -------------------------------------------------------------------------
-clb_extend = np.array([
+clb_extends = np.array([
     "max"
 ])
 
@@ -307,13 +307,6 @@ it_time_fontsize   = 25.
 it_time_fontweight = "bold"
 it_time_fontstyle  = "normal"
 
-# Extent of the color scales (note that the actual scale may extend below
-# colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
-# -------------------------------------------------------------------------
-colorbar_extents = np.array([
-    np.array([1.e-08, 1.5e-02])
-])
-
 
 
 
@@ -341,11 +334,11 @@ actual_plot_extents_end = np.array([
 # Iterations at which zooming in/out should begin/end
 # -------------------------------------------------------
 first_its_zoom = np.array([
-    535200
+    187392 ##535200
 ])
 
 last_its_zoom = np.array([
-    633600
+    187393 ##633600
 ])
 
 
@@ -375,11 +368,11 @@ vary_grid_transparency = np.array([
 # Iterations at which the change in grid transparency should begin/end
 # --------------------------------------------------------------------
 first_its_alpha_grid = np.array([
-    736000
+    187392  ##736000
 ])
 
 last_its_alpha_grid = np.array([
-    769600
+    187393  ##769600
 ])
 
 
@@ -424,7 +417,7 @@ first_its_alpha_reflevels = np.array([
 ])
 
 last_its_alpha_reflevels = np.array([
-    222208
+    191488 #222208
 ])
 
 
@@ -460,48 +453,172 @@ reflevel_ranges = np.array([
 
 ######################### CODE SELF-PROTECTION #################################
 
-assert(first_it >= 0)
-assert(last_it  >= first_it)
-
 N_datasets = len(data_dirs)
-assert(nsubplots_x*nsubplots_y == N_datasets)
+
+assert(len(grid_functions) == N_datasets)
 
 assert(input_coords == "Cartesian" or
        input_coords == "Exponential fisheye")
 
-assert(len(grid_functions)              == N_datasets)
-assert(len(abs_vals)                    == N_datasets)
-assert(len(planes)                      == N_datasets)
-assert(len(plot_extents)                == N_datasets)
-assert(len(actual_plot_extents)         == N_datasets)
-assert(len(zooms)                       == N_datasets)
-assert(len(actual_plot_extents_end)     == N_datasets)
-assert(len(first_its_zoom)              == N_datasets)
-assert(len(last_its_zoom)               == N_datasets)
-assert(len(draw_AH)                     == N_datasets)
-assert(len(AH_dirs)                     == N_datasets)
-assert(len(varnames)                    == N_datasets)
-assert(len(titles)                      == N_datasets)
-assert(len(colorbar_extents)            == N_datasets)
-assert(len(logscale)                    == N_datasets)
-assert(len(symlogscale)                 == N_datasets)
-assert(len(linscale_norm)               == N_datasets)
-assert(len(cmaps)                       == N_datasets)
-assert(len(clb_extend)                  == N_datasets)
-assert(len(compute_min_max)             == N_datasets)
-assert(len(plot_grid)                   == N_datasets)
-assert(len(vary_grid_transparency)      == N_datasets)
-assert(len(first_its_alpha_grid)        == N_datasets)
-assert(len(last_its_alpha_grid)         == N_datasets)
-assert(len(alpha_grid_init)             == N_datasets)
-assert(len(alpha_grid_end)              == N_datasets)
-assert(len(plot_reflevels)              == N_datasets)
+assert(len(planes) == N_datasets)
+for plane in planes:
+    assert(plane == "xy" or plane == "xz" or plane == "yz")
+
+assert(len(abs_vals) == N_datasets)
+for abs_val in abs_vals:
+    assert(abs_val or not abs_val)
+
+assert(first_it    >= 0)
+assert(last_it     >= first_it)
+assert(out2D_every >= 0)
+
+assert(len(compute_min_max) == N_datasets)
+for comp in compute_min_max:
+    assert(comp or not comp)
+
+assert(len(plot_extents) == N_datasets)
+for plot_extent in plot_extents:
+    assert(len(plot_extent == 4))
+    assert(plot_extent[1] > plot_extent[0])
+    assert(plot_extent[3] > plot_extent[2])
+
+assert(len(actual_plot_extents) == N_datasets)
+for actual_plot_extent in actual_plot_extents:
+    assert(len(actual_plot_extent == 4))
+    assert(actual_plot_extent[1] > actual_plot_extent[0])
+    assert(actual_plot_extent[3] > actual_plot_extent[2])
+
+assert(nsubplots_x > 0)
+assert(nsubplots_y > 0)
+assert(nsubplots_x*nsubplots_y == N_datasets)
+
+assert(len(figsize) == 2)
+assert(dpi > 0)
+
+assert(len(draw_AH) == N_datasets)
+for draw in draw_AH:
+    assert(draw or not draw)
+
+assert(N_AH_files > 0)
+assert(len(AH_dirs) == N_datasets)
+
+assert(len(logscale) == N_datasets)
+for log in logscale:
+    assert(log or not log)
+
+assert(len(symlogscale) == N_datasets)
+for symlog in symlogscale:
+    assert(symlog or not symlog)
+
+assert(len(linscale_norm) == N_datasets)
+for lin in linscale_norm:
+    assert(lin or not lin)
+
+assert(units == "arbitrary" or
+       units == "geometric" or
+       units == "SI")
+
+assert(len(varnames) == N_datasets)
+assert(len(titles) == N_datasets)
+
+assert(len(add_clb) == N_datasets)
+for aclb in add_clb:
+    assert(aclb or not aclb)
+
+assert(len(clb_extents) == N_datasets)
+for clb_extt in clb_extents:
+    assert(len(clb_extt) == 2)
+    assert(clb_extt[1] > clb_extt[0])
+
+assert(len(clb_extends) == N_datasets)
+for clb_extd in clb_extends:
+    assert(clb_extd == "min"  or
+           clb_extd == "max"  or
+           clb_extd == "both")
+
+assert(len(cmaps) == N_datasets)
+
+assert(title_fontsize    > 0.)
+assert(labelsize         > 0.)
+assert(ticksize          > 0.)
+assert(clb_ticksize      > 0.)
+assert(clb_fraction      > 0.)
+assert(clblabel_fontsize > 0.)
+
+assert(len(it_pos   == 2))
+assert(len(time_pos == 2))
+assert(it_time_fontsize > 0.)
+
+assert(len(zooms) == N_datasets)
+for zm in zooms:
+    assert(zm or not zm)
+
+assert(len(actual_plot_extents_end) == N_datasets)
+for actual_plot_extent_end in actual_plot_extents_end:
+    assert(len(actual_plot_extent_end == 4))
+    assert(actual_plot_extent_end[1] > actual_plot_extent_end[0])
+    assert(actual_plot_extent_end[3] > actual_plot_extent_end[2])
+
+assert(len(first_its_zoom) == N_datasets)
+for first_it_zoom in first_its_zoom:
+    assert(first_it_zoom >= first_it)
+
+assert(len(last_its_zoom) == N_datasets)
+for last_it_zoom in last_its_zoom:
+    assert(last_it_zoom <= last_it)
+
+assert(len(plot_grid) == N_datasets)
+for pg in plot_grid:
+    assert(pg or not pg)
+
+assert(len(vary_grid_transparency) == N_datasets)
+for vgt in vary_grid_transparency:
+    assert(vgt or not vgt)
+
+assert(len(first_its_alpha_grid) == N_datasets)
+for first_it_alpha_grid in first_its_alpha_grid:
+    assert(first_it_alpha_grid >= first_it)
+
+assert(len(last_its_alpha_grid) == N_datasets)
+for last_it_alpha_grid in last_its_alpha_grid:
+    assert(last_it_alpha_grid <= last_it)
+
+assert(len(alpha_grid_init) == N_datasets)
+for agi in alpha_grid_init:
+    assert(agi >= 0.)
+
+assert(len(alpha_grid_end) == N_datasets)
+for age in alpha_grid_end:
+    assert(age >= 0.)
+
+assert(len(plot_reflevels) == N_datasets)
+for plot_rlvl in plot_reflevels:
+    assert(plot_rlvl or not plot_rlvl)
+
 assert(len(vary_reflevels_transparency) == N_datasets)
-assert(len(alpha_reflevels_init)        == N_datasets)
-assert(len(alpha_reflevels_end)         == N_datasets)
-assert(len(reflevel_ranges)             == N_datasets)
-assert(len(first_its_alpha_reflevels)   == N_datasets)
-assert(len(last_its_alpha_reflevels)    == N_datasets)
+for vrt in vary_reflevels_transparency:
+    assert(vrt or not vrt)
+
+assert(len(first_its_alpha_reflevels) == N_datasets)
+for first_it_alpha_reflevels in first_its_alpha_reflevels:
+    assert(first_it_alpha_reflevels >= first_it)
+
+assert(len(last_its_alpha_reflevels) == N_datasets)
+for last_it_alpha_reflevels in last_its_alpha_reflevels:
+    assert(last_it_alpha_reflevels <= last_it)
+
+assert(len(alpha_reflevels_init) == N_datasets)
+for ari in alpha_reflevels_init:
+    assert(ari >= 0.)
+
+assert(len(alpha_reflevels_end) == N_datasets)
+for are in alpha_reflevels_end:
+    assert(are >= 0.)
+
+assert(len(reflevel_ranges) == N_datasets)
+for rr in reflevel_ranges:
+    assert(len(rr) == 2)
+    assert(rr[1] >= rr[0])
 
 ################################################################################
 
@@ -707,19 +824,19 @@ for n in range(N_datasets):
     # Set up the plot scale
     if (logscale[n] == True):
         if (symlogscale[n] == True):
-            norms.append(colors.SymLogNorm(vmin      = colorbar_extents[n][0],
-                                           vmax      = colorbar_extents[n][1],
-                                           linthresh = colorbar_extents[n][0]))
+            norms.append(colors.SymLogNorm(vmin      = clb_extents[n][0],
+                                           vmax      = clb_extents[n][1],
+                                           linthresh = clb_extents[n][0]))
         elif (symlogscale[n] == False):
-            norms.append(colors.LogNorm(vmin = colorbar_extents[n][0],
-                                        vmax = colorbar_extents[n][1]))
+            norms.append(colors.LogNorm(vmin = clb_extents[n][0],
+                                        vmax = clb_extents[n][1]))
         else:
             raise RuntimeError("Please set symlogscale[" + str(n) + "] to either 'True' or 'False'")
 
     elif (logscale[n] == False):
         if (linscale_norm[n] == "yes"):
-            norms.append(colors.Normalize(vmin = colorbar_extents[n][0],
-                                          vmax = colorbar_extents[n][1]))
+            norms.append(colors.Normalize(vmin = clb_extents[n][0],
+                                          vmax = clb_extents[n][1]))
         elif (linscale_norm[n] == False):
             norms.append(None)
         else:
@@ -1014,8 +1131,8 @@ for it in range(first_it, last_it + 1, out2D_every):
                                shading = "auto", cmap = cmaps[n], norm = norms[n])
 
         # Add a colorbar
-        if (add_colorbar[n]):
-            clb = fig.colorbar(im, ax = ax, extend = clb_extend[n],
+        if (add_clb[n]):
+            clb = fig.colorbar(im, ax = ax, extend = clb_extends[n],
                                fraction = clb_fraction)
             clb.ax.set_title(varnames[n] + unit_gf_str, pad = clblabel_pad,
                              fontsize   = clblabel_fontsize,
@@ -1121,7 +1238,7 @@ for it in range(first_it, last_it + 1, out2D_every):
             reflevels_colors = []
             for i in range(len(levels)):
                 reflevels_colors.append((0., 0., 0., alpha_reflevels[n]))
-            viz.plot_contour(patch_contour, levels = levels, linewidth = 0.1,
+            viz.plot_contour(patch_contour, levels = levels,
                              colors = reflevels_colors)
 
             # Reset the reflevels' transparency if desired 
@@ -1140,7 +1257,7 @@ for it in range(first_it, last_it + 1, out2D_every):
     # Time and iteration info
     it_str   = "It = " + str(it)
     ##time_str = "t = " + str("{:.2e}".format(patch_plot.time*conv_fac_time))
-    time_str = "t = " + str("{:.2e}".format((patch_plot.time + 119820.)*conv_fac_time))
+    time_str = "t = " + str("{:.2e}".format((t0 + patch_plot.time)*conv_fac_time))
 
     fig.text(it_pos[0], it_pos[1], it_str, color = "red",
              fontsize  = it_time_fontsize,  fontweight = it_time_fontweight,
