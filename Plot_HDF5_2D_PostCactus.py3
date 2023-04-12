@@ -56,27 +56,27 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # Directories containing the files to be opened
 # ---------------------------------------------
 data_dirs = np.array([
-    ##"/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
+    "/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
+    ##"/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
 ])
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
-##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP_ZoomOut"
-plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_TEST_PLOT_GRID"
+plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
+##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_TEST_PLOT_GRID"
 
 
 # Which grid functions to plot
 # ----------------------------
 grid_functions = np.array([
-    "rho_b"  ##"rho"
+    "rho"  ##"rho_b"
 ])
 
 
 # Input coordinates
 # -----------------
-input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
+input_coords = "Exponential fisheye"  # "Cartesian" or "Exponential fisheye"
 
 
 # Which 2D slices to plot
@@ -84,7 +84,7 @@ input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
 # Spherical-like coordinates: r-theta, r-phi or theta-phi plane
 # -------------------------------------------------------------
 planes = np.array([
-    "xy"  ##"xz"
+    "xz"  ##"xy"
 ])
 
 
@@ -97,10 +97,17 @@ abs_vals = np.array([
 
 # Iterations and initial time info
 # --------------------------------
-first_it    = 187392  ##151552  ##115712
-last_it     = 191488 #222208  ##186368  ##150528  ##1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 1024    ##400
-t0          = 119977.65  ##0.
+first_it    = 0
+last_it     = 367200  ##1000000000  # Set this to a huge number to plot all iterations
+out2D_every = 400     ##1024
+t0          = 0.      ##119977.65.
+
+
+# Binary orbit counting
+# ---------------------
+orb_count = True
+omega     = 1.049229e-02
+
 
 # Do you want to find the max and min in the data for every available
 # iteration?
@@ -122,8 +129,8 @@ compute_min_max = np.array([
 # [xmin, xmax, ymin, ymax]. Used to build the PostCactus geometry.
 # ----------------------------------------------------------------
 plot_extents = np.array([
-     ##np.array([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
-     np.array([-40., 40., -40., 40.])
+     np.array([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
+     ##np.array([-40., 40., -40., 40.])
 ])
 
 
@@ -133,9 +140,9 @@ plot_extents = np.array([
 #       non-Cartesian coordinate systems
 # NOTE: used as the starting plot extent if 'zoom' (see below) is True
 actual_plot_extents = np.array([
-    np.array([-40., 40., -40., 40.])
-##    np.array([-300., 300., -300., 300.])
-##    np.array([-2010., 2010., -2010., 2010.])
+    np.array([-300., 300., -300., 300.])
+    ##np.array([-2010., 2010., -2010., 2010.])
+    ##np.array([-40., 40., -40., 40.])
 ])
 
 
@@ -164,7 +171,7 @@ fig_ext = ".png"
 # Draw the apparent horizon(s)?
 # -----------------------------
 draw_AH = np.array([
-    True  ##False
+    False  ##True
 ])
 
 
@@ -299,13 +306,14 @@ clblabel_fontsize   = 25.
 clblabel_fontweight = "bold"
 clblabel_fontstyle  = "normal"
 
-# Iteration and time strings options
-# ----------------------------------
-it_pos             = np.array([0.15, 0.015])
-time_pos           = np.array([0.6, 0.015])
-it_time_fontsize   = 25.
-it_time_fontweight = "bold"
-it_time_fontstyle  = "normal"
+# Iteration, time and orbits strings options
+# ------------------------------------------
+it_pos                 = np.array([0.15, 0.015])
+time_pos               = np.array([0.6, 0.015])
+orb_pos                = np.array([0.12, 0.015])
+it_time_orb_fontsize   = 25.
+it_time_orb_fontweight = "bold"
+it_time_orb_fontstyle  = "normal"
 
 
 
@@ -334,11 +342,11 @@ actual_plot_extents_end = np.array([
 # Iterations at which zooming in/out should begin/end
 # -------------------------------------------------------
 first_its_zoom = np.array([
-    187392 ##535200
+    200000
 ])
 
 last_its_zoom = np.array([
-    187393 ##633600
+    333600
 ])
 
 
@@ -368,11 +376,11 @@ vary_grid_transparency = np.array([
 # Iterations at which the change in grid transparency should begin/end
 # --------------------------------------------------------------------
 first_its_alpha_grid = np.array([
-    187392  ##736000
+    0
 ])
 
 last_its_alpha_grid = np.array([
-    187393  ##769600
+    1
 ])
 
 
@@ -397,7 +405,7 @@ alpha_grid_end = np.array([
 # Plot refinement level boundaries?
 # ---------------------------------
 plot_reflevels = np.array([
-    True
+    False  ##True
 ])
 
 
@@ -413,22 +421,22 @@ vary_reflevels_transparency = np.array([
 # begin/end
 # -----------------------------------------------------------------------
 first_its_alpha_reflevels = np.array([
-    187392
+    0
 ])
 
 last_its_alpha_reflevels = np.array([
-    191488 #222208
+    1
 ])
 
 
 # Refinement levels transparency at the beginning/end
 # ---------------------------------------------------
 alpha_reflevels_init = np.array([
-    1.  ##0.
+    0.
 ])
 
 alpha_reflevels_end = np.array([
-    0.
+    1.
 ])
 
 
@@ -471,6 +479,9 @@ for abs_val in abs_vals:
 assert(first_it    >= 0)
 assert(last_it     >= first_it)
 assert(out2D_every >= 0)
+
+assert(orb_count or not orb_count)
+assert(omega > 0.)
 
 assert(len(compute_min_max) == N_datasets)
 for comp in compute_min_max:
@@ -547,7 +558,8 @@ assert(clblabel_fontsize > 0.)
 
 assert(len(it_pos   == 2))
 assert(len(time_pos == 2))
-assert(it_time_fontsize > 0.)
+assert(len(orb_pos  == 2))
+assert(it_time_orb_fontsize > 0.)
 
 assert(len(zooms) == N_datasets)
 for zm in zooms:
@@ -948,6 +960,10 @@ ymax_largest = plot_extents[:, 3].max()
 g_toy = gd.RegGeom([2, 2], [xmin_largest, ymin_largest],
                       x1 = [xmax_largest, ymax_largest])
 
+# Quantity needed to compute the number of orbits
+if (orb_count):
+    omega_over_2pi = 0.5*omega/np.pi
+
 
 # ***** Actually plot the data *****
 for it in range(first_it, last_it + 1, out2D_every):
@@ -1255,16 +1271,32 @@ for it in range(first_it, last_it + 1, out2D_every):
 
 
     # Time and iteration info
-    it_str   = "It = " + str(it)
-    ##time_str = "t = " + str("{:.2e}".format(patch_plot.time*conv_fac_time))
-    time_str = "t = " + str("{:.2e}".format((t0 + patch_plot.time)*conv_fac_time))
+    """
+    fig.text(it_pos[0], it_pos[1],
+             "It = " + str(it),
+             color      = "red",
+             fontsize   = it_time_orb_fontsize,
+             fontweight = it_time_orb_fontweight,
+             fontstyle  = it_time_orb_fontstyle)
+    """
 
-    fig.text(it_pos[0], it_pos[1], it_str, color = "red",
-             fontsize  = it_time_fontsize,  fontweight = it_time_fontweight,
-             fontstyle = it_time_fontstyle)
-    fig.text(time_pos[0], time_pos[1], time_str + unit_time_str, color = "red",
-             fontsize  = it_time_fontsize,  fontweight = it_time_fontweight,
-             fontstyle = it_time_fontstyle)
+    t = (t0 + patch_plot.time)*conv_fac_time
+
+    fig.text(time_pos[0], time_pos[1],
+             "t = " + str("{:.2e}".format(t)) + unit_time_str,
+             color      = "red",
+             fontsize   = it_time_orb_fontsize,
+             fontweight = it_time_orb_fontweight,
+             fontstyle  = it_time_orb_fontstyle)
+
+    if (orb_count):
+        fig.text(orb_pos[0], orb_pos[1],
+                 "#orb = " + str("{:.2e}".format(omega_over_2pi*t)),
+                 color      = "red",
+                 fontsize   = it_time_orb_fontsize,
+                 fontweight = it_time_orb_fontweight,
+                 fontstyle  = it_time_orb_fontstyle)
+
 
 
     # Get ready for the next iteration
