@@ -1,4 +1,8 @@
-# This script generates a list of files used by ffmpeg to generate a movie
+# This script generates a list of files used by ffmpeg to generate a movie.
+# Assuming the list of files is saved in a file called "ffmpeg_list.txt", the
+# following command can be used to generate a movie from it:
+#
+#    ffmpeg -f concat -safe 0 -i ffmpeg_list.txt <outfilename>.mp4
 
 # !/bin/bash
 
@@ -6,13 +10,13 @@
 ######################### USER-DEFINED VARIABLES ###############################
 
 paths=(
-    "/home/lorenzo/Downloads/BBH_evolution_movie/CBD"
-    "/home/lorenzo/Downloads/BBH_evolution_movie/CBD_End_ZoomingIn/Grid"
+    "/home/lorenzo/Downloads/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP_Frames"
+    "/home/lorenzo/Downloads/CBD_handoff_IGM_McLachlan_Spinning_aligned08_Frames"
 )
 
 basenames=(
    "rho_xz_"
-   "rho_"
+   "rho_b_xy_"
 )
 
 
@@ -26,7 +30,7 @@ durations=(
     0.03
 )
 
-list="/home/lorenzo/Downloads/BBH_evolution_movie/ffmpeg_list.txt"
+list="/home/lorenzo/Downloads/ffmpeg_list.txt"
 
 ################################################################################
 
