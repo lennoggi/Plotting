@@ -26,8 +26,8 @@ extensions=(
 )
 
 durations=(
-    0.02
     0.03
+    0.04
 )
 
 list="/home/lorenzo/Downloads/ffmpeg_list.txt"
