@@ -28,8 +28,10 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import colors as colors
+from matplotlib.patches import Rectangle
 from postcactus.simdir import SimDir
 from postcactus import grid_data as gd
+from postcactus import visualize as viz
 from scipy.spatial import ConvexHull
 from os import path
 import warnings
@@ -54,30 +56,36 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # Directories containing the files to be opened
 # ---------------------------------------------
 data_dirs = np.array([
-    "/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
+    ##"/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
+    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
 ])
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
-plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-
-
-# File extension for the plots
-# ----------------------------
-fig_ext = ".png"
+##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP_ZoomOut"
+plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_TEST_PLOT_GRID"
 
 
 # Which grid functions to plot
 # ----------------------------
 grid_functions = np.array([
-    "rho"
+    "rho_b"  ##"rho"
 ])
 
 
 # Input coordinates
 # -----------------
-input_coords = "Exponential fisheye"
+input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
+
+
+# Which 2D slices to plot
+# Cartesian      coordinates: xy, xz or yz plane
+# Spherical-like coordinates: r-theta, r-phi or theta-phi plane
+# -------------------------------------------------------------
+planes = np.array([
+    "xy"  ##"xz"
+])
 
 
 # Plot absolute values?
@@ -87,20 +95,35 @@ abs_vals = np.array([
 ])
 
 
-# Which 2D slices to plot
-# Cartesian coordinates: xy, xz or yz plane
-# Spherical coordinates: r-theta, r-phi or theta-phi plane
-# --------------------------------------------------------
-planes = np.array([
-    "xz"
+# Which iterations to plot
+# ------------------------
+first_it    = 187392  ##151552  ##115712
+last_it     = 222208  ##186368  ##150528  ##1000000000  # Set this to a huge number to plot all iterations
+out2D_every = 1024    ##400
+
+
+# Do you want to find the max and min in the data for every available
+# iteration?
+# NOTE: this may take some time
+# -------------------------------------------------------------------
+compute_min_max = np.array([
+    False
 ])
 
+
+
+
+
+# ********************************
+# *  Figure and layout settings  *
+# ********************************
 
 # Plot extent **IN NUMERICAL COORDINATES**; provide it as
 # [xmin, xmax, ymin, ymax]. Used to build the PostCactus geometry.
 # ----------------------------------------------------------------
 plot_extents = np.array([
-     np.array([np.log(15.), np.log(2000.), 0., 2.*np.pi])
+     ##np.array([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
+     np.array([-40., 40., -40., 40.])
 ])
 
 
@@ -108,37 +131,88 @@ plot_extents = np.array([
 # will actually see in the snapshot(s)
 # NOTE: set to None if you want to keep the original grid dimensions when using
 #       non-Cartesian coordinate systems
-actual_plot_extent = np.array([
-    np.array([-300., 300., -300., 300.])
+# NOTE: used as the starting plot extent if 'zoom' (see below) is True
+actual_plot_extents = np.array([
+    np.array([-40., 40., -40., 40.])
+##    np.array([-300., 300., -300., 300.])
+##    np.array([-2010., 2010., -2010., 2010.])
 ])
 
 
-# Which iterations to plot
-# ------------------------
-first_it    = 0
-last_it     = 1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 400 ##512
+# Subplots layout
+# ---------------
+nsubplots_x = 1
+nsubplots_y = 1
+
+# Figure size and resolution
+# --------------------------
+figsize = [12., 10.]
+dpi     = 200
+
+# File extension for the plots
+# ----------------------------
+fig_ext = ".png"
 
 
-# Apparent horizon
-# ----------------
+
+
+
+# *******************************
+# *  Apparent horizon settings  *
+# *******************************
+
+# Draw the apparent horizon(s)?
+# -----------------------------
 draw_AH = np.array([
-    False
+    True  ##False
 ])
+
 
 # How many files per AH are there, i.e. the maximum value of 'AH_number' in
 # 'h.t<iteration>.ah<AH_number>'
 # -------------------------------------------------------------------------
 N_AH_files = 2
 
+
 # **IMPORTANT**
 # Make sure all AH files ('h.t<iteration>.ah<AH_number>') are in the same
 # directory. In case they live under different 'output-xxxx' directories, copy
-# them to a common directory
-# # --------------------------------------------------------------------------
+# them to a common directory.
+# ----------------------------------------------------------------------------
 AH_dirs = np.array([
-##    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data"
+    ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
+    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08/AH_data"
+])
+
+
+
+
+
+# ********************
+# *  Scale settings  *
+# ********************
+
+# Use a logarithmic scale?
+# ------------------------
+logscale = np.array([
+    True
+])
+
+
+# Use a symmetric logarithmic scale? I.e., if a logarithmic scale is in use and
+# data values extend down to zero, then a linear scale is used from zero to the
+# desired minimum in the colorbar (see below)
+# -----------------------------------------------------------------------------
+symlogscale = np.array([
+    False
+])
+
+
+# If a linear color scale is in use (i.e. if 'logscale' is false), normalize it
+# between 0 and 1?
+# -----------------------------------------------------------------------------
+linscale_norm = np.array([
+    True
 ])
 
 
@@ -170,50 +244,11 @@ titles = np.array([
 ])
 
 
-# Add colorbars?
-# --------------
+# Add colorbar(s)?
+# ----------------
 add_colorbar = np.array([
     True
 ])
-
-
-# Title and other text options
-# ----------------------------
-titlecolor       = "midnightblue"
-titlepad         = 1.02
-title_fontsize   = 35.
-title_fontweight = "bold"
-title_fontstyle  = "normal"
-title_fontname   = "Ubuntu"
-
-labelsize  = 25.
-labelpad_x = 3.
-labelpad_y = -5.
-ticksize   = 20.
-
-clb_ticksize        = 20.
-clblabel_pad        = 8.
-clb_fraction        = 0.05
-clblabel_fontsize   = 25.
-clblabel_fontweight = "bold"
-clblabel_fontstyle  = "normal"
-
-it_pos             = np.array([0.15, 0.015])
-time_pos           = np.array([0.6, 0.015])
-it_time_fontsize   = 25.
-it_time_fontweight = "bold"
-it_time_fontstyle  = "normal"
-
-
-# Subplots layout
-# ---------------
-nsubplots_x = 1
-nsubplots_y = 1
-
-# Figure size and resolution
-# --------------------------
-figsize = [12., 10.]
-dpi     = 200
 
 
 # Extent of the color scales (note that the actual scale may extend below
@@ -221,37 +256,6 @@ dpi     = 200
 # -------------------------------------------------------------------------
 colorbar_extents = np.array([
     np.array([1.e-08, 1.5e-02])
-])
-
-
-# Logarithmic scale
-# -----------------
-logscale = np.array([
-    True
-])
-
-
-# Symmetric logarithmic scale: if a logarithmic scale is in use and data values
-# extend down to zero, then a linear scale is used from zero to the desired
-# minimum in the colorbar
-# -----------------------------------------------------------------------------
-symlogscale = np.array([
-    False
-])
-
-
-# Normalize the linear color scale between 0 and 1 (only if a logarithmic scale
-# is not in use)
-# -----------------------------------------------------------------------------
-linscale_norm = np.array([
-    True
-])
-
-
-# Colormap
-# --------
-cmaps = np.array([
-    "plasma"
 ])
 
 
@@ -263,11 +267,184 @@ clb_extend = np.array([
 ])
 
 
-# Choose if you want to find max and min in the data for every iteration
-# available or not (this may take some time)
-# ----------------------------------------------------------------------
-compute_min_max = np.array([
-    False
+# Colormap
+# --------
+cmaps = np.array([
+    "plasma"
+])
+
+
+# Title options
+# -------------
+titlecolor       = "midnightblue"
+titlepad         = 1.02
+title_fontsize   = 35.
+title_fontweight = "bold"
+title_fontstyle  = "normal"
+title_fontname   = "Ubuntu"
+
+# Labels options
+# --------------
+labelsize  = 25.
+labelpad_x = 3.
+labelpad_y = -5.
+ticksize   = 20.
+
+# Colorbar label options
+# ----------------------
+clb_ticksize        = 20.
+clblabel_pad        = 8.
+clb_fraction        = 0.05
+clblabel_fontsize   = 25.
+clblabel_fontweight = "bold"
+clblabel_fontstyle  = "normal"
+
+# Iteration and time strings options
+# ----------------------------------
+it_pos             = np.array([0.15, 0.015])
+time_pos           = np.array([0.6, 0.015])
+it_time_fontsize   = 25.
+it_time_fontweight = "bold"
+it_time_fontstyle  = "normal"
+
+# Extent of the color scales (note that the actual scale may extend below
+# colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
+# -------------------------------------------------------------------------
+colorbar_extents = np.array([
+    np.array([1.e-08, 1.5e-02])
+])
+
+
+
+
+
+# *****************************
+# *  Dynamic zooming options  *
+# *****************************
+
+# Zoom in/out as time goes?
+# -------------------------
+zooms = np.array([
+    False  ##True
+])
+
+
+# If zooming in/out, set the actual plot extents at the final time here
+# ---------------------------------------------------------------------
+actual_plot_extents_end = np.array([
+    ##np.array([-2010., 2010., -2010., 2010.])
+    ##np.array([-300., 300., -300., 300.])
+    np.array([-40., 40., -40., 40.])
+])
+
+
+# Iterations at which zooming in/out should begin/end
+# -------------------------------------------------------
+first_its_zoom = np.array([
+    535200
+])
+
+last_its_zoom = np.array([
+    633600
+])
+
+
+
+
+
+# ************************************************
+# *  Dynamic grid plotting (pcolormesh) options  *
+# ************************************************
+
+# Plot the grid using the 'edgecolor' option in np.pcolormesh?
+# NOTE: this works best on uniform grids, as it shows the full
+#       mesh and not just the refinement level boundaries
+# ------------------------------------------------------------
+plot_grid = np.array([
+    False  ##True
+])
+
+
+# If plot_grid is true, do you want the grid to gradually fade in/out?
+# --------------------------------------------------------------------
+vary_grid_transparency = np.array([
+    True
+])
+
+
+# Iterations at which the change in grid transparency should begin/end
+# --------------------------------------------------------------------
+first_its_alpha_grid = np.array([
+    736000
+])
+
+last_its_alpha_grid = np.array([
+    769600
+])
+
+
+# Grid transparency values at the beginning/end
+# ---------------------------------------------
+alpha_grid_init = np.array([
+    0.
+])
+
+alpha_grid_end = np.array([
+    1.
+])
+
+
+
+
+
+# ***********************************************************************
+# *  Dynamic refinement level boundaries plotting (PostCactus) options  *
+# ***********************************************************************
+
+# Plot refinement level boundaries?
+# ---------------------------------
+plot_reflevels = np.array([
+    True
+])
+
+
+# If plot_reflevels is true, do you want the refinement level boundaries to
+# gradually fade in/out?
+# -------------------------------------------------------------------------
+vary_reflevels_transparency = np.array([
+    True
+])
+
+
+# Iterations at which the change in refinement levels transparency should
+# begin/end
+# -----------------------------------------------------------------------
+first_its_alpha_reflevels = np.array([
+    187392
+])
+
+last_its_alpha_reflevels = np.array([
+    222208
+])
+
+
+# Refinement levels transparency at the beginning/end
+# ---------------------------------------------------
+alpha_reflevels_init = np.array([
+    1.  ##0.
+])
+
+alpha_reflevels_end = np.array([
+    0.
+])
+
+
+# Range of refinement levels boundaries to be plotted
+# NOTE: the minimum must be no smaller than 0, and you can set the maximum to
+#       some high value to plot all reflevel boundaries
+# ---------------------------------------------------------------------------
+reflevel_ranges = np.array([
+    np.array([0, 20])
 ])
 
 ################################################################################
@@ -292,21 +469,39 @@ assert(nsubplots_x*nsubplots_y == N_datasets)
 assert(input_coords == "Cartesian" or
        input_coords == "Exponential fisheye")
 
-assert(len(grid_functions)   == N_datasets)
-assert(len(abs_vals)         == N_datasets)
-assert(len(planes)           == N_datasets)
-assert(len(plot_extents)     == N_datasets)
-assert(len(draw_AH)          == N_datasets)
-assert(len(AH_dirs)          == N_datasets)
-assert(len(varnames)         == N_datasets)
-assert(len(titles)           == N_datasets)
-assert(len(colorbar_extents) == N_datasets)
-assert(len(logscale)         == N_datasets)
-assert(len(symlogscale)      == N_datasets)
-assert(len(linscale_norm)    == N_datasets)
-assert(len(cmaps)            == N_datasets)
-assert(len(clb_extend)       == N_datasets)
-assert(len(compute_min_max)  == N_datasets)
+assert(len(grid_functions)              == N_datasets)
+assert(len(abs_vals)                    == N_datasets)
+assert(len(planes)                      == N_datasets)
+assert(len(plot_extents)                == N_datasets)
+assert(len(actual_plot_extents)         == N_datasets)
+assert(len(zooms)                       == N_datasets)
+assert(len(actual_plot_extents_end)     == N_datasets)
+assert(len(first_its_zoom)              == N_datasets)
+assert(len(last_its_zoom)               == N_datasets)
+assert(len(draw_AH)                     == N_datasets)
+assert(len(AH_dirs)                     == N_datasets)
+assert(len(varnames)                    == N_datasets)
+assert(len(titles)                      == N_datasets)
+assert(len(colorbar_extents)            == N_datasets)
+assert(len(logscale)                    == N_datasets)
+assert(len(symlogscale)                 == N_datasets)
+assert(len(linscale_norm)               == N_datasets)
+assert(len(cmaps)                       == N_datasets)
+assert(len(clb_extend)                  == N_datasets)
+assert(len(compute_min_max)             == N_datasets)
+assert(len(plot_grid)                   == N_datasets)
+assert(len(vary_grid_transparency)      == N_datasets)
+assert(len(first_its_alpha_grid)        == N_datasets)
+assert(len(last_its_alpha_grid)         == N_datasets)
+assert(len(alpha_grid_init)             == N_datasets)
+assert(len(alpha_grid_end)              == N_datasets)
+assert(len(plot_reflevels)              == N_datasets)
+assert(len(vary_reflevels_transparency) == N_datasets)
+assert(len(alpha_reflevels_init)        == N_datasets)
+assert(len(alpha_reflevels_end)         == N_datasets)
+assert(len(reflevel_ranges)             == N_datasets)
+assert(len(first_its_alpha_reflevels)   == N_datasets)
+assert(len(last_its_alpha_reflevels)    == N_datasets)
 
 ################################################################################
 
@@ -426,17 +621,34 @@ else: raise RuntimeError("Unrecognized units \"" + units + "\"")
 # Initialize the template filename for the plots
 figname = plots_dir + "/"
 
-# Initialize some needed arrays
-simdirs               = []
-read_data             = []
-AHfile_cols1          = []
-AHfile_cols2          = []
-xlabels               = []
-ylabels               = []
-norms                 = []
+# Initialize some needed lists
+simdirs   = []
+read_data = []
+
+AHfile_cols1 = []
+AHfile_cols2 = []
+
+xlabels = []
+ylabels = []
+norms   = []
+
 there_are_iters_avail = []
 last_valid_it         = []
 last_valid_g          = []
+
+xsteps = []
+ysteps = []
+
+xmin_plot = []
+xmax_plot = []
+ymin_plot = []
+ymax_plot = []
+
+alpha_grid       = []
+alpha_grid_steps = []
+
+alpha_reflevels         = []
+alpha_reflevels_steps   = []
 
 
 for n in range(N_datasets):
@@ -521,6 +733,80 @@ for n in range(N_datasets):
     last_valid_it.append(first_it)
     last_valid_g.append(None)
 
+
+    # Compute the plot size reduction to be applied at each timestep,
+    # logarithmically increasing/decreasing the zoom
+    if (zooms[n]):
+        xmin_init = actual_plot_extents[n][0]
+        xmax_init = actual_plot_extents[n][1]
+        ymin_init = actual_plot_extents[n][2]
+        ymax_init = actual_plot_extents[n][3]
+
+        xmin_end = actual_plot_extents_end[n][0]
+        xmax_end = actual_plot_extents_end[n][1]
+        ymin_end = actual_plot_extents_end[n][2]
+        ymax_end = actual_plot_extents_end[n][3]
+
+        half_range_x_init = 0.5*(xmax_init - xmin_init)
+        half_range_y_init = 0.5*(ymax_init - ymin_init)
+        assert(half_range_x_init > 0.)
+        assert(half_range_y_init > 0.)
+
+        half_range_x_end = 0.5*(xmax_end - xmin_end)
+        half_range_y_end = 0.5*(ymax_end - ymin_end)
+        assert(half_range_x_end > 0.)
+        assert(half_range_y_end > 0.)
+
+        assert(first_its_zoom[n] >= first_it)
+        assert( last_its_zoom[n] <=  last_it)
+        assert((last_its_zoom[n] - first_its_zoom[n]) % out2D_every == 0)
+        n_zoom = int((last_its_zoom[n] - first_its_zoom[n])/out2D_every) + 1
+
+        # If the grid is expanding (half_range_x_end > half_range_x_init), then
+        # xsteps and ysteps are monotonically increasing, otherwise they are
+        # decreasing
+        xsteps.append(np.logspace(np.log(half_range_x_init), np.log(half_range_x_end),
+                                  num = n_zoom, base = np.e, endpoint = True))
+        ysteps.append(np.logspace(np.log(half_range_y_init), np.log(half_range_y_end),
+                                  num = n_zoom, base = np.e, endpoint = True))
+
+    # Initialize the plot range
+    if ( input_coords == "Cartesian" or
+        (input_coords != "Cartesian" and actual_plot_extents[n] is None)):
+        xmin_plot.append(plot_extents[n][0])
+        xmax_plot.append(plot_extents[n][1])
+        ymin_plot.append(plot_extents[n][2])
+        ymax_plot.append(plot_extents[n][3])
+    else:  # Non-Cartesian coords, actual_plot_extents[n] is not None
+        xmin_plot.append(actual_plot_extents[n][0])
+        xmax_plot.append(actual_plot_extents[n][1])
+        ymin_plot.append(actual_plot_extents[n][2])
+        ymax_plot.append(actual_plot_extents[n][3])
+
+
+    # If requested, compute the steps over which the grid's transparency should
+    # change at every iteration in the assigned range and initialize the grid's
+    # transparencies
+    if (plot_grid[n]):
+        alpha_grid.append(alpha_grid_init[n])
+        if (vary_grid_transparency[n]):
+            assert((last_its_alpha_grid[n] - first_its_alpha_grid[n]) % out2D_every == 0)
+            alpha_grid_n     = (last_its_alpha_grid[n] - first_its_alpha_grid[n])/out2D_every
+            alpha_grid_range = alpha_grid_end[n] - alpha_grid_init[n]
+            alpha_grid_steps.append(alpha_grid_range/alpha_grid_n)
+
+
+    # If requested, compute the steps over which the refinement levels'
+    # transparency should change at every iteration in the assigned range and
+    # initialize the refinement levels' transparencies
+    if (plot_reflevels[n]):
+        alpha_reflevels.append(alpha_reflevels_init[n])
+        if (vary_reflevels_transparency[n]):
+            assert((last_its_alpha_reflevels[n] - first_its_alpha_reflevels[n]) % out2D_every == 0)
+            alpha_reflevels_n     = (last_its_alpha_reflevels[n] - first_its_alpha_reflevels[n])/out2D_every
+            alpha_reflevels_range = alpha_reflevels_end[n] - alpha_reflevels_init[n]
+            alpha_reflevels_steps.append(alpha_reflevels_range/alpha_reflevels_n)
+
 ################################################################################
 
 
@@ -547,7 +833,7 @@ g_toy = gd.RegGeom([2, 2], [xmin_largest, ymin_largest],
 
 
 # ***** Actually plot the data *****
-for it in range(first_it, last_it, out2D_every):
+for it in range(first_it, last_it + 1, out2D_every):
     print("***** Iteration " + str(it) + " *****\n")
 
     # Can't have 'plt.subplots(1, 1)'
@@ -575,6 +861,8 @@ for it in range(first_it, last_it, out2D_every):
         ax.set_xlabel(xlabels[n], fontsize = labelsize, labelpad = labelpad_x)
         ax.set_ylabel(ylabels[n], fontsize = labelsize, labelpad = labelpad_y)
         ax.tick_params(labelsize = ticksize)
+        ax.set_xlim(xmin_plot[n], xmax_plot[n])
+        ax.set_ylim(ymin_plot[n], ymax_plot[n])
 
         # Try to read data on a small, "toy" grid just to make sure the current
         # iteration is available for the current dataset
@@ -610,7 +898,7 @@ for it in range(first_it, last_it, out2D_every):
                                           adjust_spacing = True,
                                           order          = 0,
                                           outside_val    = 0.,
-                                          level_fill     = False)
+                                          level_fill     = True)
 
         else:
             # Build an object containing the grid hierarchy, i.e. a list of
@@ -624,9 +912,12 @@ for it in range(first_it, last_it, out2D_every):
                                    outside_val    = 0.,
                                    level_fill     = False)
 
-            # Find the grid spacing on the finest refinement level
+            # Find the grid spacing on the finest refinement level and, if
+            # desired, draw the refinement level contours and save them for the
+            # next iteration
             for i in range(len(patches)):
-                deltas = patches[i].geom().dx()
+                geom   = patches[i].geom()
+                deltas = geom.dx()
                 dx     = deltas[0]
                 dy     = deltas[1]
 
@@ -662,6 +953,7 @@ for it in range(first_it, last_it, out2D_every):
                                       outside_val    = 0.,
                                       level_fill     = False)
 
+
         # The option 'adjust_spacing = True' above may reshape patch_plot.data
         # in order to snap to the finest resolution available, so that
         # np.transpose(patch_plot.data) may not have dimensions (Nx, Ny)
@@ -671,7 +963,10 @@ for it in range(first_it, last_it, out2D_every):
         # NOTE: alternatively, one could specify 'adjust_spacing = False' and
         # PostCactus wouldn't snap to the finest available resolution, leaving
         # the shape of patch_plot untouched.
-        plot_data = patch_plot.data*conv_fac_gf
+        if (abs_vals[n]):
+            plot_data = np.absolute(patch_plot.data*conv_fac_gf)
+        else:
+            plot_data = patch_plot.data*conv_fac_gf
 
         Nx_new = plot_data.shape[0]
         Ny_new = plot_data.shape[1]
@@ -709,9 +1004,11 @@ for it in range(first_it, last_it, out2D_every):
         #       np.transpose(plot_data) in each direction, than the data would
         #       be placed on cell vertices and shading = "auto" should produce
         #       shading = "flat".
-        if (abs_vals[n]):
-            im = ax.pcolormesh(mx, my, np.absolute(np.transpose(plot_data)),
-                               shading = "auto", cmap = cmaps[n], norm = norms[n])
+        if (plot_grid[n]):
+            im = ax.pcolormesh(mx, my, np.transpose(plot_data),
+                               shading = "auto", cmap = cmaps[n], norm = norms[n],
+                               edgecolor = (0., 0., 0., alpha_grid[n]),
+                               linewidth = 0.01)
         else:
             im = ax.pcolormesh(mx, my, np.transpose(plot_data),
                                shading = "auto", cmap = cmaps[n], norm = norms[n])
@@ -785,11 +1082,53 @@ for it in range(first_it, last_it, out2D_every):
         """
 
 
-        # Reset the plot dimensions if the coordinates are not Cartesian and if
-        # desired
-        if (input_coords != "Cartesian" and actual_plot_extent is not None):
-            ax.set_xlim(actual_plot_extent[n][0], actual_plot_extent[n][1])
-            ax.set_ylim(actual_plot_extent[n][2], actual_plot_extent[n][3])
+        # Zoom in/out if required and reset the plot range if necessary
+        if (zooms[n] and it >= first_its_zoom[n]
+                     and it <  last_its_zoom[n]):
+            assert((it - first_its_zoom[n]) % out2D_every == 0)
+            snapshot_index = int((it - first_its_zoom[n])/out2D_every)
+            assert(snapshot_index >= 0 and snapshot_index < xsteps[n].shape[0]
+                                       and snapshot_index < ysteps[n].shape[0])
+
+            dlog_x = xsteps[n][snapshot_index + 1] - xsteps[n][snapshot_index]
+            dlog_y = ysteps[n][snapshot_index + 1] - ysteps[n][snapshot_index]
+
+            # If the grid is expanding (half_range_x_end > half_range_x_init),
+            # then xsteps and ysteps are monotonically increasing and so
+            # dlog_x > 0; otherwise dlog_x < 0 (same for dlog_y)
+            xmin_plot[n] -= dlog_x
+            xmax_plot[n] += dlog_x
+            ymin_plot[n] -= dlog_y
+            ymax_plot[n] += dlog_y
+
+
+        # Reset the grid's transparency if desired
+        if (plot_grid[n] and vary_grid_transparency[n] and
+            it >= first_its_alpha_grid[n] and
+            it <   last_its_alpha_grid[n]):
+            alpha_grid[n] += alpha_grid_steps[n]
+
+
+        # Plot the refinement level boundaries if desired
+        if (plot_reflevels[n]):
+            patch_contour = read_data[n](grid_functions[n], it,
+                                         geom           = g,
+                                         adjust_spacing = True,
+                                         order          = 0,
+                                         outside_val    = 0.,
+                                         level_fill     = True)
+            levels = np.arange(reflevel_ranges[n][0], reflevel_ranges[n][1] + 1)
+            reflevels_colors = []
+            for i in range(len(levels)):
+                reflevels_colors.append((0., 0., 0., alpha_reflevels[n]))
+            viz.plot_contour(patch_contour, levels = levels, linewidth = 0.1,
+                             colors = reflevels_colors)
+
+            # Reset the reflevels' transparency if desired 
+            if (vary_reflevels_transparency[n] and
+                it >= first_its_alpha_reflevels[n] and
+                it <   last_its_alpha_reflevels[n]):
+                alpha_reflevels[n] += alpha_reflevels_steps[n]
 
 
         # Reset the last valid iteration and the geometry if needed
@@ -800,7 +1139,8 @@ for it in range(first_it, last_it, out2D_every):
 
     # Time and iteration info
     it_str   = "It = " + str(it)
-    time_str = "t = " + str("{:.2e}".format(patch_plot.time*conv_fac_time))
+    ##time_str = "t = " + str("{:.2e}".format(patch_plot.time*conv_fac_time))
+    time_str = "t = " + str("{:.2e}".format((patch_plot.time + 119820.)*conv_fac_time))
 
     fig.text(it_pos[0], it_pos[1], it_str, color = "red",
              fontsize  = it_time_fontsize,  fontweight = it_time_fontweight,
