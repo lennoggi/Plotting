@@ -28,7 +28,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import colors as colors
-from matplotlib.patches import Rectangle
 from postcactus.simdir import SimDir
 from postcactus import grid_data as gd
 from postcactus import visualize as viz
@@ -56,27 +55,27 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # Directories containing the files to be opened
 # ---------------------------------------------
 data_dirs = np.array([
-    "/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-    ##"/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
+    ##"/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
+    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
 ])
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
-plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_TEST_PLOT_GRID"
+##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
+plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
 
 
 # Which grid functions to plot
 # ----------------------------
 grid_functions = np.array([
-    "rho"  ##"rho_b"
+    "rho_b"  ##"rho"
 ])
 
 
 # Input coordinates
 # -----------------
-input_coords = "Exponential fisheye"  # "Cartesian" or "Exponential fisheye"
+input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
 
 
 # Which 2D slices to plot
@@ -84,7 +83,7 @@ input_coords = "Exponential fisheye"  # "Cartesian" or "Exponential fisheye"
 # Spherical-like coordinates: r-theta, r-phi or theta-phi plane
 # -------------------------------------------------------------
 planes = np.array([
-    "xz"  ##"xy"
+    "xy"  ##"xz"
 ])
 
 
@@ -98,14 +97,14 @@ abs_vals = np.array([
 # Iterations and initial time info
 # --------------------------------
 first_it    = 0
-last_it     = 367200  ##1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 400     ##1024
-t0          = 0.      ##119977.65.
+last_it     = 10000000  # Set this to a huge number to plot all iterations
+out2D_every = 1024  ##400
+t0          = 0.
 
 
 # Binary orbit counting
 # ---------------------
-orb_count = True
+orb_count = False
 omega     = 1.049229e-02
 
 
@@ -129,8 +128,8 @@ compute_min_max = np.array([
 # [xmin, xmax, ymin, ymax]. Used to build the PostCactus geometry.
 # ----------------------------------------------------------------
 plot_extents = np.array([
-     np.array([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
-     ##np.array([-40., 40., -40., 40.])
+     ##np.array([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
+     np.array([-40., 40., -40., 40.])
 ])
 
 
@@ -139,11 +138,12 @@ plot_extents = np.array([
 # NOTE: set to None if you want to keep the original grid dimensions when using
 #       non-Cartesian coordinate systems
 # NOTE: used as the starting plot extent if 'zoom' (see below) is True
-actual_plot_extents = np.array([
-    np.array([-300., 300., -300., 300.])
+actual_plot_extents = None 
+##actual_plot_extents = np.array([
+    ##np.array([-300., 300., -300., 300.])
     ##np.array([-2010., 2010., -2010., 2010.])
     ##np.array([-40., 40., -40., 40.])
-])
+##])
 
 
 # Subplots layout
@@ -171,7 +171,7 @@ fig_ext = ".png"
 # Draw the apparent horizon(s)?
 # -----------------------------
 draw_AH = np.array([
-    False  ##True
+    True
 ])
 
 
@@ -326,7 +326,7 @@ it_time_orb_fontstyle  = "normal"
 # Zoom in/out as time goes?
 # -------------------------
 zooms = np.array([
-    False  ##True
+    False
 ])
 
 
@@ -342,11 +342,11 @@ actual_plot_extents_end = np.array([
 # Iterations at which zooming in/out should begin/end
 # -------------------------------------------------------
 first_its_zoom = np.array([
-    200000
+    0
 ])
 
 last_its_zoom = np.array([
-    333600
+    1
 ])
 
 
@@ -362,7 +362,7 @@ last_its_zoom = np.array([
 #       mesh and not just the refinement level boundaries
 # ------------------------------------------------------------
 plot_grid = np.array([
-    False  ##True
+    False
 ])
 
 
@@ -405,7 +405,7 @@ alpha_grid_end = np.array([
 # Plot refinement level boundaries?
 # ---------------------------------
 plot_reflevels = np.array([
-    False  ##True
+    False
 ])
 
 
@@ -432,11 +432,11 @@ last_its_alpha_reflevels = np.array([
 # Refinement levels transparency at the beginning/end
 # ---------------------------------------------------
 alpha_reflevels_init = np.array([
-    0.
+    1.
 ])
 
 alpha_reflevels_end = np.array([
-    1.
+    0.
 ])
 
 
@@ -493,11 +493,13 @@ for plot_extent in plot_extents:
     assert(plot_extent[1] > plot_extent[0])
     assert(plot_extent[3] > plot_extent[2])
 
-assert(len(actual_plot_extents) == N_datasets)
-for actual_plot_extent in actual_plot_extents:
-    assert(len(actual_plot_extent == 4))
-    assert(actual_plot_extent[1] > actual_plot_extent[0])
-    assert(actual_plot_extent[3] > actual_plot_extent[2])
+assert(actual_plot_extents is None or
+       len(actual_plot_extents) == N_datasets)
+if (actual_plot_extents is not None):
+    for actual_plot_extent in actual_plot_extents:
+        assert(len(actual_plot_extent) == 4)
+        assert(actual_plot_extent[1] > actual_plot_extent[0])
+        assert(actual_plot_extent[3] > actual_plot_extent[2])
 
 assert(nsubplots_x > 0)
 assert(nsubplots_y > 0)
@@ -960,6 +962,10 @@ ymax_largest = plot_extents[:, 3].max()
 g_toy = gd.RegGeom([2, 2], [xmin_largest, ymin_largest],
                       x1 = [xmax_largest, ymax_largest])
 
+# Array storing the times of each dataset. Used to figure out the largest time
+# between two dataset in case any of them is not evolving anymore.
+times = np.empty([2])
+
 # Quantity needed to compute the number of orbits
 if (orb_count):
     omega_over_2pi = 0.5*omega/np.pi
@@ -1031,7 +1037,7 @@ for it in range(first_it, last_it + 1, out2D_every):
                                           adjust_spacing = True,
                                           order          = 0,
                                           outside_val    = 0.,
-                                          level_fill     = True)
+                                          level_fill     = False)
 
         else:
             # Build an object containing the grid hierarchy, i.e. a list of
@@ -1264,6 +1270,10 @@ for it in range(first_it, last_it + 1, out2D_every):
                 alpha_reflevels[n] += alpha_reflevels_steps[n]
 
 
+        # Save the time for this patch
+        times[n] = patch_plot.time
+
+
         # Reset the last valid iteration and the geometry if needed
         if (there_are_iters_avail[n]):
             last_valid_it[n] = it
@@ -1280,7 +1290,8 @@ for it in range(first_it, last_it + 1, out2D_every):
              fontstyle  = it_time_orb_fontstyle)
     """
 
-    t = (t0 + patch_plot.time)*conv_fac_time
+    time = np.max(times)
+    t    = (t0 + time)*conv_fac_time
 
     fig.text(time_pos[0], time_pos[1],
              "t = " + str("{:.2e}".format(t)) + unit_time_str,
@@ -1291,7 +1302,7 @@ for it in range(first_it, last_it + 1, out2D_every):
 
     if (orb_count):
         fig.text(orb_pos[0], orb_pos[1],
-                 "#orb = " + str("{:.2e}".format(omega_over_2pi*t)),
+                 "#orb = " + str(int(np.floor(omega_over_2pi*t))),
                  color      = "red",
                  fontsize   = it_time_orb_fontsize,
                  fontweight = it_time_orb_fontweight,
