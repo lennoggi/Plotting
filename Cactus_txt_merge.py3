@@ -25,12 +25,19 @@ outfile = args.outfile
 # Loop over all restarts
 fullpath = simdir + "/output-0000/" + subpath
 n        = 0
+fulldata = np.array([])
 
 while (path.exists(fullpath)):
     assert(n >= 0)
     data = np.loadtxt(fullpath)
+
     if (n == 0):  fulldata = data
-    else:         np.concatenate(fulldata, data, axis = 0)
+    else:         np.concatenate((fulldata, data), axis = 0)
+
+    out_str = "output-" + str("{:0>4d}".format(n))
+    print(out_str + " merged")
+
+    fullpath = simdir + "/" + out_str + "/" + subpath
     n += 1
 
 
