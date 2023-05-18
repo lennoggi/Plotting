@@ -56,20 +56,24 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # ---------------------------------------------
 data_dirs = np.array([
     ##"/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
+    ##"/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
+    "/scratch3/07825/lennoggi/CBD_handoff_IGM_McLachlan_Spinning_aligned08",
+    "/scratch3/07825/lennoggi/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
 ])
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
 ##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
+##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
+plots_dir = "/scratch3/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
 
 
 # Which grid functions to plot
 # ----------------------------
 grid_functions = np.array([
-    "rho_b"  ##"rho"
+    "rho_b",
+    "smallb2"
 ])
 
 
@@ -83,20 +87,22 @@ input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
 # Spherical-like coordinates: r-theta, r-phi or theta-phi plane
 # -------------------------------------------------------------
 planes = np.array([
-    "xy"  ##"xz"
+    "xy",
+    "xy"
 ])
 
 
 # Plot absolute values?
 # ---------------------
 abs_vals = np.array([
+    False,
     False
 ])
 
 
 # Iterations and initial time info
 # --------------------------------
-first_it    = 0
+first_it    = 481280
 last_it     = 10000000  # Set this to a huge number to plot all iterations
 out2D_every = 1024  ##400
 t0          = 0.
@@ -113,6 +119,7 @@ omega     = 1.049229e-02
 # NOTE: this may take some time
 # -------------------------------------------------------------------
 compute_min_max = np.array([
+    False,
     False
 ])
 
@@ -129,6 +136,7 @@ compute_min_max = np.array([
 # ----------------------------------------------------------------
 plot_extents = np.array([
      ##np.array([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
+     np.array([-40., 40., -40., 40.]),
      np.array([-40., 40., -40., 40.])
 ])
 
@@ -148,13 +156,13 @@ actual_plot_extents = None
 
 # Subplots layout
 # ---------------
-nsubplots_x = 1
+nsubplots_x = 2
 nsubplots_y = 1
 
 # Figure size and resolution
 # --------------------------
-figsize = [12., 10.]
-dpi     = 200
+figsize = [22., 10.]
+dpi     = 100
 
 # File extension for the plots
 # ----------------------------
@@ -171,6 +179,7 @@ fig_ext = ".png"
 # Draw the apparent horizon(s)?
 # -----------------------------
 draw_AH = np.array([
+    True,
     True
 ])
 
@@ -188,7 +197,8 @@ N_AH_files = 2
 # ----------------------------------------------------------------------------
 AH_dirs = np.array([
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08/AH_data"
+    "/scratch3/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08/AH_data",
+    "/scratch3/07825/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08/AH_data"
 ])
 
 
@@ -202,6 +212,7 @@ AH_dirs = np.array([
 # Use a logarithmic scale?
 # ------------------------
 logscale = np.array([
+    True,
     True
 ])
 
@@ -211,7 +222,8 @@ logscale = np.array([
 # desired minimum in the colorbar (see below)
 # -----------------------------------------------------------------------------
 symlogscale = np.array([
-    False
+    False,
+    True
 ])
 
 
@@ -219,6 +231,7 @@ symlogscale = np.array([
 # between 0 and 1?
 # -----------------------------------------------------------------------------
 linscale_norm = np.array([
+    True,
     True
 ])
 
@@ -240,13 +253,15 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 # Names of the variables to be put close to the colorbar
 # ------------------------------------------------------
 varnames = np.array([
-    "$\\rho$"
+    "$\\rho$",
+    "$b^2$"
 ])
 
 
 # Titles for each subplot
 # -----------------------
 titles = np.array([
+    "",
     ""
 ])
 
@@ -254,6 +269,7 @@ titles = np.array([
 # Add colorbar(s)?
 # ----------------
 add_clb = np.array([
+    True,
     True
 ])
 
@@ -262,7 +278,8 @@ add_clb = np.array([
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -------------------------------------------------------------------------
 clb_extents = np.array([
-    np.array([1.e-08, 1.5e-02])
+    np.array([1.e-08, 1.5e-02]),
+    np.array([1.e-13, 1.e-05])
 ])
 
 
@@ -270,14 +287,16 @@ clb_extents = np.array([
 # "both")
 # -------------------------------------------------------------------------
 clb_extends = np.array([
-    "max"
+    "max",
+    "both"
 ])
 
 
 # Colormap
 # --------
 cmaps = np.array([
-    "plasma"
+    "plasma",
+    "viridis"
 ])
 
 
@@ -309,7 +328,7 @@ clblabel_fontstyle  = "normal"
 # Iteration, time and orbits strings options
 # ------------------------------------------
 it_pos                 = np.array([0.15, 0.015])
-time_pos               = np.array([0.6, 0.015])
+time_pos               = np.array([0.5, 0.015])
 orb_pos                = np.array([0.12, 0.015])
 it_time_orb_fontsize   = 25.
 it_time_orb_fontweight = "bold"
@@ -326,6 +345,7 @@ it_time_orb_fontstyle  = "normal"
 # Zoom in/out as time goes?
 # -------------------------
 zooms = np.array([
+    False,
     False
 ])
 
@@ -335,6 +355,7 @@ zooms = np.array([
 actual_plot_extents_end = np.array([
     ##np.array([-2010., 2010., -2010., 2010.])
     ##np.array([-300., 300., -300., 300.])
+    np.array([-40., 40., -40., 40.]),
     np.array([-40., 40., -40., 40.])
 ])
 
@@ -342,11 +363,13 @@ actual_plot_extents_end = np.array([
 # Iterations at which zooming in/out should begin/end
 # -------------------------------------------------------
 first_its_zoom = np.array([
-    0
+    500000,
+    500000
 ])
 
 last_its_zoom = np.array([
-    1
+    500001,
+    500001
 ])
 
 
@@ -362,6 +385,7 @@ last_its_zoom = np.array([
 #       mesh and not just the refinement level boundaries
 # ------------------------------------------------------------
 plot_grid = np.array([
+    False,
     False
 ])
 
@@ -369,6 +393,7 @@ plot_grid = np.array([
 # If plot_grid is true, do you want the grid to gradually fade in/out?
 # --------------------------------------------------------------------
 vary_grid_transparency = np.array([
+    True,
     True
 ])
 
@@ -376,21 +401,25 @@ vary_grid_transparency = np.array([
 # Iterations at which the change in grid transparency should begin/end
 # --------------------------------------------------------------------
 first_its_alpha_grid = np.array([
-    0
+    500000,
+    500000
 ])
 
 last_its_alpha_grid = np.array([
-    1
+    500001,
+    500001
 ])
 
 
 # Grid transparency values at the beginning/end
 # ---------------------------------------------
 alpha_grid_init = np.array([
+    0.,
     0.
 ])
 
 alpha_grid_end = np.array([
+    1.,
     1.
 ])
 
@@ -405,6 +434,7 @@ alpha_grid_end = np.array([
 # Plot refinement level boundaries?
 # ---------------------------------
 plot_reflevels = np.array([
+    False,
     False
 ])
 
@@ -413,6 +443,7 @@ plot_reflevels = np.array([
 # gradually fade in/out?
 # -------------------------------------------------------------------------
 vary_reflevels_transparency = np.array([
+    True,
     True
 ])
 
@@ -421,21 +452,25 @@ vary_reflevels_transparency = np.array([
 # begin/end
 # -----------------------------------------------------------------------
 first_its_alpha_reflevels = np.array([
-    0
+    500000,
+    500000
 ])
 
 last_its_alpha_reflevels = np.array([
-    1
+    500001,
+    500001
 ])
 
 
 # Refinement levels transparency at the beginning/end
 # ---------------------------------------------------
 alpha_reflevels_init = np.array([
+    1.,
     1.
 ])
 
 alpha_reflevels_end = np.array([
+    0.,
     0.
 ])
 
@@ -445,6 +480,7 @@ alpha_reflevels_end = np.array([
 #       some high value to plot all reflevel boundaries
 # ---------------------------------------------------------------------------
 reflevel_ranges = np.array([
+    np.array([0, 20]),
     np.array([0, 20])
 ])
 
