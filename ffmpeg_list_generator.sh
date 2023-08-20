@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # ******************************************************************************
 # This script generates a list of files used by ffmpeg to generate a movie.
 # Assuming the list of files is saved in a file called "ffmpeg_list.txt", the

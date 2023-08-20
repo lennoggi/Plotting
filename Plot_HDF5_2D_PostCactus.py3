@@ -32,7 +32,7 @@ from postcactus.simdir import SimDir
 from postcactus import grid_data as gd
 from postcactus import visualize as viz
 from scipy.spatial import ConvexHull
-from os import path
+import os
 import warnings
 
 from matplotlib import rc
@@ -56,20 +56,23 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # ---------------------------------------------
 data_dirs = np.array([
     ##"/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-    "/lagoon/bbhdisk/BBHDiskMerger/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08",
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08"
 ])
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
 ##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-plots_dir = "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08"
+plots_dir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08"
 
 
 # Which grid functions to plot
 # ----------------------------
 grid_functions = np.array([
-    "rho_b"  ##"rho"
+    ##"rho"
+    "rho_b",
+    "rho_b"
 ])
 
 
@@ -83,13 +86,16 @@ input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
 # Spherical-like coordinates: r-theta, r-phi or theta-phi plane
 # -------------------------------------------------------------
 planes = np.array([
-    "xy"  ##"xz"
+    ##"xz"
+    "xy",
+    "xz"
 ])
 
 
 # Plot absolute values?
 # ---------------------
 abs_vals = np.array([
+    False,
     False
 ])
 
@@ -108,13 +114,16 @@ orb_count = False
 omega     = 1.049229e-02
 
 
+# FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
 # Do you want to find the max and min in the data for every available
 # iteration?
 # NOTE: this may take some time
 # -------------------------------------------------------------------
 compute_min_max = np.array([
+    False,
     False
 ])
+# FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
 
 
 
@@ -129,7 +138,8 @@ compute_min_max = np.array([
 # ----------------------------------------------------------------
 plot_extents = np.array([
      ##np.array([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
-     np.array([-40., 40., -40., 40.])
+     np.array([-40., 40., -40., 40.]),
+     np.array([-200., 200., -200., 200.])
 ])
 
 
@@ -148,12 +158,14 @@ actual_plot_extents = None
 
 # Subplots layout
 # ---------------
-nsubplots_x = 1
+nsubplots_x = 2
 nsubplots_y = 1
 
 # Figure size and resolution
 # --------------------------
-figsize = [12., 10.]
+##figsize = [12., 10.]  # Single frame with colorbar on the right 
+##dpi     = 200
+figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
 dpi     = 200
 
 # File extension for the plots
@@ -171,6 +183,7 @@ fig_ext = ".png"
 # Draw the apparent horizon(s)?
 # -----------------------------
 draw_AH = np.array([
+    True,
     True
 ])
 
@@ -182,13 +195,16 @@ N_AH_files = 2
 
 
 # **IMPORTANT**
-# Make sure all AH files ('h.t<iteration>.ah<AH_number>') are in the same
-# directory. In case they live under different 'output-xxxx' directories, copy
-# them to a common directory.
-# ----------------------------------------------------------------------------
+# Each path in AH_dirs is searched for the file containing the AH data for a
+# given iteration via os.walk . In order to make life easier for os.walk, create
+# a directory containing as many subdirectories as there are simulation
+# restarts; each subdirectory should be a symlink to the actual directory
+# containing all the AH files for the corresponding simulation restart.
+# ------------------------------------------------------------------------------
 AH_dirs = np.array([
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08/AH_data"
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08/AH_data",
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08/AH_data"
 ])
 
 
@@ -202,6 +218,7 @@ AH_dirs = np.array([
 # Use a logarithmic scale?
 # ------------------------
 logscale = np.array([
+    True,
     True
 ])
 
@@ -211,6 +228,7 @@ logscale = np.array([
 # desired minimum in the colorbar (see below)
 # -----------------------------------------------------------------------------
 symlogscale = np.array([
+    False,
     False
 ])
 
@@ -219,6 +237,7 @@ symlogscale = np.array([
 # between 0 and 1?
 # -----------------------------------------------------------------------------
 linscale_norm = np.array([
+    True,
     True
 ])
 
@@ -240,6 +259,7 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 # Names of the variables to be put close to the colorbar
 # ------------------------------------------------------
 varnames = np.array([
+    "$\\rho$",
     "$\\rho$"
 ])
 
@@ -247,6 +267,7 @@ varnames = np.array([
 # Titles for each subplot
 # -----------------------
 titles = np.array([
+    "",
     ""
 ])
 
@@ -254,6 +275,7 @@ titles = np.array([
 # Add colorbar(s)?
 # ----------------
 add_clb = np.array([
+    False,
     True
 ])
 
@@ -262,7 +284,8 @@ add_clb = np.array([
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -------------------------------------------------------------------------
 clb_extents = np.array([
-    np.array([1.e-08, 1.5e-02])
+    np.array([1.e-12, 1.e-02]),
+    np.array([1.e-12, 1.e-02])
 ])
 
 
@@ -270,6 +293,7 @@ clb_extents = np.array([
 # "both")
 # -------------------------------------------------------------------------
 clb_extends = np.array([
+    "max",
     "max"
 ])
 
@@ -277,6 +301,7 @@ clb_extends = np.array([
 # Colormap
 # --------
 cmaps = np.array([
+    "plasma",
     "plasma"
 ])
 
@@ -309,7 +334,7 @@ clblabel_fontstyle  = "normal"
 # Iteration, time and orbits strings options
 # ------------------------------------------
 it_pos                 = np.array([0.15, 0.015])
-time_pos               = np.array([0.6, 0.015])
+time_pos               = np.array([0.5, 0.015])
 orb_pos                = np.array([0.12, 0.015])
 it_time_orb_fontsize   = 25.
 it_time_orb_fontweight = "bold"
@@ -326,6 +351,7 @@ it_time_orb_fontstyle  = "normal"
 # Zoom in/out as time goes?
 # -------------------------
 zooms = np.array([
+    False,
     False
 ])
 
@@ -335,6 +361,7 @@ zooms = np.array([
 actual_plot_extents_end = np.array([
     ##np.array([-2010., 2010., -2010., 2010.])
     ##np.array([-300., 300., -300., 300.])
+    np.array([-40., 40., -40., 40.]),
     np.array([-40., 40., -40., 40.])
 ])
 
@@ -342,10 +369,12 @@ actual_plot_extents_end = np.array([
 # Iterations at which zooming in/out should begin/end
 # -------------------------------------------------------
 first_its_zoom = np.array([
+    0,
     0
 ])
 
 last_its_zoom = np.array([
+    1,
     1
 ])
 
@@ -362,6 +391,7 @@ last_its_zoom = np.array([
 #       mesh and not just the refinement level boundaries
 # ------------------------------------------------------------
 plot_grid = np.array([
+    False,
     False
 ])
 
@@ -369,17 +399,20 @@ plot_grid = np.array([
 # If plot_grid is true, do you want the grid to gradually fade in/out?
 # --------------------------------------------------------------------
 vary_grid_transparency = np.array([
-    True
+    False,
+    False
 ])
 
 
 # Iterations at which the change in grid transparency should begin/end
 # --------------------------------------------------------------------
 first_its_alpha_grid = np.array([
+    0,
     0
 ])
 
 last_its_alpha_grid = np.array([
+    1,
     1
 ])
 
@@ -387,10 +420,12 @@ last_its_alpha_grid = np.array([
 # Grid transparency values at the beginning/end
 # ---------------------------------------------
 alpha_grid_init = np.array([
+    0.,
     0.
 ])
 
 alpha_grid_end = np.array([
+    1.,
     1.
 ])
 
@@ -405,6 +440,7 @@ alpha_grid_end = np.array([
 # Plot refinement level boundaries?
 # ---------------------------------
 plot_reflevels = np.array([
+    False,
     False
 ])
 
@@ -413,7 +449,8 @@ plot_reflevels = np.array([
 # gradually fade in/out?
 # -------------------------------------------------------------------------
 vary_reflevels_transparency = np.array([
-    True
+    False,
+    False
 ])
 
 
@@ -421,10 +458,12 @@ vary_reflevels_transparency = np.array([
 # begin/end
 # -----------------------------------------------------------------------
 first_its_alpha_reflevels = np.array([
+    0,
     0
 ])
 
 last_its_alpha_reflevels = np.array([
+    1,
     1
 ])
 
@@ -432,10 +471,12 @@ last_its_alpha_reflevels = np.array([
 # Refinement levels transparency at the beginning/end
 # ---------------------------------------------------
 alpha_reflevels_init = np.array([
+    1.,
     1.
 ])
 
 alpha_reflevels_end = np.array([
+    0.,
     0.
 ])
 
@@ -445,6 +486,7 @@ alpha_reflevels_end = np.array([
 #       some high value to plot all reflevel boundaries
 # ---------------------------------------------------------------------------
 reflevel_ranges = np.array([
+    np.array([0, 20]),
     np.array([0, 20])
 ])
 
@@ -574,12 +616,14 @@ for actual_plot_extent_end in actual_plot_extents_end:
     assert(actual_plot_extent_end[3] > actual_plot_extent_end[2])
 
 assert(len(first_its_zoom) == N_datasets)
-for first_it_zoom in first_its_zoom:
-    assert(first_it_zoom >= first_it)
+for i in range(N_datasets):
+    if (zooms[i]):
+        assert(firsts_it_zoom[i] >= first_it)
 
 assert(len(last_its_zoom) == N_datasets)
-for last_it_zoom in last_its_zoom:
-    assert(last_it_zoom <= last_it)
+for i in range(N_datasets):
+    if (zooms[i]):
+        assert(last_its_zoom[i] <= last_it)
 
 assert(len(plot_grid) == N_datasets)
 for pg in plot_grid:
@@ -590,12 +634,14 @@ for vgt in vary_grid_transparency:
     assert(vgt or not vgt)
 
 assert(len(first_its_alpha_grid) == N_datasets)
-for first_it_alpha_grid in first_its_alpha_grid:
-    assert(first_it_alpha_grid >= first_it)
+for i in range(N_datasets):
+    if (plot_grid[i] and vary_grid_transparency[i]):
+        assert(first_its_alpha_grid[i] >= first_it)
 
 assert(len(last_its_alpha_grid) == N_datasets)
-for last_it_alpha_grid in last_its_alpha_grid:
-    assert(last_it_alpha_grid <= last_it)
+for i in range(N_datasets):
+    if (plot_grid[i] and vary_grid_transparency[i]):
+        assert(last_it_alpha_grid <= last_it)
 
 assert(len(alpha_grid_init) == N_datasets)
 for agi in alpha_grid_init:
@@ -614,12 +660,14 @@ for vrt in vary_reflevels_transparency:
     assert(vrt or not vrt)
 
 assert(len(first_its_alpha_reflevels) == N_datasets)
-for first_it_alpha_reflevels in first_its_alpha_reflevels:
-    assert(first_it_alpha_reflevels >= first_it)
+for i in range(N_datasets):
+    if (plot_reflevels[i] and vary_reflevels_transparency[i]):
+        assert(first_its_alpha_reflevels[i] >= first_it)
 
 assert(len(last_its_alpha_reflevels) == N_datasets)
-for last_it_alpha_reflevels in last_its_alpha_reflevels:
-    assert(last_it_alpha_reflevels <= last_it)
+for i in range(N_datasets):
+    if (plot_reflevels[i] and vary_reflevels_transparency[i]):
+        assert(last_its_alpha_reflevels[i] <= last_it)
 
 assert(len(alpha_reflevels_init) == N_datasets)
 for ari in alpha_reflevels_init:
@@ -1166,33 +1214,34 @@ for it in range(first_it, last_it + 1, out2D_every):
         # Plot apparent horizons by finding the convex hull of the projection of
         # the points defining it (as found by AHFinderDirect) in the desired
         # plane
-        if (draw_AH[n]):
+        if draw_AH[n]:
             print("Dataset " + str(n) + ": trying to draw apparent horizon(s)...")
-            found_AH_data = False
+            found_AH_file = False
 
+            # In case there are multiple files available for the same apparent
+            # horizon, the following only uses the first one that's found
             for r in range(1, N_AH_files + 1):
-                if (there_are_iters_avail[n]):
-                    AH_file = AH_dirs[n] + "/h.t" + str(it) + ".ah" + str(r) + ".gp"
-                else:
-                    AH_file = AH_dirs[n] + "/h.t" + str(int(last_valid_it[n])) + ".ah" + str(r) + ".gp"
+                if not found_AH_file:
+                    AH_file = ("h.t" + str(it) + ".ah" + str(r) + ".gp"
+                               if there_are_iters_avail[n]
+                               else
+                               "h.t" + str(int(last_valid_it[n])) + ".ah" + str(r) + ".gp")
+                    for root, dirs, files in os.walk(str(AH_dirs[n]), followlinks = True):  # Search symlinks too
+                        if AH_file in files:
+                            found_AH_file = True
+                            AH_data       = np.loadtxt(root + "/" + AH_file)
+                            hull          = ConvexHull(AH_data[:, [AHfile_cols1[n], AHfile_cols2[n]]])
+                            xhull         = AH_data[:, AHfile_cols1[n]][hull.vertices]
+                            yhull         = AH_data[:, AHfile_cols2[n]][hull.vertices]
 
-                # In case there are multiple files available for the same
-                # horizon, the following overrides the previous data
-                if (path.exists(AH_file)):
-                    found_AH_data = True
-                    AH_data       = np.loadtxt(AH_file)
-                    hull          = ConvexHull(AH_data[:, [AHfile_cols1[n], AHfile_cols2[n]]])
-                    xhull         = AH_data[:, AHfile_cols1[n]][hull.vertices]
-                    yhull         = AH_data[:, AHfile_cols2[n]][hull.vertices]
+                            ax.fill(xhull*conv_fac_space, yhull*conv_fac_space,
+                                    linewidth = 0., facecolor = "black")
 
-                    ax.fill(xhull*conv_fac_space, yhull*conv_fac_space,
-                            linewidth = 0., facecolor = "black")
-
-                    print("Dataset " + str(n) + ": apparent horizon " + str(r) + " drawn from AH file " + str(r))
+                            print("Dataset " + str(n) + ": apparent horizon " + str(r) + " drawn from AH file " + str(r))
 
             print("")
 
-            if (not found_AH_data):
+            if (not found_AH_file):
                 warnings.warn("Dataset " + str(n) + ": no AH data found")
 
 

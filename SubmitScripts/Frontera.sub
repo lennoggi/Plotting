@@ -1,13 +1,13 @@
 #! /bin/bash
 #SBATCH -A PHY20010
-#SBATCH -p development
-#SBATCH -t 02:00:00
+#SBATCH -p small
+#SBATCH -t 24:00:00
 #SBATCH -N 1 -n 1
 #SBATCH -J Plot
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=lorenzo.ennoggi@gmail.com
-#SBATCH -o /scratch1/07825/lennoggi/Plot.out
-#SBATCH -e /scratch1/07825/lennoggi/Plot.err
+#SBATCH -o /scratch3/07825/lennoggi/Plot.out
+#SBATCH -e /scratch3/07825/lennoggi/Plot.err
 
 # Activate TACC I/O manager
 # (see https://portal.tacc.utexas.edu/tutorials/managingio)
