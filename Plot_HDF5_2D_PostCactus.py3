@@ -166,7 +166,7 @@ nsubplots_y = 1
 ##figsize = [12., 10.]  # Single frame with colorbar on the right 
 ##dpi     = 200
 figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
-dpi     = 200
+dpi     = 100
 
 # File extension for the plots
 # ----------------------------
@@ -188,9 +188,9 @@ draw_AH = np.array([
 ])
 
 
-# How many files per AH are there, i.e. the maximum value of 'AH_number' in
-# 'h.t<iteration>.ah<AH_number>'
-# -------------------------------------------------------------------------
+# How many AH files there are per iteration, i.e. the maximum value of
+# 'AH_number' in 'h.t<iteration>.ah<AH_number>'
+# --------------------------------------------------------------------
 N_AH_files = 2
 
 
@@ -1216,33 +1216,29 @@ for it in range(first_it, last_it + 1, out2D_every):
         # plane
         if draw_AH[n]:
             print("Dataset " + str(n) + ": trying to draw apparent horizon(s)...")
-            found_AH_file = False
 
             # In case there are multiple files available for the same apparent
-            # horizon, the following only uses the first one that's found
+            # horizon, the following overwrites the AH that many times
             for r in range(1, N_AH_files + 1):
-                if not found_AH_file:
-                    AH_file = ("h.t" + str(it) + ".ah" + str(r) + ".gp"
-                               if there_are_iters_avail[n]
-                               else
-                               "h.t" + str(int(last_valid_it[n])) + ".ah" + str(r) + ".gp")
-                    for root, dirs, files in os.walk(str(AH_dirs[n]), followlinks = True):  # Search symlinks too
-                        if AH_file in files:
-                            found_AH_file = True
-                            AH_data       = np.loadtxt(root + "/" + AH_file)
-                            hull          = ConvexHull(AH_data[:, [AHfile_cols1[n], AHfile_cols2[n]]])
-                            xhull         = AH_data[:, AHfile_cols1[n]][hull.vertices]
-                            yhull         = AH_data[:, AHfile_cols2[n]][hull.vertices]
+                AH_file = ("h.t" + str(it) + ".ah" + str(r) + ".gp"
+                           if there_are_iters_avail[n]
+                           else
+                           "h.t" + str(int(last_valid_it[n])) + ".ah" + str(r) + ".gp")
 
-                            ax.fill(xhull*conv_fac_space, yhull*conv_fac_space,
-                                    linewidth = 0., facecolor = "black")
+                for root, dirs, files in os.walk(str(AH_dirs[n]), followlinks = True):  # Search symlinks too
+                    if AH_file in files:
+                        AH_data = np.loadtxt(root + "/" + AH_file)
+                        hull    = ConvexHull(AH_data[:, [AHfile_cols1[n], AHfile_cols2[n]]])
+                        xhull   = AH_data[:, AHfile_cols1[n]][hull.vertices]
+                        yhull   = AH_data[:, AHfile_cols2[n]][hull.vertices]
 
-                            print("Dataset " + str(n) + ": apparent horizon " + str(r) + " drawn from AH file " + str(r))
+                        ax.fill(xhull*conv_fac_space, yhull*conv_fac_space,
+                                linewidth = 0., facecolor = "black")
 
+                        print("Dataset " + str(n) + ": apparent horizon " + str(r) + " drawn from AH file " + str(r))
+                    else:
+                        warnings.warn("Dataset " + str(n) + ": no file found for AH " + str(r))
             print("")
-
-            if (not found_AH_file):
-                warnings.warn("Dataset " + str(n) + ": no AH data found")
 
 
         # Compute the min and max value in the plotted data if requested
