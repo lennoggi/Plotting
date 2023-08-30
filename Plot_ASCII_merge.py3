@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 
 ######################### USER-DEFINED PARAMETERS ##############################
 
-qty = "qlm_spin"
+qty = "qlm_spin[0]"
 ext = "..asc"
 
 t_col  = 8
@@ -22,7 +22,7 @@ subdirs = np.array([
 ])
 
 outputs = np.array([
-    np.array([0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
+    np.array([0, 1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
 ])
 
 normalize = False
@@ -30,14 +30,14 @@ absval    = False
 log_scale = True
 
 mytitle   = ""
-my_ylabel = ""
+my_ylabel = "$J\,\\left[M^2\\right]$"
 
 plot_path = "/home1/07825/lennoggi"
 plot_ext  = ".pdf"
 
 colors = np.array([
     "dodgerblue"
-)
+])
 
 labels = np.array([
     ""
@@ -86,7 +86,7 @@ for n in range(N):
     tmax = t[-1][-1]
 
     if normalize:
-        norm_fac = 1./(data[0, ft_column]) - 1.)
+        norm_fac = 1./(data[0, ft_col] - 1.)
         data.append(data[:, ft_col]*norm_fac)
     else:
         ft.append(data[:, ft_col])
@@ -97,8 +97,9 @@ for n in range(N):
     for i in outputs[n]:
         output_number = "output-" + str("{:0>4d}".format(i))
         fullpath      = paths[n] + "/" + output_number + "/" + fullfname
-        data          = np.loadtxt(paths[n] + output_number + "/" + subdirs[n] + filename)
-        L             = len(data[:, t_column])
+        data          = np.loadtxt(fullpath)
+        data_arr      = data[:, t_col]
+        L             = len(data_arr)
 
         for j in range(L):
             if data_arr[j] >= tmax:
@@ -111,13 +112,13 @@ for n in range(N):
         if j == L - 1:
             continue
 
-        t[n] = np.concatenate((t[n],  data[tmax_index:, t_column]))
+        t[n] = np.concatenate((t[n],  data[tmax_index:, t_col]))
         tmax = t[-1][-1]
 
         if normalize:
-            ft[n] = np.concatenate((ft[n], data[tmax_index:, ft_column]*norm_fac)
+            ft[n] = np.concatenate((ft[n], data[tmax_index:, ft_col]*norm_fac))
         else:
-            ft[n] = np.concatenate((ft[n], data[tmax_index:, ft_column]))
+            ft[n] = np.concatenate((ft[n], data[tmax_index:, ft_col]))
 
         print(output_number + " merged")
 
@@ -153,7 +154,7 @@ for n in range(N):
 ##plt.axvline(850., 0., 1., linestyle = "--", linewidth = 1.,
 ##    color = "red", label = "GW cross detector surface")
 
-plt.legend() ##(loc = "lower left", markerscale = 8.)
+##plt.legend() ##(loc = "lower left", markerscale = 8.)
 plt.tight_layout()
 plt.savefig(plot_path + "/" + qty + plot_ext)
 plt.close()
