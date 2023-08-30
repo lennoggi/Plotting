@@ -1,9 +1,15 @@
+# This script merges ASCII files from different simulation restarts and produces
+# a plot and/or a text file containing the merged data
+
 import numpy as np
 from matplotlib import pyplot as plt
 ##import scipy.interpolate as sc  # Needed for the commented code portion at the end
 
 
 ######################### USER-DEFINED PARAMETERS ##############################
+
+produce_plot      = True
+produce_text_file = True
 
 qty = "qlm_spin[0]"
 ext = "..asc"
@@ -32,8 +38,9 @@ log_scale = True
 mytitle   = ""
 my_ylabel = "$J\,\\left[M^2\\right]$"
 
-plot_path = "/home1/07825/lennoggi"
-plot_ext  = ".pdf"
+plot_text_path = "/home1/07825/lennoggi"
+plot_ext       = ".pdf"
+text_file_ext  = ".asc"
 
 colors = np.array([
     "dodgerblue"
@@ -53,6 +60,8 @@ assert(len(outputs) == N)
 assert(len(colors)  == N)
 assert(len(labels)  == N)
 
+assert(produce_plot or not produce_plot)
+assert(produce_text_file or not produce_text_file)
 assert(normalize or not normalize)
 assert(absval or not absval)
 assert(log_scale or not log_scale)
@@ -127,37 +136,41 @@ for n in range(N):
 
 
 
-# Plot
-plt.figure()
-plt.title(mytitle, fontsize = 15., fontweight = "bold", fontstyle = "normal",
-          fontname = "Ubuntu", color = "midnightblue")
-plt.xlabel("$t\,$" + time_str, fontsize = 12.)
-plt.ylabel(my_ylabel, fontsize = 12.)
-##plt.xlim(1850., 4000.)
-##plt.ylim(-0.000001, 0.000001)
+if produce_plot:
+    plt.figure()
+    plt.title(mytitle, fontsize = 15., fontweight = "bold", fontstyle = "normal",
+              fontname = "Ubuntu", color = "midnightblue")
+    plt.xlabel("$t\,$" + time_str, fontsize = 12.)
+    plt.ylabel(my_ylabel, fontsize = 12.)
+    ##plt.xlim(1850., 4000.)
+    ##plt.ylim(-0.000001, 0.000001)
 
-if log_scale:
-    plt.yscale("log")
+    if log_scale:
+        plt.yscale("log")
 
-for n in range(N):
-    if absval:
-        plt.plot(t[n], np.absolute(ft[n]),
-                 linestyle = "-", linewidth = 1.,
-                 marker = "", markersize = 2.,
-                 color = colors[n], label = labels[n])
-    else:
-        plt.plot(t[n], ft[n],
-                 linestyle = "-", linewidth = 1.,
-                 marker = "", markersize = 2.,
-                 color = colors[n], label = labels[n])
+    for n in range(N):
+        if absval:
+            plt.plot(t[n], np.absolute(ft[n]), linestyle = "-", linewidth = 1.,
+                     marker = "", markersize = 2., color = colors[n], label = labels[n])
+        else:
+            plt.plot(t[n], ft[n], linestyle = "-", linewidth = 1.,
+                     marker = "", markersize = 2., color = colors[n], label = labels[n])
 
-##plt.axvline(850., 0., 1., linestyle = "--", linewidth = 1.,
-##    color = "red", label = "GW cross detector surface")
+    ##plt.axvline(850., 0., 1., linestyle = "--", linewidth = 1.,
+    ##    color = "red", label = "GW cross detector surface")
 
-##plt.legend() ##(loc = "lower left", markerscale = 8.)
-plt.tight_layout()
-plt.savefig(plot_path + "/" + qty + plot_ext)
-plt.close()
+    ##plt.legend() ##(loc = "lower left", markerscale = 8.)
+    plt.tight_layout()
+    plot_fullpath = plot_text_path + "/" + qty + plot_ext
+    plt.savefig(plot_fullpath)
+    plt.close()
+    print("Plot saved as '" + plot_fullpath + "'")
+
+
+if produce_text_file:
+    text_file_fullpath = plot_text_path + "/" + qty + text_file_ext
+    np.savetxt(text_file_fullpath)
+    print("Text file saved as '" + text_file_fullpath + "'")
 
 
 
