@@ -169,7 +169,10 @@ if produce_plot:
 
 if produce_text_file:
     text_file_fullpath = plot_text_path + "/" + qty + text_file_ext
-    np.savetxt(text_file_fullpath)
+    if absval:
+        np.savetxt(text_file_fullpath, (t[n], np.absolute(ft[n])))
+    else:
+        np.savetxt(text_file_fullpath, (t[n], ft[n]))
     print("Text file saved as '" + text_file_fullpath + "'")
 
 
