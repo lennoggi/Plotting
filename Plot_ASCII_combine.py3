@@ -15,6 +15,9 @@ filename2 = "/home1/07825/lennoggi/qlm_mass[0].asc"
 # 5: a/(b*b)
 operation = 5
 
+t_col  = 0
+ft_col = 1
+
 plot_title    = "++0.8 run, apparent horizon 0"
 my_ylabel     = "$\chi$"
 plot_fullpath = "/home1/07825/lennoggi/qlm_dimensionless_spin[0]_pp08.pdf"
@@ -24,6 +27,8 @@ plot_fullpath = "/home1/07825/lennoggi/qlm_dimensionless_spin[0]_pp08.pdf"
 
 data1 = np.loadtxt(filename1)
 data2 = np.loadtxt(filename2)
+
+assert(len(data1) == len(data2))
 
 t  = data1[:, 0]
 f1 = data1[:, 1]
