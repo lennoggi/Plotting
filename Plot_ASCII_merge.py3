@@ -1,5 +1,7 @@
+# ==============================================================================
 # This script merges ASCII files from different simulation restarts and produces
 # a plot and/or a text file containing the merged data
+# ==============================================================================
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -11,7 +13,7 @@ from matplotlib import pyplot as plt
 produce_plot      = True
 produce_text_file = True
 
-qty = "qlm_spin[0]"
+qty = "pt_loc_z[1]"
 ext = "..asc"
 
 t_col  = 8
@@ -20,7 +22,8 @@ ft_col = 12
 time_units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 
 paths = np.array([
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08"
+    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08"
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp45deg"
 ])
 
 subdirs = np.array([
@@ -28,15 +31,16 @@ subdirs = np.array([
 ])
 
 outputs = np.array([
-    np.array([0, 1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20])
+    ##np.array([0, 1, 2, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19])  ## pp08
+    np.array([0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22])  ## pp45deg
 ])
 
 normalize = False
 absval    = False
-log_scale = True
+log_scale = False ##True
 
 mytitle   = ""
-my_ylabel = "$J\,\\left[M^2\\right]$"
+my_ylabel = "$z_1\,\\left[M\\right]$" ##"$J\,\\left[M^2\\right]$"
 
 plot_text_path = "/home1/07825/lennoggi"
 plot_ext       = ".pdf"
@@ -169,10 +173,15 @@ if produce_plot:
 
 if produce_text_file:
     text_file_fullpath = plot_text_path + "/" + qty + text_file_ext
+
     if absval:
-        np.savetxt(text_file_fullpath, (t[n], np.absolute(ft[n])))
-    else:
-        np.savetxt(text_file_fullpath, (t[n], ft[n]))
+        ft[n] = np.absolute(ft[n])
+
+    t_reshaped  = np.reshape(t[n],  (len(t[n]),  1))
+    ft_reshaped = np.reshape(ft[n], (len(ft[n]), 1))
+    data_file   = np.concatenate((t_reshaped, ft_reshaped), axis = 1)
+
+    np.savetxt(text_file_fullpath, data_file)
     print("Text file saved as '" + text_file_fullpath + "'")
 
 
