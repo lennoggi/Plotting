@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 
 ######################### USER-DEFINED PARAMETERS ##############################
 
-produce_plot      = True
+produce_plot      = False ##True
 produce_text_file = True
 
 qty = "pt_loc_z[1]"
@@ -40,7 +40,7 @@ absval    = False
 log_scale = False ##True
 
 mytitle   = ""
-my_ylabel = "$z_1\,\\left[M\\right]$" ##"$J\,\\left[M^2\\right]$"
+my_ylabel = "$z_1\,\left[M\\right]$" ##"$J\,\left[M^2\\right]$"
 
 plot_text_path = "/home1/07825/lennoggi"
 plot_ext       = ".pdf"
@@ -139,6 +139,7 @@ for n in range(N):
         t[n] *= 4.9257949707731345e-03
 
 
+print("")
 
 if produce_plot:
     plt.figure()
@@ -170,6 +171,8 @@ if produce_plot:
     plt.close()
     print("Plot saved as '" + plot_fullpath + "'")
 
+else: print("No plot produced")
+
 
 if produce_text_file:
     text_file_fullpath = plot_text_path + "/" + qty + text_file_ext
@@ -183,6 +186,8 @@ if produce_text_file:
 
     np.savetxt(text_file_fullpath, data_file)
     print("Text file saved as '" + text_file_fullpath + "'")
+
+else: print("No text file produced")
 
 
 
