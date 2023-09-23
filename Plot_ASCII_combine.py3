@@ -1,12 +1,19 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+
 ######################### USER-DEFINED PARAMETERS ##############################
 
 filename1 = "/home1/07825/lennoggi/qlm_spin[0].asc"
 filename2 = "/home1/07825/lennoggi/qlm_mass[0].asc"
 
-operation = "/"
+# Supported operations:
+# 1: a + b
+# 2: a - b
+# 3: a*b
+# 4: a/b
+# 5: a/(b*b)
+operation = 5
 
 plot_title    = "++0.8 run, apparent horizon 0"
 my_ylabel     = "$\chi$"
@@ -31,14 +38,15 @@ assert(len(f1) == N)
 assert(len(f2) == N)
 
 
-if operation == "+":
+if operation == 1:
     ftot = f1 + f2
-elif operation == "-":
+elif operation == 2:
     ftot = f1 - f2
-elif operation == "*":
+elif operation == 3:
     ftot = f1*f2
-elif operation == "/":
-    ##ftot = f1/f2  # FIXME
+elif operation == 4:
+    ftot = f1/f2
+elif operation == 5:
     ftot = f1/(f2*f2)
 else:
     raise RuntimeError("Invalid operation '" + operation + "'")
