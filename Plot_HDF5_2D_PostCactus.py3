@@ -64,7 +64,7 @@ data_dirs = np.array([
 # Directory where the plots will be placed
 # ----------------------------------------
 ##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-plots_dir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08"
+plots_dir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08/rho_b_xy_rho_b_xz_TEST"
 
 
 # Which grid functions to plot
@@ -103,7 +103,7 @@ abs_vals = np.array([
 # Iterations and initial time info
 # --------------------------------
 first_it    = 0
-last_it     = 10000000  # Set this to a huge number to plot all iterations
+last_it     = 1000000000  # Set this to a huge number to plot all iterations
 out2D_every = 1024  ##400
 t0          = 0.
 
@@ -139,7 +139,7 @@ compute_min_max = np.array([
 plot_extents = np.array([
      ##np.array([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
      np.array([-40., 40., -40., 40.]),
-     np.array([-200., 200., -200., 200.])
+     np.array([-40., 40., -40., 40.])
 ])
 
 
@@ -167,10 +167,29 @@ nsubplots_y = 1
 ##dpi     = 200
 figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
 dpi     = 100
+##figsize = [24., 10.]  # Two frames with one colorbar each
+##dpi     = 100
+##figsize = [33., 10.]  # Three frames with one colorbar only (on the far right)
+##dpi     = 100
 
 # File extension for the plots
 # ----------------------------
 fig_ext = ".png"
+
+
+# Limit resolution (to save memory and time)?
+# -------------------------------------------
+limit_resolution = np.array([
+    False,
+    False
+])
+
+# Resolution to be used if limit_resolution is True
+# -------------------------------------------------
+resolution = np.array([
+    0.125,
+    0.125
+])
 
 
 
@@ -275,7 +294,7 @@ titles = np.array([
 # Add colorbar(s)?
 # ----------------
 add_clb = np.array([
-    False,
+    True,
     True
 ])
 
@@ -284,8 +303,8 @@ add_clb = np.array([
 # colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
 # -------------------------------------------------------------------------
 clb_extents = np.array([
-    np.array([1.e-12, 1.e-02]),
-    np.array([1.e-12, 1.e-02])
+    np.array([1.e-08, 3.e-02]),
+    np.array([1.e-12, 3.e-02])
 ])
 
 
@@ -293,8 +312,8 @@ clb_extents = np.array([
 # "both")
 # -------------------------------------------------------------------------
 clb_extends = np.array([
-    "max",
-    "max"
+    "both", ##"max",
+    "both"  ##"max"
 ])
 
 
@@ -334,7 +353,7 @@ clblabel_fontstyle  = "normal"
 # Iteration, time and orbits strings options
 # ------------------------------------------
 it_pos                 = np.array([0.15, 0.015])
-time_pos               = np.array([0.5, 0.015])
+time_pos               = np.array([0.45, 0.015])
 orb_pos                = np.array([0.12, 0.015])
 it_time_orb_fontsize   = 25.
 it_time_orb_fontweight = "bold"
@@ -529,6 +548,7 @@ assert(len(compute_min_max) == N_datasets)
 for comp in compute_min_max:
     assert(comp or not comp)
 
+
 assert(len(plot_extents) == N_datasets)
 for plot_extent in plot_extents:
     assert(len(plot_extent == 4))
@@ -537,11 +557,13 @@ for plot_extent in plot_extents:
 
 assert(actual_plot_extents is None or
        len(actual_plot_extents) == N_datasets)
-if (actual_plot_extents is not None):
+
+if actual_plot_extents is not None:
     for actual_plot_extent in actual_plot_extents:
         assert(len(actual_plot_extent) == 4)
         assert(actual_plot_extent[1] > actual_plot_extent[0])
         assert(actual_plot_extent[3] > actual_plot_extent[2])
+
 
 assert(nsubplots_x > 0)
 assert(nsubplots_y > 0)
@@ -550,12 +572,23 @@ assert(nsubplots_x*nsubplots_y == N_datasets)
 assert(len(figsize) == 2)
 assert(dpi > 0)
 
+
+assert(len(limit_resolution == N_datasets))
+for limit in limit_resolution:
+    assert(limit or not limit)
+
+assert(len(resolution == N_datasets))
+for res in resolution:
+    assert(res > 0.)
+
+
 assert(len(draw_AH) == N_datasets)
 for draw in draw_AH:
     assert(draw or not draw)
 
 assert(N_AH_files > 0)
 assert(len(AH_dirs) == N_datasets)
+
 
 assert(len(logscale) == N_datasets)
 for log in logscale:
@@ -569,12 +602,14 @@ assert(len(linscale_norm) == N_datasets)
 for lin in linscale_norm:
     assert(lin or not lin)
 
+
 assert(units == "arbitrary" or
        units == "geometric" or
        units == "SI")
 
 assert(len(varnames) == N_datasets)
 assert(len(titles) == N_datasets)
+
 
 assert(len(add_clb) == N_datasets)
 for aclb in add_clb:
@@ -591,6 +626,7 @@ for clb_extd in clb_extends:
            clb_extd == "max"  or
            clb_extd == "both")
 
+
 assert(len(cmaps) == N_datasets)
 
 assert(title_fontsize    > 0.)
@@ -605,6 +641,7 @@ assert(len(time_pos == 2))
 assert(len(orb_pos  == 2))
 assert(it_time_orb_fontsize > 0.)
 
+
 assert(len(zooms) == N_datasets)
 for zm in zooms:
     assert(zm or not zm)
@@ -617,13 +654,14 @@ for actual_plot_extent_end in actual_plot_extents_end:
 
 assert(len(first_its_zoom) == N_datasets)
 for i in range(N_datasets):
-    if (zooms[i]):
+    if zooms[i]:
         assert(firsts_it_zoom[i] >= first_it)
 
 assert(len(last_its_zoom) == N_datasets)
 for i in range(N_datasets):
-    if (zooms[i]):
+    if zooms[i]:
         assert(last_its_zoom[i] <= last_it)
+
 
 assert(len(plot_grid) == N_datasets)
 for pg in plot_grid:
@@ -635,12 +673,12 @@ for vgt in vary_grid_transparency:
 
 assert(len(first_its_alpha_grid) == N_datasets)
 for i in range(N_datasets):
-    if (plot_grid[i] and vary_grid_transparency[i]):
+    if plot_grid[i] and vary_grid_transparency[i]:
         assert(first_its_alpha_grid[i] >= first_it)
 
 assert(len(last_its_alpha_grid) == N_datasets)
 for i in range(N_datasets):
-    if (plot_grid[i] and vary_grid_transparency[i]):
+    if plot_grid[i] and vary_grid_transparency[i]:
         assert(last_it_alpha_grid <= last_it)
 
 assert(len(alpha_grid_init) == N_datasets)
@@ -650,6 +688,7 @@ for agi in alpha_grid_init:
 assert(len(alpha_grid_end) == N_datasets)
 for age in alpha_grid_end:
     assert(age >= 0.)
+
 
 assert(len(plot_reflevels) == N_datasets)
 for plot_rlvl in plot_reflevels:
@@ -661,12 +700,12 @@ for vrt in vary_reflevels_transparency:
 
 assert(len(first_its_alpha_reflevels) == N_datasets)
 for i in range(N_datasets):
-    if (plot_reflevels[i] and vary_reflevels_transparency[i]):
+    if plot_reflevels[i] and vary_reflevels_transparency[i]:
         assert(first_its_alpha_reflevels[i] >= first_it)
 
 assert(len(last_its_alpha_reflevels) == N_datasets)
 for i in range(N_datasets):
-    if (plot_reflevels[i] and vary_reflevels_transparency[i]):
+    if plot_reflevels[i] and vary_reflevels_transparency[i]:
         assert(last_its_alpha_reflevels[i] <= last_it)
 
 assert(len(alpha_reflevels_init) == N_datasets)
@@ -695,25 +734,25 @@ for rr in reflevel_ranges:
 
 ############################## UNITS SETUP #####################################
 
-if (units == "arbitrary"):
+if units == "arbitrary":
     conv_fac_time  = 1.
     unit_time_str  = "$\mathbf{M}$"
 
     conv_fac_space = 1.
     unit_space_str = "[$\mathbf{M}$]"
 
-    # TODO: add magnetic field and any other useful conversions
+    # TODO: add other potentially useful conversion factors
     for gf in grid_functions:
-        if (gf == "rho"   or gf == "rho_b"):
+        if gf == "rho"   or gf == "rho_b":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M}^{-2}\\right]$"
-        elif (gf == "press" or gf == "P"):
+        elif gf == "press" or gf == "P":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M}^{2}\\right]$"
-        elif (gf == "eps"):
+        elif gf == "eps":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M}\\right]$"
-        elif (gf == "smallb2" or gf == "b2small" or gf == "B_norm"):
+        elif gf == "smallb2" or gf == "b2small" or gf == "B_norm":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M}^{-1}\\right]$"
         else:
@@ -722,22 +761,22 @@ if (units == "arbitrary"):
             warnings.warn("No known conversion to " + units + " units for grid function '" + gf + "'") 
 
 
-elif (units == "geometric"):
+elif units == "geometric":
     conv_fac_time  = 1.
     unit_time_str  = "$\mathbf{M_{\\odot}}$"
 
     conv_fac_space = 1.
     unit_space_str = "[$\mathbf{M_{\\odot}}$]"
 
-    # TODO: add magnetic field and any other useful conversions
+    # TODO: add other potentially useful conversion factors
     for gf in grid_functions:
-        if (gf == "rho"   or gf == "rho_b"):
+        if gf == "rho"   or gf == "rho_b":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}^{-2}\\right]$"
-        elif (gf == "press" or gf == "P"):
+        elif gf == "press" or gf == "P":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}^{2}\\right]$"
-        elif (gf == "eps"):
+        elif gf == "eps":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}\\right]$"
         else:
@@ -746,7 +785,7 @@ elif (units == "geometric"):
             warnings.warn("No known conversion to " + units + " units for grid function '" + gf + "'") 
 
 
-elif (units == "SI"):
+elif units == "SI":
     G    = 6.67408e-11;     # m^3/(kg·s^2)
     c    = 2.99792458e+08;  # m/s
     Msun = 1.98847e+30;     # kg
@@ -765,15 +804,15 @@ elif (units == "SI"):
     unit_time_str  = " $\mathbf{ms}$"
     unit_space_str = "[$\mathbf{km}$]"
 
-    # TODO: add magnetic field and any other useful conversion
+    # TODO: add other potentially useful conversion factors
     for gf in grid_functions:
-        if (gf == "rho"   or gf == "rho_b"):
+        if gf == "rho"   or gf == "rho_b":
             conv_fac_gf = Msun_to_kg_over_m3
             unit_gf_str = "$\,\left[\\frac{kg}{m^3}\\right]$"
-        elif (gf == "press" or gf == "P"):
+        elif gf == "press" or gf == "P":
             conv_fac_gf = Msun_to_N_over_m2
             unit_gf_str = "$\,\left[\\frac{N}{m^2}\\right]$"
-        elif (gf == "smallb2" or gf == "b2small" or gf == "B_norm"):
+        elif gf == "smallb2" or gf == "b2small" or gf == "B_norm":
             conv_fac_gf = Msun_to_N_over_A2
             unit_gf_str = "$\,\left[T\\right]$"
         else:
@@ -841,40 +880,40 @@ for n in range(N_datasets):
     # Get the correct PostCactus method to read the data on the desired plane,
     # get the correct columns in the AHFinderDirect files to read data from and
     # set the axes' labels
-    if (planes[n] == "xy"):
+    if planes[n] == "xy":
         read_data.append(simdirs[n].grid.xy.read)
         AHfile_cols1.append(3)
         AHfile_cols2.append(4)
 
-        if (input_coords == "Cartesian"):
+        if input_coords == "Cartesian":
             xlabels.append("x$\,$" + unit_space_str)
             ylabels.append("y$\,$" + unit_space_str)
-        elif (input_coords == "Exponential fisheye"):
+        elif input_coords == "Exponential fisheye":
             xlabels.append("x$\,$" + unit_space_str)
             ylabels.append("z$\,$" + unit_space_str)
 
-    elif (planes[n] == "xz"):
+    elif planes[n] == "xz":
         read_data.append(simdirs[n].grid.xz.read)
         AHfile_cols1.append(3)
         AHfile_cols2.append(5)
 
-        if (input_coords == "Cartesian"):
+        if input_coords == "Cartesian":
             xlabels.append("x$\,$" + unit_space_str)
             ylabels.append("z$\,$" + unit_space_str)
-        elif (input_coords == "Exponential fisheye"):
+        elif input_coords == "Exponential fisheye":
             xlabels.append("x$\,$" + unit_space_str)
             ylabels.append("y$\,$" + unit_space_str)
 
-    elif (planes[n] == "yz"):
+    elif planes[n] == "yz":
         read_data.append(simdirs[n].grid.yz.read)
         AHfile_cols1.append(4)
         AHfile_cols2.append(5)
 
-        if (input_coords == "Cartesian"):
+        if input_coords == "Cartesian":
             xlabels.append("y$\,$" + unit_space_str)
             ylabels.append("z$\,$" + unit_space_str)
         # FIXME FIXME FIXME FIXME FIXME FIXME FIXME
-        elif (input_coords == "Exponential fisheye"):
+        elif input_coords == "Exponential fisheye":
             xlabels.append("$\\theta$")
             ylabels.append("$\phi$")
         # FIXME FIXME FIXME FIXME FIXME FIXME FIXME
@@ -884,22 +923,22 @@ for n in range(N_datasets):
 
 
     # Set up the plot scale
-    if (logscale[n] == True):
-        if (symlogscale[n] == True):
+    if logscale[n] == True:
+        if symlogscale[n] == True:
             norms.append(colors.SymLogNorm(vmin      = clb_extents[n][0],
                                            vmax      = clb_extents[n][1],
                                            linthresh = clb_extents[n][0]))
-        elif (symlogscale[n] == False):
+        elif symlogscale[n] == False:
             norms.append(colors.LogNorm(vmin = clb_extents[n][0],
                                         vmax = clb_extents[n][1]))
         else:
             raise RuntimeError("Please set symlogscale[" + str(n) + "] to either 'True' or 'False'")
 
-    elif (logscale[n] == False):
-        if (linscale_norm[n] == "yes"):
+    elif logscale[n] == False:
+        if linscale_norm[n] == "yes":
             norms.append(colors.Normalize(vmin = clb_extents[n][0],
                                           vmax = clb_extents[n][1]))
-        elif (linscale_norm[n] == False):
+        elif linscale_norm[n] == False:
             norms.append(None)
         else:
             raise RuntimeError("Please set linscale_norm[" + str(n) + "] to either 'True' or 'False'")
@@ -915,7 +954,7 @@ for n in range(N_datasets):
 
     # Compute the plot size reduction to be applied at each timestep,
     # logarithmically increasing/decreasing the zoom
-    if (zooms[n]):
+    if zooms[n]:
         xmin_init = actual_plot_extents[n][0]
         xmax_init = actual_plot_extents[n][1]
         ymin_init = actual_plot_extents[n][2]
@@ -950,8 +989,8 @@ for n in range(N_datasets):
                                   num = n_zoom, base = np.e, endpoint = True))
 
     # Initialize the plot range
-    if ( input_coords == "Cartesian" or
-        (input_coords != "Cartesian" and actual_plot_extents[n] is None)):
+    if (input_coords == "Cartesian" or
+       (input_coords != "Cartesian" and actual_plot_extents[n] is None)):
         xmin_plot.append(plot_extents[n][0])
         xmax_plot.append(plot_extents[n][1])
         ymin_plot.append(plot_extents[n][2])
@@ -966,9 +1005,9 @@ for n in range(N_datasets):
     # If requested, compute the steps over which the grid's transparency should
     # change at every iteration in the assigned range and initialize the grid's
     # transparencies
-    if (plot_grid[n]):
+    if plot_grid[n]:
         alpha_grid.append(alpha_grid_init[n])
-        if (vary_grid_transparency[n]):
+        if vary_grid_transparency[n]:
             assert((last_its_alpha_grid[n] - first_its_alpha_grid[n]) % out2D_every == 0)
             alpha_grid_n     = (last_its_alpha_grid[n] - first_its_alpha_grid[n])/out2D_every
             alpha_grid_range = alpha_grid_end[n] - alpha_grid_init[n]
@@ -978,9 +1017,9 @@ for n in range(N_datasets):
     # If requested, compute the steps over which the refinement levels'
     # transparency should change at every iteration in the assigned range and
     # initialize the refinement levels' transparencies
-    if (plot_reflevels[n]):
+    if plot_reflevels[n]:
         alpha_reflevels.append(alpha_reflevels_init[n])
-        if (vary_reflevels_transparency[n]):
+        if vary_reflevels_transparency[n]:
             assert((last_its_alpha_reflevels[n] - first_its_alpha_reflevels[n]) % out2D_every == 0)
             alpha_reflevels_n     = (last_its_alpha_reflevels[n] - first_its_alpha_reflevels[n])/out2D_every
             alpha_reflevels_range = alpha_reflevels_end[n] - alpha_reflevels_init[n]
@@ -1012,10 +1051,10 @@ g_toy = gd.RegGeom([2, 2], [xmin_largest, ymin_largest],
 
 # Array storing the times of each dataset. Used to figure out the largest time
 # between two dataset in case any of them is not evolving anymore.
-times = np.empty([2])
+times = np.empty([N_datasets])
 
 # Quantity needed to compute the number of orbits
-if (orb_count):
+if orb_count:
     omega_over_2pi = 0.5*omega/np.pi
 
 
@@ -1024,7 +1063,7 @@ for it in range(first_it, last_it + 1, out2D_every):
     print("***** Iteration " + str(it) + " *****\n")
 
     # Can't have 'plt.subplots(1, 1)'
-    if (N_datasets > 1):
+    if N_datasets > 1:
         fig, axes = plt.subplots(nsubplots_y, nsubplots_x,
                                  figsize = figsize, dpi = dpi)
     else:  # Single subplot -> No arguments
@@ -1035,7 +1074,7 @@ for it in range(first_it, last_it + 1, out2D_every):
     for n in range(N_datasets):
         # The axis object returned by plt.subplots() when there's only one
         # subplot is not subscriptable
-        if (N_datasets > 1):
+        if N_datasets > 1:
             ax = axes[n]
 
         # Configure axes
@@ -1065,17 +1104,17 @@ for it in range(first_it, last_it + 1, out2D_every):
         # all the other datasets are flagged already, then it means there's
         # nothing else to be plotted: break. Otherwise, reset to the last
         # non-flagged iteration for this dataset.
-        if (patch_toy.time is None):
+        if patch_toy.time is None:
             print("Setting dataset " + str(n) + " to the last valid iteration")
             there_are_iters_avail[n] = False
             no_iters_avail_count     = 0
 
             for avail in there_are_iters_avail:
-               if (not avail): no_iters_avail_count += 1
+               if not avail: no_iters_avail_count += 1
 
             assert(no_iters_avail_count <= N_datasets)
 
-            if (no_iters_avail_count == N_datasets):
+            if no_iters_avail_count == N_datasets:
                 # Dirty hack to break a nested loop
                 raise StopIteration
 
@@ -1099,24 +1138,31 @@ for it in range(first_it, last_it + 1, out2D_every):
                                    outside_val    = 0.,
                                    level_fill     = False)
 
-            # Find the grid spacing on the finest refinement level and, if
-            # desired, draw the refinement level contours and save them for the
-            # next iteration
-            for i in range(len(patches)):
-                geom   = patches[i].geom()
-                deltas = geom.dx()
-                dx     = deltas[0]
-                dy     = deltas[1]
+            # Set plot resolution
+            if limit_resolution[n]:
+                deltax_min = resolution[n]
+                deltay_min = resolution[n]
+                print("Dataset " + str(n) + ": grid spacing limited to ("
+                      + str(deltax_min) + ", " + str(deltay_min) + ")")
+            else:
+                # Find the grid spacing on the finest refinement level and, if
+                # desired, draw the refinement level contours and save them for the
+                # next iteration
+                for i in range(len(patches)):
+                    geom   = patches[i].geom()
+                    deltas = geom.dx()
+                    dx     = deltas[0]
+                    dy     = deltas[1]
 
-                if (i == 0):
-                    deltax_min = dx
-                    deltay_min = dy
-                else:
-                    if (dx < deltax_min): deltax_min = dx
-                    if (dy < deltay_min): deltay_min = dy
+                    if i == 0:
+                        deltax_min = dx
+                        deltay_min = dy
+                    else:
+                        if dx < deltax_min: deltax_min = dx
+                        if dy < deltay_min: deltay_min = dy
 
-            print("Dataset " + str(n) + ": finest grid spacing is ("
-                  + str(deltax_min) + ", " + str(deltay_min) + ")")
+                print("Dataset " + str(n) + ": finest grid spacing is ("
+                      + str(deltax_min) + ", " + str(deltay_min) + ")")
 
 
             # Set the geometry of the grid to be plotted
@@ -1150,7 +1196,7 @@ for it in range(first_it, last_it + 1, out2D_every):
         # NOTE: alternatively, one could specify 'adjust_spacing = False' and
         # PostCactus wouldn't snap to the finest available resolution, leaving
         # the shape of patch_plot untouched.
-        if (abs_vals[n]):
+        if abs_vals[n]:
             plot_data = np.absolute(patch_plot.data*conv_fac_gf)
         else:
             plot_data = patch_plot.data*conv_fac_gf
@@ -1158,20 +1204,20 @@ for it in range(first_it, last_it + 1, out2D_every):
         Nx_new = plot_data.shape[0]
         Ny_new = plot_data.shape[1]
 
-        if (Nx_new != Nx or Ny_new != Ny):
+        if Nx_new != Nx or Ny_new != Ny:
             print("Dataset " + str(n) + ": grid reshaped from (" + str(Nx) + ", " + str(Ny) + ") to (" + str(Nx_new) + ", " + str(Ny_new) + ")")
 
 
         # Build the mesh for pcolormesh and transform to Cartesian coordinates
         # if needed
         # NOTE: there are Nx cells => Nx+1 edges (and the same for Ny)
-        if (input_coords == "Cartesian"):
+        if input_coords == "Cartesian":
             x       = np.linspace(xmin, xmax, Nx_new)
             y       = np.linspace(ymin, ymax, Ny_new)
             mx, my  = np.meshgrid(x, y)
             mx_plot = mx
             my_plot = my
-        elif (input_coords == "Exponential fisheye"):
+        elif input_coords == "Exponential fisheye":
             logr        = np.linspace(xmin, xmax, Nx_new)
             phi         = np.linspace(ymin, ymax, Ny_new)
             mlogr, mphi = np.meshgrid(logr, phi)
@@ -1191,7 +1237,7 @@ for it in range(first_it, last_it + 1, out2D_every):
         #       np.transpose(plot_data) in each direction, than the data would
         #       be placed on cell vertices and shading = "auto" should produce
         #       shading = "flat".
-        if (plot_grid[n]):
+        if plot_grid[n]:
             im = ax.pcolormesh(mx, my, np.transpose(plot_data),
                                shading = "auto", cmap = cmaps[n], norm = norms[n],
                                edgecolor = (0., 0., 0., alpha_grid[n]),
@@ -1201,7 +1247,7 @@ for it in range(first_it, last_it + 1, out2D_every):
                                shading = "auto", cmap = cmaps[n], norm = norms[n])
 
         # Add a colorbar
-        if (add_clb[n]):
+        if add_clb[n]:
             clb = fig.colorbar(im, ax = ax, extend = clb_extends[n],
                                fraction = clb_fraction)
             clb.ax.set_title(varnames[n] + unit_gf_str, pad = clblabel_pad,
@@ -1243,8 +1289,8 @@ for it in range(first_it, last_it + 1, out2D_every):
 
         # Compute the min and max value in the plotted data if requested
         """
-        if (compute_min_max[n]):
-            if (abs_vals[n]):
+        if compute_min_max[n]:
+            if abs_vals[n]:
                 abs_data = np.absolute(patch_plot.data)
                 minval = abs_data.min()
                 maxval = abs_data.max()
@@ -1268,7 +1314,7 @@ for it in range(first_it, last_it + 1, out2D_every):
 
         # Zoom in/out if required and reset the plot range if necessary
         if (zooms[n] and it >= first_its_zoom[n]
-                     and it <  last_its_zoom[n]):
+                     and it <   last_its_zoom[n]):
             assert((it - first_its_zoom[n]) % out2D_every == 0)
             snapshot_index = int((it - first_its_zoom[n])/out2D_every)
             assert(snapshot_index >= 0 and snapshot_index < xsteps[n].shape[0]
@@ -1294,7 +1340,7 @@ for it in range(first_it, last_it + 1, out2D_every):
 
 
         # Plot the refinement level boundaries if desired
-        if (plot_reflevels[n]):
+        if plot_reflevels[n]:
             patch_contour = read_data[n](grid_functions[n], it,
                                          geom           = g,
                                          adjust_spacing = True,
@@ -1320,20 +1366,18 @@ for it in range(first_it, last_it + 1, out2D_every):
 
 
         # Reset the last valid iteration and the geometry if needed
-        if (there_are_iters_avail[n]):
+        if there_are_iters_avail[n]:
             last_valid_it[n] = it
             last_valid_g[n]  = g
 
 
     # Time and iteration info
-    """
     fig.text(it_pos[0], it_pos[1],
              "It = " + str(it),
              color      = "red",
              fontsize   = it_time_orb_fontsize,
              fontweight = it_time_orb_fontweight,
              fontstyle  = it_time_orb_fontstyle)
-    """
 
     time = np.max(times)
     t    = (t0 + time)*conv_fac_time
@@ -1345,7 +1389,7 @@ for it in range(first_it, last_it + 1, out2D_every):
              fontweight = it_time_orb_fontweight,
              fontstyle  = it_time_orb_fontstyle)
 
-    if (orb_count):
+    if orb_count:
         fig.text(orb_pos[0], orb_pos[1],
                  "#orb = " + str(int(np.floor(omega_over_2pi*t))),
                  color      = "red",

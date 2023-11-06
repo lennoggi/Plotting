@@ -18,36 +18,24 @@ set -e
 ######################### USER-DEFINED VARIABLES ###############################
 
 paths=(
-    "/home/lorenzo/Downloads/Comparisons/CBD_HydroDiskID_vs_handoff_Spinning_aligned08"
-    ##"/home/lorenzo/Downloads/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/smallb2_xy_smallb2_xz_MediumSaturated"
-    ##"/home/lorenzo/Downloads/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/rho_b_xy_rho_b_xz"
-    ##"/home/lorenzo/Downloads/Comparisons/CBD_handoff_IGM_McLachlan_Spinning_aligned08_vs_PlusMinus08"
-    ##
-    ##"/home/lorenzo/Downloads/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP_Frames"
-    ##"/home/lorenzo/Downloads/CBD_handoff_IGM_McLachlan_Spinning_aligned08_Frames"
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08/rho_b_xy_rho_b_xz_minidisk_disruption"
 )
 
 basenames=(
-    ##"smallb2_xy_smallb2_xz_"
-    ##"rho_b_xy_rho_b_xz_"
-    "rho_b_xy_rho_b_xy_"
-    ##
-    ##"rho_xz_"
-    ##"rho_b_xy_"
+    "rho_b_xy_rho_b_xz_"
 )
 
 
 extensions=(
     ".png"
-    ##".png"
 )
 
 durations=(
     ##0.03
-    0.04
+    0.1
 )
 
-list="/home/lorenzo/Downloads/ffmpeg_list.txt"
+list="/home1/07825/lennoggi/ffmpeg_list.txt"
 
 ################################################################################
 
