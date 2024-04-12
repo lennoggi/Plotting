@@ -56,15 +56,15 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 # ---------------------------------------------
 data_dirs = np.array([
     ##"/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08",
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08"
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large",
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large"
 ])
 
 
 # Directory where the plots will be placed
 # ----------------------------------------
 ##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-plots_dir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08/rho_b_xy_rho_b_xz_TEST"
+plots_dir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large/rho_b_xy_smallb2_xy"
 
 
 # Which grid functions to plot
@@ -72,7 +72,7 @@ plots_dir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08/rho_b_xy
 grid_functions = np.array([
     ##"rho"
     "rho_b",
-    "rho_b"
+    "smallb2"
 ])
 
 
@@ -88,7 +88,7 @@ input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
 planes = np.array([
     ##"xz"
     "xy",
-    "xz"
+    "xy"
 ])
 
 
@@ -104,7 +104,7 @@ abs_vals = np.array([
 # --------------------------------
 first_it    = 0
 last_it     = 1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 1024  ##400
+out2D_every = 256 ##1024  ##400
 t0          = 0.
 
 
@@ -138,8 +138,8 @@ compute_min_max = np.array([
 # ----------------------------------------------------------------
 plot_extents = np.array([
      ##np.array([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
-     np.array([-40., 40., -40., 40.]),
-     np.array([-40., 40., -40., 40.])
+     np.array([-10., 10., -10., 10.]),
+     np.array([-10., 10., -10., 10.])
 ])
 
 
@@ -165,10 +165,10 @@ nsubplots_y = 1
 # --------------------------
 ##figsize = [12., 10.]  # Single frame with colorbar on the right 
 ##dpi     = 200
-figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
-dpi     = 100
-##figsize = [24., 10.]  # Two frames with one colorbar each
+##figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
 ##dpi     = 100
+figsize = [24., 10.]  # Two frames with one colorbar each
+dpi     = 100
 ##figsize = [33., 10.]  # Three frames with one colorbar only (on the far right)
 ##dpi     = 100
 
@@ -222,8 +222,8 @@ N_AH_files = 2
 # ------------------------------------------------------------------------------
 AH_dirs = np.array([
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08/AH_data",
-    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08/AH_data"
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large/AH_data",
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large/AH_data"
 ])
 
 
@@ -300,7 +300,7 @@ add_clb = np.array([
 
 
 # Extent of the color scales (note that the actual scale may extend below
-# colorbar_extents[i][0] if logscale[i] = "yes" and symlogscale[i] 0 "yes")
+# colorbar_extents[i][0] if logscale[i] = True and symlogscale[i] = True)
 # -------------------------------------------------------------------------
 clb_extents = np.array([
     np.array([1.e-08, 3.e-02]),
@@ -935,7 +935,7 @@ for n in range(N_datasets):
             raise RuntimeError("Please set symlogscale[" + str(n) + "] to either 'True' or 'False'")
 
     elif logscale[n] == False:
-        if linscale_norm[n] == "yes":
+        if linscale_norm[n] == True:
             norms.append(colors.Normalize(vmin = clb_extents[n][0],
                                           vmax = clb_extents[n][1]))
         elif linscale_norm[n] == False:
@@ -1278,8 +1278,10 @@ for it in range(first_it, last_it + 1, out2D_every):
                         xhull   = AH_data[:, AHfile_cols1[n]][hull.vertices]
                         yhull   = AH_data[:, AHfile_cols2[n]][hull.vertices]
 
+                        ##ax.fill(xhull*conv_fac_space, yhull*conv_fac_space,
+                        ##        linewidth = 0., facecolor = "black")
                         ax.fill(xhull*conv_fac_space, yhull*conv_fac_space,
-                                linewidth = 0., facecolor = "black")
+                                linewidth = 1., facecolor = "None", edgecolor = "black")
 
                         print("Dataset " + str(n) + ": apparent horizon " + str(r) + " drawn from AH file " + str(r))
                     else:
