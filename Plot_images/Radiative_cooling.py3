@@ -2,11 +2,11 @@ from matplotlib import pyplot as plt
 from matplotlib import figure
 
 # ***** User-defined parameters *****
-sep        = 0.6 ##0.6 ##0.85 ##5.
+sep        = 0.67 ##0.6 ##0.85 ##5.
 xAH        = 0.5*sep
 r_minidisk = 0.45*sep
 r_cavity   = 1.5*sep
-r_max      = 1.8*sep ##1.8*0.85 ##1.8*sep  ##10.8
+r_max      = 2.3*sep ##1.8*sep ##1.8*0.85 ##1.8*sep  ##10.8
 
 merger_sep = 0.7
 
@@ -30,18 +30,16 @@ plt.fill(xcoords, ycoords, "dodgerblue")
 if sep <= merger_sep:
     print("Merger")
     ax.add_artist(plt.Circle((  0., 0.), rcool_max_merger, linestyle = "",   fill = True,  color = "darkorange"))
-    ax.add_artist(plt.Circle(( xAH, 0.), rcool_min_merger, linestyle = "",   fill = True,  color = "black"))
-    ax.add_artist(plt.Circle((-xAH, 0.), rcool_min_merger, linestyle = "",   fill = True,  color = "black"))
+    ax.add_artist(plt.Circle(( xAH, 0.), rcool_max_merger, linestyle = "",   fill = True,  color = "darkorange"))
+    ax.add_artist(plt.Circle((-xAH, 0.), rcool_max_merger, linestyle = "",   fill = True,  color = "darkorange"))
+    ax.add_artist(plt.Circle((  0., 0.), rcool_max_merger, linestyle = "--", fill = False, color = "royalblue"))
     ax.add_artist(plt.Circle((  0., 0.), rcool_min_merger, linestyle = "",   fill = True,  color = "black"))
-    ##ax.add_artist(plt.Circle(( xAH, 0.), rcool_min_merger, linestyle = "--", fill = False, color = "white"))
-    ##ax.add_artist(plt.Circle((-xAH, 0.), rcool_min_merger, linestyle = "--", fill = False, color = "white"))
-    ax.add_artist(plt.Circle((  0., 0.), rcool_min_merger, linestyle = "--", fill = False, color = "white"))
     plt.hlines(0.,                     0., rcool_min_merger, linestyle = "-",  linewidth = 1.5, color = "white")
-    plt.hlines(-0.02*rcool_min_merger, 0., rcool_max_merger, linestyle = "-",  linewidth = 1.5, color = "dodgerblue")
-    plt.text(0.32*rcool_min_merger, 0.05*rcool_min_merger, "0.45", fontsize = 8.,  fontweight = "bold", color = "white")
-    plt.text(0.65*rcool_min_merger, 0.05*rcool_min_merger, "M",    fontsize = 8.,  fontweight = "bold", color = "white")
-    plt.text(1.08*rcool_min_merger, -0.2*rcool_min_merger, "1",    fontsize = 8.,  fontweight = "bold", color = "dodgerblue")
-    plt.text(1.18*rcool_min_merger, -0.2*rcool_min_merger, "M",    fontsize = 8.,  fontweight = "bold", color = "dodgerblue")
+    plt.hlines(-0.02*rcool_min_merger, 0., rcool_max_merger, linestyle = "-",  linewidth = 1.5, color = "royalblue")
+    plt.text(0.23*rcool_min_merger, 0.05*rcool_min_merger, "0.45", fontsize = 8.,  fontweight = "bold", color = "white")
+    plt.text(0.7*rcool_min_merger,  0.05*rcool_min_merger, "M",    fontsize = 8.,  fontweight = "bold", color = "white")
+    plt.text(1.08*rcool_min_merger, -0.2*rcool_min_merger, "1",    fontsize = 8.,  fontweight = "bold", color = "royalblue")
+    plt.text(1.22*rcool_min_merger, -0.2*rcool_min_merger, "M",    fontsize = 8.,  fontweight = "bold", color = "royalblue")
 else:
     print("Inspiral")
     ax.add_artist(plt.Circle((  0., 0.), r_cavity,           linestyle = "", fill = True, color = "paleturquoise"))
