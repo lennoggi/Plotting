@@ -2,7 +2,7 @@
 # This script plots the coordinate separation between two objects (e.g. two
 # punctures)
 # NOTE: typically, you'll need the object's location data from all restarts of
-#       the simulation, and you can use Plot_ASCII_Merge.py3 for that
+#       the simulation, and you can use Plot_ASCII_merge.py3 for that
 # ============================================================================
 
 import numpy as np
@@ -11,73 +11,68 @@ from matplotlib import pyplot as plt
 
 ######################### USER-DEFINED PARAMETERS ##############################
 
-filenames_x1 = np.array([
-    "/home1/07825/lennoggi/pt_loc_x[0].asc",
-    "/home1/07825/lennoggi/pt_loc_x[0]_old.asc"
-])
+filenames_x1 = (
+    "pt_loc_x[0].asc"
+##    "pt_loc_x[0]_old.asc"
+)
 
-filenames_y1 = np.array([
-    "/home1/07825/lennoggi/pt_loc_y[0].asc",
-    "/home1/07825/lennoggi/pt_loc_y[0]_old.asc"
-])
+filenames_y1 = (
+    "pt_loc_y[0].asc"
+##    "pt_loc_y[0]_old.asc"
+)
 
-filenames_z1 = np.array([
-    "/home1/07825/lennoggi/pt_loc_z[0].asc",
-    "/home1/07825/lennoggi/pt_loc_z[0]_old.asc"
-])
-
-
-filenames_x2 = np.array([
-    "/home1/07825/lennoggi/pt_loc_x[1].asc",
-    "/home1/07825/lennoggi/pt_loc_x[1]_old.asc"
-])
-
-filenames_y2 = np.array([
-    "/home1/07825/lennoggi/pt_loc_y[1].asc",
-    "/home1/07825/lennoggi/pt_loc_y[1]_old.asc"
-])
-
-filenames_z2 = np.array([
-    "/home1/07825/lennoggi/pt_loc_z[1].asc",
-    "/home1/07825/lennoggi/pt_loc_z[1]_old.asc"
-])
+filenames_z1 = (
+    "pt_loc_z[0].asc"
+##    "pt_loc_z[0]_old.asc"
+)
 
 
-t_cols     = np.array([0, 0])
-coord_cols = np.array([1, 1])
+filenames_x2 = (
+    "pt_loc_x[1].asc"
+##    "pt_loc_x[1]_old.asc"
+)
 
-colors = np.array(["dodgerblue", "red"])
+filenames_y2 = (
+    "pt_loc_y[1].asc"
+##    "pt_loc_y[1]_old.asc"
+)
 
-labels = np.array([
-    "New",
-    "Old, eccentric, outspiralling"
-])
+filenames_z2 = (
+    "pt_loc_z[1].asc"
+##    "pt_loc_z[1]_old.asc"
+)
 
-plot_title = "++0.8 45 deg, large CBD"
-plot_path  = "/home1/07825/lennoggi/Coordinate_separation_pp45deg_large.pdf"
+
+t_cols     = (8, 8)
+coord_cols = (12, 12)
+
+colors = ("dodgerblue") ##, "red")
+
+labels = (
+    "New" ##, "Old"
+)
+
+figname = "Coordinate_separation.pdf"
 
 ################################################################################
 
 
 N = len(filenames_x1)
-assert(N > 0)
+assert N > 0
 
-assert(len(filenames_y1) == N)
-assert(len(filenames_z1) == N)
-assert(len(filenames_x2) == N)
-assert(len(filenames_y2) == N)
-assert(len(filenames_z2) == N)
+assert len(filenames_y1) == N
+assert len(filenames_z1) == N
+assert len(filenames_x2) == N
+assert len(filenames_y2) == N
+assert len(filenames_z2) == N
 
-assert(len(colors) == N)
-assert(len(labels) == N)
+assert len(colors) == N
+assert len(labels) == N
 
 
 plt.figure()
-plt.title(plot_title, fontsize = 15., fontweight = "bold",
-          fontstyle = "normal", fontname = "Ubuntu", color = "midnightblue")
-plt.xlabel("$t\,\left[M\\right]$")
-##plt.xlabel("$t\,\left[ms\\right]$")
-plt.ylabel("Coordinate separation $\left[M\\right]$")
+plt.xlabel("$t\,\left[M\\right]$", fontsize = 12.)
+plt.ylabel("$a\,\left[M\\right]$", fontsize = 12.)
 
 for n in range(N):
     data_x1 = np.loadtxt(filenames_x1[n])
@@ -112,14 +107,13 @@ for n in range(N):
 
     sep = np.sqrt(sep_x*sep_x + sep_y*sep_y + sep_z*sep_z)
 
-    plt.plot(t, sep,
-    ##plt.plot(t*4.9257949707731345e-03, sep,
-             linestyle = "-", marker = ".", markersize = 3.,
-             color = colors[n], label = labels[n])
+    plt.grid(linestyle = "--", linewidth = 0.5, alpha = 0.5)
 
-plt.legend()
+    plt.plot(t, sep, linestyle = "-", linewidth = 1., marker = "", color = colors[n], label = labels[n])
+
+##plt.legend()
 plt.tight_layout()
-plt.savefig(plot_path)
+plt.savefig(figname)
 plt.close()
 
-print("Plot saved as '" + plot_path + "'")
+print("Plot saved as '" + figname + "'")
