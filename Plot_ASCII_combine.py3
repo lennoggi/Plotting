@@ -2,70 +2,69 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-######################### USER-DEFINED PARAMETERS ##############################
+# ************************* USER-DEFINED PARAMETERS ****************************
 
-filename1 = "/home1/07825/lennoggi/qlm_spin[0].asc"
-filename2 = "/home1/07825/lennoggi/qlm_mass[0].asc"
+filename1 = "/scratch3/07825/lennoggi/BBH_analysis/CactusVolumeIntegrals/CactusVolumeIntegrals_run_NonSpinning_large_TaperedCooling_r15/Volume_integrals.asc"
+filename2 = "/scratch3/07825/lennoggi/BBH_analysis/CactusAnalysis/CactusAnalysis_run_NonSpinning_large_TaperedCooling_r15/Surface_integrals.asc"
 
 # Supported operations:
-# 1: a + b
-# 2: a - b
-# 3: a*b
-# 4: a/b
-# 5: a/(b*b)
-operation = 5
+# "sum":       a + b
+# "sub":       a - b
+# "mult":      a*b
+# "ratio":     a/b
+# "ratio2":    a/(b*b)
+# "ratiosqrt": a/sqrt(b)
+operation = "ratio"
 
-t_col  = 0
-ft_col = 1
+tcols     = (1, 1)
+fcols     = (7, 3)
+negatives = (False, True)  # Use the negative data? Useful e.g. with the accretion rate
 
-plot_title    = "++0.8 run, apparent horizon 0"
-my_ylabel     = "$\chi$"
-plot_fullpath = "/home1/07825/lennoggi/qlm_dimensionless_spin[0]_pp08.pdf"
+ylabel  = "$\\frac{L_{EM}}{\dot{M}}$"
+figname = "EM_efficiency_NonSpinning_large_TaperedCooling_r15.pdf"
 
-################################################################################
+# ******************************************************************************
 
 
+# Data loading and sanity checks
 data1 = np.loadtxt(filename1)
 data2 = np.loadtxt(filename2)
+assert data1.shape[0] == data2.shape[0]
 
-assert(len(data1) == len(data2))
+t  = data1[:, tcols[0]]
+t2 = data2[:, tcols[1]]
+assert np.array_equal(t2, t)
 
-t  = data1[:, 0]
-f1 = data1[:, 1]
-f2 = data2[:, 1]
-
-N = len(t)
-
-for n in range(N):
-    assert(data2[n, 0] == t[n])
-
-assert(len(f1) == N)
-assert(len(f2) == N)
+f1 = -data1[:, fcols[0]] if negatives[0] else data1[:, fcols[0]]
+f2 = -data2[:, fcols[1]] if negatives[1] else data2[:, fcols[1]]
 
 
-if operation == 1:
-    ftot = f1 + f2
-elif operation == 2:
-    ftot = f1 - f2
-elif operation == 3:
-    ftot = f1*f2
-elif operation == 4:
-    ftot = f1/f2
-elif operation == 5:
-    ftot = f1/(f2*f2)
-else:
-    raise RuntimeError("Invalid operation '" + operation + "'")
+# Combine the data
+if   operation == "sum":       ftot = f1 + f2
+elif operation == "sub":       ftot = f1 - f2
+elif operation == "mult":      ftot = f1*f2
+elif operation == "ratio":     ftot = f1/f2
+elif operation == "ratio2":    ftot = f1/(f2*f2)
+elif operation == "ratiosqrt": ftot = f1/np.sqrt(f2)
+else: raise RuntimeError("Invalid operation '" + operation + "'")
 
-
-plt.figure()
-plt.title(plot_title, fontsize = 15., fontweight = "bold",
-          fontstyle = "normal", fontname = "Ubuntu", color = "midnightblue")
-plt.xlabel("$t\,\left[M\\right]$")
-##plt.xlabel("$t\,\left[ms\\right]$")
-plt.ylabel(my_ylabel)
-plt.plot(t, ftot,
-##plt.plot(t*4.9257949707731345e-03, ft,
-         linestyle = "-", marker = ".", markersize = 3., color = "dodgerblue")
+# Plot
+fig = plt.figure(figsize = [10., 4.])
+plt.xlabel("$t\,\left[M\\right]$", fontsize = 12.)
+plt.ylabel(ylabel, fontsize = 12.)
+plt.grid(linestyle = "--", linewidth = 0.5, alpha = 0.5)
+plt.ylim(1.e-02, 6.)
+plt.yscale("log")
+plt.axvline(12079., linestyle = "--", linewidth = 1., color = "black")
+bbox_props  = dict(boxstyle = "round", linewidth = 1.,
+                   ##facecolor = "powderblue", edgecolor = "midnightblue")
+                   facecolor = "powderblue", edgecolor = "midnightblue", alpha = 0.5)
+plt.text(0.785, 0.88, "Merger", fontsize = 10., fontweight = "bold",
+         fontstyle = "normal", fontfamily = "Ubuntu", color = "midnightblue",
+         multialignment = "center", bbox = bbox_props, transform = fig.gca().transAxes)
+plt.plot(t, ftot, linestyle = "-", linewidth = 1., marker = "", color = "mediumslateblue")
 plt.tight_layout()
-plt.savefig(plot_fullpath)
+plt.savefig(figname)
 plt.close()
+
+print("Plot saved as '" + figname + "'")
