@@ -45,56 +45,63 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 
 
 
+# ==========
+# Parameters
+# ==========
 
-######################### USER-DEFINED PARAMETERS ##############################
-
-# **********************
-# *  General settings  *
-# **********************
+# ----------------
+# General settings
+# ----------------
 
 # Directories containing the files to be opened
-# ---------------------------------------------
-data_dirs = (
-    ##"/lagoon/bbhdisk/CBD_SphericalNR/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
+datadirs = (
+    ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
     ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling",
     ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling"
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/output-0020/HDF5_2D",
     "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/output-0020/HDF5_2D"
 )
 
+# Simulation restarts to be skipped (set to 'None' to go over all of them)
+skip_restarts = None
+##skip_restarts = (
+##    {"output-0003", "output-0019", "output-0020"},
+##    {"output-0003", "output-0019", "output-0020"}
+##)
 
 # Directory where the plots will be placed
-# ----------------------------------------
-##plots_dir = "/lagoon/lennoggi/Snapshots/CBD_493_140_280_SerialFFTfilter_64nodes_7OMP"
-plots_dir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/rho_b_xy_smallb2_xy_ZoomIn_Merger"
+##plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
+plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/rho_b_xy_rho_b_xz_Bstream"
 
 
-# Which grid functions to plot
-# ----------------------------
-grid_functions = (
-    ##"rho"
+# Which grid functions to plot as field variables
+gfs = (
+    ##"rho",
     "rho_b",
-    "smallb2"
+    "rho_b"
 )
 
+# Which grid functions to plot as stream variables, i.e. integral curves of a
+# vector field ('None' plots nothing)
+##gfs_stream = None
+gfs_stream = (
+    ("Bx", "By"),
+    ("Bx", "Bz")
+)
 
 # Input coordinates
-# -----------------
 input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
 
-
 # Which 2D slices to plot
-# Cartesian      coordinates: xy, xz or yz plane
-# Spherical-like coordinates: r-theta, r-phi or theta-phi plane
-# -------------------------------------------------------------
+#   - Cartesian      coordinates: xy, xz or yz plane
+#   - Spherical-like coordinates: r-theta, r-phi or theta-phi plane
 planes = (
-    ##"xz"
+    ##"xz",
     "xy",
-    "xy"
+    "xz"
 )
 
-
 # Plot absolute values?
-# ---------------------
 abs_vals = (
     False,
     False
@@ -102,24 +109,19 @@ abs_vals = (
 
 
 # Iterations and initial time info
-# --------------------------------
-first_it    = 1512448 ##422912 ##1677312 ##1473536 ##422912 ##0
-last_it     = 100000000 ##422912 ##1677312 ##1473536 ##422912 ##1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 1024  ##400
+first_it    = 1517568 ##0
+last_it     = 1000000000  # Set this to a huge number to plot all iterations
+out2D_every = 1024 ##400
 t0          = 0.
 
-
 # Binary orbit counting
-# ---------------------
 orb_count = False
 omega     = 1.049229e-02
-
 
 # FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
 # Do you want to find the max and min in the data for every available
 # iteration?
 # NOTE: this may take some time
-# -------------------------------------------------------------------
 compute_min_max = (
     False,
     False
@@ -128,42 +130,37 @@ compute_min_max = (
 
 
 
-
-
-# ********************************
-# *  Figure and layout settings  *
-# ********************************
+# --------------------------
+# Figure and layout settings
+# --------------------------
 
 # Plot extent **IN NUMERICAL COORDINATES**; provide it as
-# [xmin, xmax, ymin, ymax]. Used to build the PostCactus geometry.
-# ----------------------------------------------------------------
-plot_extents = (
-     ##([np.log(15.1), np.log(2000.), 0., 2.*np.pi])
-     (-10., 10., -10., 10.),
-     (-10., 10., -10., 10.)
-)
-
+# (xmin, xmax, ymin, ymax). Used to build the PostCactus geometry.
+# NOTE: np.array needed to facilitate slicing
+plot_extents = np.array([
+     ##np.array([np.log(15.1), np.log(60.),  0., 2.*np.pi]),  #  40*sqrt(2) = 56.5685424949, 60 > 56.5685424949
+     np.array([-40.,  40.,  -40.,  40.]),
+     np.array([-40.,  40.,  -40.,  40.])
+     ##np.array([-200., 200., -200., 200.])
+])
 
 # Actual plot extent if the input coordinates are not Cartesian, i.e., what you
 # will actually see in the snapshot(s)
 # NOTE: set to None if you want to keep the original grid dimensions when using
 #       non-Cartesian coordinate systems
 # NOTE: used as the starting plot extent if 'zoom' (see below) is True
-actual_plot_extents = None 
-##actual_plot_extents = (
-    ##(-300., 300., -300., 300.])
-    ##(-2010., 2010., -2010., 2010.])
-    ##(-40., 40., -40., 40.])
-##])
-
+##actual_plot_extents = None
+actual_plot_extents = (
+    (-40.,  40.,  -40.,  40.),
+    (-40.,  40.,  -40.,  40.)
+    ##(-200., 200., -200., 200.)
+)
 
 # Subplots layout
-# ---------------
-nsubplots_x = 2
+nsubplots_x = 2 ##1
 nsubplots_y = 1
 
 # Figure size and resolution
-# --------------------------
 ##figsize = [12., 10.]  # Single frame with colorbar on the right 
 ##dpi     = 200
 ##figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
@@ -174,20 +171,16 @@ dpi     = 100
 ##dpi     = 100
 
 # File extension for the plots
-# ----------------------------
-fig_ext = ".png"
-##fig_ext = ".jpg"
+fig_ext = ".png" ##".jpg"
 
-
-# Limit resolution (to save memory and time)?
-# -------------------------------------------
+# Limit resolution (saves memory and time)?
 limit_resolution = (
     False,
     False
+    ##True
 )
 
 # Resolution to be used if limit_resolution is True
-# -------------------------------------------------
 resolution = (
     0.125,
     0.125
@@ -195,23 +188,18 @@ resolution = (
 
 
 
-
-
-# *******************************
-# *  Apparent horizon settings  *
-# *******************************
+# -------------------------
+# Apparent horizon settings
+# -------------------------
 
 # Draw the apparent horizon(s)?
-# -----------------------------
 draw_AH = (
     True,
     True
 )
 
-
 # How many AH files there are per iteration, i.e. the maximum value of
 # 'AH_number' in 'h.t<iteration>.ah<AH_number>'
-# --------------------------------------------------------------------
 N_AH_files = 2
 
 
@@ -221,42 +209,34 @@ N_AH_files = 2
 # a directory containing as many subdirectories as there are simulation
 # restarts; each subdirectory should be a symlink to the actual directory
 # containing all the AH files for the corresponding simulation restart.
-# ------------------------------------------------------------------------------
 AH_dirs = (
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
     "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/AH_data",
-    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/AH_data"
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/AH_data",
 )
 
 
 
-
-
-# ********************
-# *  Scale settings  *
-# ********************
+# --------------
+# Scale settings
+# --------------
 
 # Use a logarithmic scale?
-# ------------------------
 logscale = (
     True,
     True
 )
 
-
 # Use a symmetric logarithmic scale? I.e., if a logarithmic scale is in use and
 # data values extend down to zero, then a linear scale is used from zero to the
 # desired minimum in the colorbar (see below)
-# -----------------------------------------------------------------------------
 symlogscale = (
     False,
     False
 )
 
-
 # If a linear color scale is in use (i.e. if 'logscale' is false), normalize it
 # between 0 and 1?
-# -----------------------------------------------------------------------------
 linscale_norm = (
     True,
     True
@@ -264,71 +244,54 @@ linscale_norm = (
 
 
 
-
-
-# *****************
-# *  Plot setup  *
-# *****************
+# ----------
+# Plot setup
+# ----------
 
 # Units
-# -----
-# 1 solar mass time     = 4.9257949707731345e-03 ms
-# 1 solar mass distance = 1.4767161818921162 km
+#   - 1 solar mass time     = 4.9257949707731345e-03 ms
+#   - 1 solar mass distance = 1.4767161818921162 km
 units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 
-
 # Names of the variables to be put close to the colorbar
-# ------------------------------------------------------
 varnames = (
     "$\\rho$",
-    "$b^2$"
+    "$\\rho$"
 )
 
-
 # Titles for each subplot
-# -----------------------
 titles = (
     "",
     ""
 )
 
-
 # Add colorbar(s)?
-# ----------------
 add_clb = (
     True,
     True
 )
 
-
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = True and symlogscale[i] = True)
-# -------------------------------------------------------------------------
 clb_extents = (
     (1.e-08, 3.e-02),
-    (1.e-12, 3.e-02)
+    (1.e-12, 3.e-02),
 )
-
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
 # "both")
-# -------------------------------------------------------------------------
 clb_extends = (
-    "both", ##"max",
-    "both"  ##"max"
+    "both",
+    "both"
 )
 
-
 # Colormap
-# --------
 cmaps = (
     "plasma",
     "plasma"
 )
 
-
 # Title options
-# -------------
 titlecolor       = "midnightblue"
 titlepad         = 1.02
 title_fontsize   = 35.
@@ -337,14 +300,12 @@ title_fontstyle  = "normal"
 title_fontname   = "Ubuntu"
 
 # Labels options
-# --------------
 labelsize  = 25.
 labelpad_x = 3.
 labelpad_y = -5.
 ticksize   = 20.
 
 # Colorbar label options
-# ----------------------
 clb_ticksize        = 20.
 clblabel_pad        = 40. ##8.
 clb_fraction        = 0.05
@@ -353,10 +314,9 @@ clblabel_fontweight = "bold"
 clblabel_fontstyle  = "normal"
 
 # Iteration, time and orbits strings options
-# ------------------------------------------
 it_pos                 = (0.35, 0.015)
-time_pos               = (0.6,  0.015)
-##time_pos               = (0.45, 0.015)
+##time_pos               = (0.6,  0.015)
+time_pos               = (0.45, 0.015)
 orb_pos                = (0.12, 0.015)
 it_time_orb_fontsize   = 20.
 ##it_time_orb_fontsize   = 25.
@@ -365,32 +325,24 @@ it_time_orb_fontstyle  = "normal"
 
 
 
-
-
-# *****************************
-# *  Dynamic zooming options  *
-# *****************************
+# -----------------------
+# Dynamic zooming options
+# -----------------------
 
 # Zoom in/out as time goes?
-# -------------------------
 zooms = (
     False,
     False
 )
 
-
 # If zooming in/out, set the actual plot extents at the final time here
-# ---------------------------------------------------------------------
 actual_plot_extents_end = (
-    ##(-2010., 2010., -2010., 2010.)
-    ##(-300., 300., -300., 300.)
-    ##(-40., 40., -40., 40.)
+    (-40.,  40.,  -40.,  40.),
     (-200., 200., -200., 200.)
-])
+)
 
 
 # Iterations at which zooming in/out should begin/end
-# -------------------------------------------------------
 first_its_zoom = (
     0,
     0
@@ -403,24 +355,19 @@ last_its_zoom = (
 
 
 
-
-
-# ************************************************
-# *  Dynamic grid plotting (pcolormesh) options  *
-# ************************************************
+# ------------------------------------------
+# Dynamic grid plotting (pcolormesh) options
+# ------------------------------------------
 
 # Plot the grid using the 'edgecolor' option in np.pcolormesh?
 # NOTE: this works best on uniform grids, as it shows the full
 #       mesh and not just the refinement level boundaries
-# ------------------------------------------------------------
 plot_grid = (
     False,
     False
 )
 
-
 # If plot_grid is true, do you want the grid to gradually fade in/out?
-# --------------------------------------------------------------------
 vary_grid_transparency = (
     False,
     False
@@ -428,7 +375,6 @@ vary_grid_transparency = (
 
 
 # Iterations at which the change in grid transparency should begin/end
-# --------------------------------------------------------------------
 first_its_alpha_grid = (
     0,
     0
@@ -441,7 +387,6 @@ last_its_alpha_grid = (
 
 
 # Grid transparency values at the beginning/end
-# ---------------------------------------------
 alpha_grid_init = (
     0.,
     0.
@@ -454,23 +399,18 @@ alpha_grid_end = (
 
 
 
-
-
-# ***********************************************************************
-# *  Dynamic refinement level boundaries plotting (PostCactus) options  *
-# ***********************************************************************
+# -----------------------------------------------------------------
+# Dynamic refinement level boundaries plotting (PostCactus) options
+# -----------------------------------------------------------------
 
 # Plot refinement level boundaries?
-# ---------------------------------
 plot_reflevels = (
     False,
     False
 )
 
-
 # If plot_reflevels is true, do you want the refinement level boundaries to
 # gradually fade in/out?
-# -------------------------------------------------------------------------
 vary_reflevels_transparency = (
     False,
     False
@@ -479,7 +419,6 @@ vary_reflevels_transparency = (
 
 # Iterations at which the change in refinement levels transparency should
 # begin/end
-# -----------------------------------------------------------------------
 first_its_alpha_reflevels = (
     0,
     0
@@ -492,7 +431,6 @@ last_its_alpha_reflevels = (
 
 
 # Refinement levels transparency at the beginning/end
-# ---------------------------------------------------
 alpha_reflevels_init = (
     1.,
     1.
@@ -507,36 +445,38 @@ alpha_reflevels_end = (
 # Range of refinement levels boundaries to be plotted
 # NOTE: the minimum must be no smaller than 0, and you can set the maximum to
 #       some high value to plot all reflevel boundaries
-# ---------------------------------------------------------------------------
 reflevel_ranges = (
     (0, 20),
     (0, 20)
 )
 
-################################################################################
+# ***** End parameters *****
 
 
 
 
 
+# =============
+# Sanity checks
+# =============
 
+nplots = len(datadirs)
 
+if skip_restarts is not None: assert len(skip_restarts) == nplots
 
-
-
-######################### CODE SELF-PROTECTION #################################
-
-N_datasets = len(data_dirs)
-
-assert len(grid_functions) == N_datasets
+assert len(gfs) == nplots
+if gfs_stream is not None:
+    assert len(gfs_stream) == nplots
+    for gf_stream in gfs_stream:
+        assert len(gf_stream) == 2
 
 assert input_coords == "Cartesian" or input_coords == "Exponential fisheye"
 
-assert len(planes) == N_datasets
+assert len(planes) == nplots
 for plane in planes:
     assert plane == "xy" or plane == "xz" or plane == "yz"
 
-assert len(abs_vals) == N_datasets
+assert len(abs_vals) == nplots
 for abs_val in abs_vals:
     assert abs_val or not abs_val
 
@@ -547,18 +487,18 @@ assert out2D_every >= 0
 assert orb_count or not orb_count
 assert omega > 0.
 
-assert len(compute_min_max) == N_datasets
+assert len(compute_min_max) == nplots
 for comp in compute_min_max:
     assert comp or not comp
 
 
-assert len(plot_extents) == N_datasets
+assert len(plot_extents) == nplots
 for plot_extent in plot_extents:
-    assert len(plot_extent == 4)
+    assert len(plot_extent) == 4
     assert plot_extent[1] > plot_extent[0]
     assert plot_extent[3] > plot_extent[2]
 
-assert actual_plot_extents is None or len(actual_plot_extents) == N_datasets
+assert actual_plot_extents is None or len(actual_plot_extents) == nplots
 
 if actual_plot_extents is not None:
     for actual_plot_extent in actual_plot_extents:
@@ -569,63 +509,63 @@ if actual_plot_extents is not None:
 
 assert nsubplots_x > 0
 assert nsubplots_y > 0
-assert nsubplots_x*nsubplots_y == N_datasets
+assert nsubplots_x*nsubplots_y == nplots
 
 assert len(figsize) == 2
 assert dpi > 0
 
 
-assert len(limit_resolution == N_datasets)
+assert len(limit_resolution) == nplots
 for limit in limit_resolution:
     assert limit or not limit
 
-assert len(resolution == N_datasets)
+assert len(resolution) == nplots
 for res in resolution:
     assert res > 0.
 
 
-assert len(draw_AH) == N_datasets
+assert len(draw_AH) == nplots
 for draw in draw_AH:
     assert draw or not draw
 
 assert N_AH_files > 0
-assert len(AH_dirs) == N_datasets
+assert len(AH_dirs) == nplots
 
 
-assert len(logscale) == N_datasets
+assert len(logscale) == nplots
 for log in logscale:
     assert log or not log
 
-assert len(symlogscale) == N_datasets
+assert len(symlogscale) == nplots
 for symlog in symlogscale:
     assert symlog or not symlog
 
-assert len(linscale_norm) == N_datasets
+assert len(linscale_norm) == nplots
 for lin in linscale_norm:
     assert lin or not lin
 
 
 assert units == "arbitrary" or units == "geometric" or units == "SI"
 
-assert len(varnames) == N_datasets
-assert len(titles) == N_datasets
+assert len(varnames) == nplots
+assert len(titles)   == nplots
 
 
-assert len(add_clb) == N_datasets
+assert len(add_clb) == nplots
 for aclb in add_clb:
     assert aclb or not aclb
 
-assert len(clb_extents) == N_datasets
+assert len(clb_extents) == nplots
 for clb_extt in clb_extents:
     assert len(clb_extt) == 2
     assert clb_extt[1] > clb_extt[0]
 
-assert len(clb_extends) == N_datasets
+assert len(clb_extends) == nplots
 for clb_extd in clb_extends:
     assert clb_extd == "min" or clb_extd == "max" or clb_extd == "both"
 
 
-assert len(cmaps) == N_datasets
+assert len(cmaps) == nplots
 
 assert title_fontsize    > 0.
 assert labelsize         > 0.
@@ -634,114 +574,110 @@ assert clb_ticksize      > 0.
 assert clb_fraction      > 0.
 assert clblabel_fontsize > 0.
 
-assert len(it_pos   == 2)
-assert len(time_pos == 2)
-assert len(orb_pos  == 2)
+assert len(it_pos)   == 2
+assert len(time_pos) == 2
+assert len(orb_pos)  == 2
 assert it_time_orb_fontsize > 0.
 
 
-assert len(zooms) == N_datasets
+assert len(zooms) == nplots
 for zm in zooms:
     assert zm or not zm
 
-assert len(actual_plot_extents_end) == N_datasets
+assert len(actual_plot_extents_end) == nplots
 for actual_plot_extent_end in actual_plot_extents_end:
-    assert len(actual_plot_extent_end == 4)
+    assert len(actual_plot_extent_end) == 4
     assert actual_plot_extent_end[1] > actual_plot_extent_end[0]
     assert actual_plot_extent_end[3] > actual_plot_extent_end[2]
 
-assert len(first_its_zoom) == N_datasets
-for i in range(N_datasets):
+assert len(first_its_zoom) == nplots
+for i in range(nplots):
     if zooms[i]:
         assert firsts_it_zoom[i] >= first_it
 
-assert len(last_its_zoom) == N_datasets
-for i in range(N_datasets):
+assert len(last_its_zoom) == nplots
+for i in range(nplots):
     if zooms[i]:
         assert last_its_zoom[i] <= last_it
 
 
-assert len(plot_grid) == N_datasets
+assert len(plot_grid) == nplots
 for pg in plot_grid:
     assert pg or not pg
 
-assert len(vary_grid_transparency) == N_datasets
+assert len(vary_grid_transparency) == nplots
 for vgt in vary_grid_transparency:
     assert vgt or not vgt
 
-assert len(first_its_alpha_grid) == N_datasets
-for i in range(N_datasets):
+assert len(first_its_alpha_grid) == nplots
+for i in range(nplots):
     if plot_grid[i] and vary_grid_transparency[i]:
         assert first_its_alpha_grid[i] >= first_it
 
-assert len(last_its_alpha_grid) == N_datasets
-for i in range(N_datasets):
+assert len(last_its_alpha_grid) == nplots
+for i in range(nplots):
     if plot_grid[i] and vary_grid_transparency[i]:
         assert last_it_alpha_grid <= last_it
 
-assert len(alpha_grid_init) == N_datasets
+assert len(alpha_grid_init) == nplots
 for agi in alpha_grid_init:
     assert agi >= 0.
 
-assert len(alpha_grid_end) == N_datasets
+assert len(alpha_grid_end) == nplots
 for age in alpha_grid_end:
     assert age >= 0.
 
 
-assert len(plot_reflevels) == N_datasets
+assert len(plot_reflevels) == nplots
 for plot_rlvl in plot_reflevels:
     assert plot_rlvl or not plot_rlvl
 
-assert len(vary_reflevels_transparency) == N_datasets
+assert len(vary_reflevels_transparency) == nplots
 for vrt in vary_reflevels_transparency:
     assert vrt or not vrt
 
-assert len(first_its_alpha_reflevels) == N_datasets
-for i in range(N_datasets):
+assert len(first_its_alpha_reflevels) == nplots
+for i in range(nplots):
     if plot_reflevels[i] and vary_reflevels_transparency[i]:
         assert first_its_alpha_reflevels[i] >= first_it
 
-assert len(last_its_alpha_reflevels) == N_datasets
-for i in range(N_datasets):
+assert len(last_its_alpha_reflevels) == nplots
+for i in range(nplots):
     if plot_reflevels[i] and vary_reflevels_transparency[i]:
         assert last_its_alpha_reflevels[i] <= last_it
 
-assert len(alpha_reflevels_init) == N_datasets
+assert len(alpha_reflevels_init) == nplots
 for ari in alpha_reflevels_init:
     assert ari >= 0.
 
-assert len(alpha_reflevels_end) == N_datasets
+assert len(alpha_reflevels_end) == nplots
 for are in alpha_reflevels_end:
     assert are >= 0.
 
-assert len(reflevel_ranges) == N_datasets
+assert len(reflevel_ranges) == nplots
 for rr in reflevel_ranges:
     assert len(rr) == 2
     assert rr[1] >= rr[0]
 
-################################################################################
+# ***** End sanity checks *****
 
 
 
 
 
-
-
-
-
-
-############################## UNITS SETUP #####################################
+# ===========
+# Units setup
+# ===========
 
 if units == "arbitrary":
     conv_fac_time  = 1.
-    unit_time_str  = "$\mathbf{M}$"
-
     conv_fac_space = 1.
+    unit_time_str  = "$\mathbf{M}$"
     unit_space_str = "[$\mathbf{M}$]"
 
     # TODO: add other potentially useful conversion factors
-    for gf in grid_functions:
-        if gf == "rho"   or gf == "rho_b":
+    for gf in gfs:
+        if gf == "rho" or gf == "rho_b":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M}^{-2}\\right]$"
         elif gf == "press" or gf == "P":
@@ -750,7 +686,7 @@ if units == "arbitrary":
         elif gf == "eps":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M}\\right]$"
-        elif gf == "smallb2" or gf == "b2small" or gf == "B_norm":
+        elif gf == "smallb2" or gf == "b2small" or gf == "bcom_sq":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M}^{-1}\\right]$"
         else:
@@ -761,14 +697,13 @@ if units == "arbitrary":
 
 elif units == "geometric":
     conv_fac_time  = 1.
-    unit_time_str  = "$\mathbf{M_{\\odot}}$"
-
     conv_fac_space = 1.
+    unit_time_str  = "$\mathbf{M_{\\odot}}$"
     unit_space_str = "[$\mathbf{M_{\\odot}}$]"
 
     # TODO: add other potentially useful conversion factors
-    for gf in grid_functions:
-        if gf == "rho"   or gf == "rho_b":
+    for gf in gfs:
+        if gf == "rho" or gf == "rho_b":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}^{-2}\\right]$"
         elif gf == "press" or gf == "P":
@@ -798,19 +733,18 @@ elif units == "SI":
 
     conv_fac_space = 0.001*Msun_to_m  # From solar masses to kilometers
     conv_fac_time  = 1000.*Msun_to_s  # From solar masses to milliseconds
-
     unit_time_str  = " $\mathbf{ms}$"
     unit_space_str = "[$\mathbf{km}$]"
 
     # TODO: add other potentially useful conversion factors
-    for gf in grid_functions:
-        if gf == "rho"   or gf == "rho_b":
+    for gf in gfs:
+        if gf == "rho" or gf == "rho_b":
             conv_fac_gf = Msun_to_kg_over_m3
             unit_gf_str = "$\,\left[\\frac{kg}{m^3}\\right]$"
         elif gf == "press" or gf == "P":
             conv_fac_gf = Msun_to_N_over_m2
             unit_gf_str = "$\,\left[\\frac{N}{m^2}\\right]$"
-        elif gf == "smallb2" or gf == "b2small" or gf == "B_norm":
+        elif gf == "smallb2" or gf == "b2small" or gf == "bcom_sq":
             conv_fac_gf = Msun_to_N_over_A2
             unit_gf_str = "$\,\left[T\\right]$"
         else:
@@ -821,96 +755,89 @@ elif units == "SI":
 
 else: raise RuntimeError("Unrecognized units \"" + units + "\"")
 
-################################################################################
+# ***** End units setup *****
 
 
 
 
 
+# ==========
+# Plot setup
+# ==========
+figname = plotdir + "/"
+
+simdirs   = []
+read_data = []
+
+AHfile_cols1 = np.empty([nplots], dtype = int)
+AHfile_cols2 = np.empty([nplots], dtype = int)
+
+xlabels = []
+ylabels = []
+norms   = []
+
+there_are_iters_avail = np.empty([nplots], dtype = bool)
+last_valid_it         = np.empty([nplots], dtype = int)
+last_valid_g          = []
+
+xsteps = np.empty([nplots], dtype = np.ndarray)
+ysteps = np.empty([nplots], dtype = np.ndarray)
+
+xmin_plot = np.empty([nplots], dtype = float)
+xmax_plot = np.empty([nplots], dtype = float)
+ymin_plot = np.empty([nplots], dtype = float)
+ymax_plot = np.empty([nplots], dtype = float)
+
+alpha_grid       = np.empty([nplots], dtype = float)
+alpha_grid_steps = np.empty([nplots], dtype = float)
+
+alpha_reflevels       = np.empty([nplots], dtype = float)
+alpha_reflevels_steps = np.empty([nplots], dtype = float)
 
 
+for n in range(nplots):
+    figname   += gfs[n] + "_" + planes[n] + "_"
+    simdirs.append(SimDir(datadirs[n]))
 
-
-
-############################## PLOT SETUP ######################################
-
-figname = plots_dir + "/"
-
-simdirs   = np.empty([N_datasets], dtype = object)
-read_data = np.empty([N_datasets], dtype = object)
-
-AHfile_cols1 = np.empty([N_datasets], dtype = int)
-AHfile_cols2 = np.empty([N_datasets], dtype = int)
-
-xlabels = np.empty([N_datasets], dtype = str)
-ylabels = np.empty([N_datasets], dtype = str)
-norms   = np.empty([N_datasets], dtype = object)
-
-there_are_iters_avail = np.empty([N_datasets], dtype = bool)
-last_valid_it         = np.empty([N_datasets], dtype = int)
-last_valid_g          = np.empty([N_datasets], dtype = object)
-
-xsteps = np.empty([N_datasets], dtype = np.ndarray)
-ysteps = np.empty([N_datasets], dtype = np.ndarray)
-
-xmin_plot = np.empty([N_datasets], dtype = float)
-xmax_plot = np.empty([N_datasets], dtype = float)
-ymin_plot = np.empty([N_datasets], dtype = float)
-ymax_plot = np.empty([N_datasets], dtype = float)
-
-alpha_grid       = np.empty([N_datasets], dtype = float)
-alpha_grid_steps = np.empty([N_datasets], dtype = float)
-
-alpha_reflevels       = np.empty([N_datasets], dtype = float)
-alpha_reflevels_steps = np.empty([N_datasets], dtype = float)
-
-
-for n in range(N_datasets):
-    figname   += grid_functions[n] + "_" + planes[n] + "_"
-    simdirs[n] = SimDir(data_dirs[n])
-    #################################
-    # XXX: remove
-    # Bad hack to skip subdirectories
-    excluded_dir    = "output-0019"
-    simdirs[n].dirs = [d for d in simdirs[n].dirs if excluded_dir not in d]
-    #################################
+    if skip_restarts is not None:
+        simdirs[n].dirs = [d for d in simdirs[n].dirs if not any(skip_restart in d for skip_restart in skip_restarts[n])]
 
     if planes[n] == "xy":
-        read_data[n] = simdirs[n].grid.hdf5.xy.read
+        read_data.append(simdirs[n].grid.hdf5.xy.read)
         AHfile_cols1[n] = 3
         AHfile_cols2[n] = 4
 
         if input_coords == "Cartesian":
-            xlabels[n] = "x$\,$" + unit_space_str
-            ylabels[n] = "y$\,$" + unit_space_str
+            xlabels.append("x$\,$" + unit_space_str)
+            ylabels.append("y$\,$" + unit_space_str)
         elif input_coords == "Exponential fisheye":
-            xlabels[n] = "x$\,$" + unit_space_str
-            ylabels[n] = "z$\,$" + unit_space_str
+            xlabels.append("x$\,$" + unit_space_str)
+            ylabels.append("z$\,$" + unit_space_str)
 
     elif planes[n] == "xz":
-        read_data[n] = simdirs[n].grid.hdf5.xz.read
+        read_data.append(simdirs[n].grid.hdf5.xz.read)
         AHfile_cols1[n] = 3
         AHfile_cols2[n] = 5
 
         if input_coords == "Cartesian":
-            xlabels[n] = "x$\,$" + unit_space_str
-            ylabels[n] = "z$\,$" + unit_space_str
+            xlabels.append("x$\,$" + unit_space_str)
+            ylabels.append("z$\,$" + unit_space_str)
         elif input_coords == "Exponential fisheye":
-            xlabels[n] = "x$\,$" + unit_space_str
-            ylabels[n] = "y$\,$" + unit_space_str
+            xlabels.append("x$\,$" + unit_space_str)
+            ylabels.append("y$\,$" + unit_space_str)
 
     elif planes[n] == "yz":
-        read_data[n] = simdirs[n].grid.hdf5.yz.read
+        read_data.append(simdirs[n].grid.hdf5.yz.read)
         AHfile_cols1[n] = 4
         AHfile_cols2[n] = 5
 
         if input_coords == "Cartesian":
-            xlabels[n] = "y$\,$" + unit_space_str
-            ylabels[n] = "z$\,$" + unit_space_str
+            xlabels.append("y$\,$" + unit_space_str)
+            ylabels.append("z$\,$" + unit_space_str)
         # FIXME FIXME FIXME FIXME FIXME FIXME FIXME
         elif input_coords == "Exponential fisheye":
-            xlabels[n] = "$\\theta$"
-            ylabels[n] = "$\phi$"
+            xlabels.append("$\\theta$")
+            ylabels.append("$\phi$")
         # FIXME FIXME FIXME FIXME FIXME FIXME FIXME
 
     else:
@@ -919,21 +846,21 @@ for n in range(N_datasets):
 
     if logscale[n] == True:
         if symlogscale[n] == True:
-            norms[n] = colors.SymLogNorm(vmin      = clb_extents[n][0],
-                                         vmax      = clb_extents[n][1],
-                                         linthresh = clb_extents[n][0])
+            norms.append(colors.SymLogNorm(vmin      = clb_extents[n][0],
+                                           vmax      = clb_extents[n][1],
+                                           linthresh = clb_extents[n][0]))
         elif symlogscale[n] == False:
-            norms[n] = colors.LogNorm(vmin = clb_extents[n][0],
-                                      vmax = clb_extents[n][1])
+            norms.append(colors.LogNorm(vmin = clb_extents[n][0],
+                                        vmax = clb_extents[n][1]))
         else:
             raise RuntimeError("Please set symlogscale[" + str(n) + "] to either 'True' or 'False'")
 
     elif logscale[n] == False:
         if linscale_norm[n] == True:
-            norms[n] = colors.Normalize(vmin = clb_extents[n][0],
-                                        vmax = clb_extents[n][1])
+            norms.append(colors.Normalize(vmin = clb_extents[n][0],
+                                          vmax = clb_extents[n][1]))
         elif linscale_norm[n] == False:
-            norms[n] = None
+            norms.append(None)
         else:
             raise RuntimeError("Please set linscale_norm[" + str(n) + "] to either 'True' or 'False'")
     else:
@@ -942,7 +869,7 @@ for n in range(N_datasets):
 
     there_are_iters_avail[n] = True
     last_valid_it[n]         = first_it
-    last_valid_g[n]          = None
+    last_valid_g.append(None)
 
 
     if zooms[n]:
@@ -1008,19 +935,15 @@ for n in range(N_datasets):
             alpha_reflevels_range    = alpha_reflevels_end[n] - alpha_reflevels_init[n]
             alpha_reflevels_steps[n] = alpha_reflevels_range/alpha_reflevels_n
 
-################################################################################
+# ***** End plot setup *****
 
 
 
 
 
-
-
-
-
-
-################################### PLOT #######################################
-
+# ====
+# Plot
+# ====
 nframe = int(first_it/out2D_every)
 
 # Toy grid used to check whether an iteration is available for a given dataset
@@ -1033,7 +956,7 @@ g_toy = gd.RegGeom([2, 2], [xmin_largest, ymin_largest],
 
 # Array storing the times of each dataset. Used to figure out the largest time
 # between two dataset in case any of them is not evolving anymore.
-times = np.empty([N_datasets])
+times = np.empty([nplots])
 
 if orb_count: omega_over_2pi = 0.5*omega/np.pi
 
@@ -1041,17 +964,17 @@ if orb_count: omega_over_2pi = 0.5*omega/np.pi
 for it in range(first_it, last_it + 1, out2D_every):
     print("***** Iteration " + str(it) + " *****\n")
 
-    if N_datasets > 1:  # Can't have 'plt.subplots(1, 1)'
+    if nplots > 1:  # Can't have 'plt.subplots(1, 1)'
         fig, axes = plt.subplots(nsubplots_y, nsubplots_x, figsize = figsize, dpi = dpi)
     else:  # Single subplot -> No arguments
         fig, ax = plt.subplots(figsize = figsize, dpi = dpi)
 
     fig.set_tight_layout(True)
 
-    for n in range(N_datasets):
+    for n in range(nplots):
         # The axis object returned by plt.subplots() when there's only one
         # subplot is not subscriptable
-        if N_datasets > 1: ax = axes[n]
+        if nplots > 1: ax = axes[n]
 
         ax.set_box_aspect(1)  # Square snapshots
         ax.set_title(titles[n], color = titlecolor, y = titlepad,
@@ -1059,20 +982,16 @@ for it in range(first_it, last_it + 1, out2D_every):
                      fontweight = title_fontweight,
                      fontstyle  = title_fontstyle,
                      fontname   = title_fontname)
-        ##################################################################################
-        # XXX: restore
-        ##ax.set_xlabel(xlabels[n], fontsize = labelsize, labelpad = labelpad_x)
-        ##ax.set_ylabel(ylabels[n], fontsize = labelsize, labelpad = labelpad_y)
-        ax.set_xlabel("x$\,$[$\mathbf{M}$]", fontsize = labelsize, labelpad = labelpad_x)
-        ax.set_ylabel("y$\,$[$\mathbf{M}$]", fontsize = labelsize, labelpad = labelpad_y)
-        ##################################################################################
+        ax.set_xlabel(xlabels[n], fontsize = labelsize, labelpad = labelpad_x)
+        ax.set_ylabel(ylabels[n], fontsize = labelsize, labelpad = labelpad_y)
+
         ax.tick_params(labelsize = ticksize)
         ax.set_xlim(xmin_plot[n], xmax_plot[n])
         ax.set_ylim(ymin_plot[n], ymax_plot[n])
 
         # Try to read data on a small, "toy" grid just to make sure the current
         # iteration is available for the current dataset
-        patch_toy = read_data[n](grid_functions[n], it,
+        patch_toy = read_data[n](gfs[n], it,
                                  geom           = g_toy,
                                  adjust_spacing = True,
                                  order          = 0,
@@ -1085,33 +1004,45 @@ for it in range(first_it, last_it + 1, out2D_every):
         # nothing else to be plotted: break. Otherwise, reset to the last
         # non-flagged iteration for this dataset.
         if patch_toy.time is None:
-            print("Setting dataset " + str(n) + " to the last valid iteration")
+            warnings.warn("Setting dataset " + str(n) + " to the last valid iteration")
             there_are_iters_avail[n] = False
             no_iters_avail_count     = 0
 
             for avail in there_are_iters_avail:
                if not avail: no_iters_avail_count += 1
 
-            assert no_iters_avail_count <= N_datasets
+            assert no_iters_avail_count <= nplots
 
-            if no_iters_avail_count == N_datasets:
-                # Dirty hack to break a nested loop
-                raise StopIteration
+            if no_iters_avail_count == nplots:
+                raise StopIteration  # Dirty hack to break a nested loop
 
             else: 
-                patch_plot = read_data[n](grid_functions[n], last_valid_it[n],
+                patch_plot = read_data[n](gfs[n], last_valid_it[n],
                                           geom           = last_valid_g[n],
                                           adjust_spacing = True,
                                           order          = 0,
                                           outside_val    = 0.,
                                           level_fill     = False)
+                if gfs_stream is not None:
+                    patch_stream1 = read_data[n](gfs_stream[n][0], last_valid_it[n],
+                                                 geom           = last_valid_g[n],
+                                                 adjust_spacing = True,
+                                                 order          = 0,
+                                                 outside_val    = 0.,
+                                                 level_fill     = False)
+                    patch_stream2 = read_data[n](gfs_stream[n][1], last_valid_it[n],
+                                                 geom           = last_valid_g[n],
+                                                 adjust_spacing = True,
+                                                 order          = 0,
+                                                 outside_val    = 0.,
+                                                 level_fill     = False)
 
         else:
             # Build an object containing the grid hierarchy, i.e. a list of
             # objects each containing information about the grid patch (size,
             # resolution, time, iteration, refinement level, number of ghost
             # cells, etc.) and the associated data 
-            patches = read_data[n](grid_functions[n], it,
+            patches = read_data[n](gfs[n], it,
                                    geom           = None,
                                    adjust_spacing = True,
                                    order          = 0,
@@ -1151,15 +1082,28 @@ for it in range(first_it, last_it + 1, out2D_every):
 
             g = gd.RegGeom([Nx, Ny], [xmin, ymin], x1 = [xmax, ymax])
 
-
-            # Build the patch to be plotted, which is resampled to a uniform grid
-            # (with the finest or custom grid spacing)
-            patch_plot = read_data[n](grid_functions[n], it,
+            # Build the field and stream patches to be plotted, which are
+            # resampled to a uniform grid (with the finest or custom grid
+            # spacing)
+            patch_plot = read_data[n](gfs[n], it,
                                       geom           = g,
                                       adjust_spacing = True,
                                       order          = 0,
                                       outside_val    = 0.,
                                       level_fill     = False)
+            if gfs_stream is not None:
+                patch_stream1 = read_data[n](gfs_stream[n][0], it,
+                                             geom           = g,
+                                             adjust_spacing = True,
+                                             order          = 0,
+                                             outside_val    = 0.,
+                                             level_fill     = False)
+                patch_stream2 = read_data[n](gfs_stream[n][1], it,
+                                             geom           = g,
+                                             adjust_spacing = True,
+                                             order          = 0,
+                                             outside_val    = 0.,
+                                             level_fill     = False)
 
 
         # The option 'adjust_spacing = True' above may reshape patch_plot.data
@@ -1177,7 +1121,8 @@ for it in range(first_it, last_it + 1, out2D_every):
         Nx_new = plot_data.shape[0]
         Ny_new = plot_data.shape[1]
 
-        if Nx_new != Nx or Ny_new != Ny: print("Dataset " + str(n) + ": grid reshaped from (" + str(Nx) + ", " + str(Ny) + ") to (" + str(Nx_new) + ", " + str(Ny_new) + ")")
+        if Nx_new != Nx or Ny_new != Ny:
+            warnings.warn("Dataset " + str(n) + ": grid reshaped from (" + str(Nx) + ", " + str(Ny) + ") to (" + str(Nx_new) + ", " + str(Ny_new) + ")")
 
 
         # Build the mesh for pcolormesh and transform to Cartesian coordinates
@@ -1187,16 +1132,12 @@ for it in range(first_it, last_it + 1, out2D_every):
             x       = np.linspace(xmin, xmax, Nx_new)
             y       = np.linspace(ymin, ymax, Ny_new)
             mx, my  = np.meshgrid(x, y)
-            mx_plot = mx
-            my_plot = my
         elif input_coords == "Exponential fisheye":
             logr        = np.linspace(xmin, xmax, Nx_new)
             phi         = np.linspace(ymin, ymax, Ny_new)
             mlogr, mphi = np.meshgrid(logr, phi)
             mx          = np.exp(mlogr)*np.cos(mphi)
             my          = np.exp(mlogr)*np.sin(mphi)
-            mx_plot     = mx
-            my_plot     = my
         else:
             raise RuntimeError("Invalid input coordinates")
 
@@ -1214,8 +1155,33 @@ for it in range(first_it, last_it + 1, out2D_every):
                                edgecolor = (0., 0., 0., alpha_grid[n]),
                                linewidth = 0.01)
         else:
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
             im = ax.pcolormesh(mx, my, np.transpose(plot_data),
+            ##im = ax.pcolormesh(mx, my, 4.*np.pi*np.transpose(plot_data),  # XXX: useful e.g. when comparing IllinoisGRMHD::smallb2 and GRHydro::bcom_sq
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
                                shading = "auto", cmap = cmaps[n], norm = norms[n])
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+            ##if n == 0:
+            ##    im = ax.pcolormesh(mx, my, np.transpose(plot_data),
+            ##                       shading = "auto", cmap = cmaps[n], norm = norms[n])
+            ##else:
+            ##    im = ax.pcolormesh(my, mx, np.transpose(plot_data),
+            ##                       shading = "auto", cmap = cmaps[n], norm = norms[n])
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+
+        # Build the stream plot if necessary
+        if gfs_stream is not None:
+            ##viz.plot_vectors((patch_stream1, patch_stream2))
+            ax.streamplot(mx, my, np.transpose(patch_stream1.data), np.transpose(patch_stream2.data), linewidth = 0.5, color = "black", arrowsize = 1., arrowstyle = "-|>")
+            ##ax.quiver(mx, my, np.transpose(patch_stream1.data), np.transpose(patch_stream2.data))
 
         if add_clb[n]:
             clb = fig.colorbar(im, ax = ax, extend = clb_extends[n],
@@ -1305,7 +1271,7 @@ for it in range(first_it, last_it + 1, out2D_every):
 
 
         if plot_reflevels[n]:
-            patch_contour = read_data[n](grid_functions[n], it,
+            patch_contour = read_data[n](gfs[n], it,
                                          geom           = g,
                                          adjust_spacing = True,
                                          order          = 0,
@@ -1330,13 +1296,24 @@ for it in range(first_it, last_it + 1, out2D_every):
             last_valid_it[n] = it
             last_valid_g[n]  = g
 
-        #############
-        # XXX: remove
-        #if n == 0:
-        #    ax.add_artist(plt.Circle((0., 0.), 20., fill = False, linestyle = "-", linewidth = 1., color = "black"))
-        #    ax.add_artist(plt.Circle((0., 0.), 30., fill = False, linestyle = "-", linewidth = 1., color = "black"))
-        #    ax.add_artist(plt.Circle((0., 0.), 40., fill = False, linestyle = "-", linewidth = 1., color = "black"))
-        #############
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+        ##if n == 0:
+        ##    ax.add_artist(plt.Circle((0., 0.), 15., fill = False, linestyle = "--", linewidth = 1., color = "black"))
+        ##    ax.add_artist(plt.Circle((0., 0.), 20., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+        ##    ax.add_artist(plt.Circle((0., 0.), 30., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+        ##    ax.add_artist(plt.Circle((0., 0.), 40., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+        ##elif n ==1:
+        ##    ax.axvline(x = -15., linestyle = "--", linewidth = 1., color = "black")
+        ##    ax.axvline(x =  15., linestyle = "--", linewidth = 1., color = "black")
+        ##    ax.axvline(x = -20., linestyle = "-",  linewidth = 1., color = "black")
+        ##    ax.axvline(x =  20., linestyle = "-",  linewidth = 1., color = "black")
+        ##    ax.axvline(x = -30., linestyle = "-",  linewidth = 1., color = "black")
+        ##    ax.axvline(x =  30., linestyle = "-",  linewidth = 1., color = "black")
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
 
 
 
@@ -1353,7 +1330,14 @@ for it in range(first_it, last_it + 1, out2D_every):
     t    = (t0 + time)*conv_fac_time
 
     fig.text(time_pos[0], time_pos[1],
+             # XXX XXX XXX XXX XXX XXX
+             # XXX XXX XXX XXX XXX XXX
+             # XXX XXX XXX XXX XXX XXX
              "t = " + str("{:.2e}".format(t)) + unit_time_str,
+             ##"t = " + str(t+99189.9) + "$\,$" + unit_time_str,
+             # XXX XXX XXX XXX XXX XXX
+             # XXX XXX XXX XXX XXX XXX
+             # XXX XXX XXX XXX XXX XXX
              color      = "red",
              fontsize   = it_time_orb_fontsize,
              fontweight = it_time_orb_fontweight,
