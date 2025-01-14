@@ -37,9 +37,9 @@ import warnings
 
 from matplotlib import rc
 from matplotlib import rcParams
-#rc("mathtext", usetex = True)
-#rc("font",**{"family":"sans-serif","sans-serif":["Avant Garde"]})
-#rcParams["text.latex.preamble"] = [r"\usepackage{amsmath}"]
+##rc("mathtext", usetex = True)
+##rc("font",**{"family":"sans-serif","sans-serif":["Avant Garde"]})
+##rcParams["text.latex.preamble"] = [r"\usepackage{amsmath}"]
 rcParams["mathtext.fontset"] = "dejavuserif"
 
 
@@ -58,8 +58,8 @@ datadirs = (
     ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
     ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling",
     ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling"
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/output-0020/HDF5_2D",
-    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/output-0020/HDF5_2D"
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0016/HDF5_2D",
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0016/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -71,23 +71,23 @@ skip_restarts = None
 
 # Directory where the plots will be placed
 ##plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
-plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/rho_b_xy_Bstream"
+plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/rho_b_xy_rho_b_xz"
 
 
 # Which grid functions to plot as field variables
 gfs = (
     ##"rho",
     "rho_b",
-    ##"rho_b"
+    "rho_b"
 )
 
 # Which grid functions to plot as stream variables, i.e. integral curves of a
 # vector field ('None' plots nothing)
-##gfs_stream = None
-gfs_stream = (
-    ("Bx", "By"),
-    ##("Bx", "Bz")
-)
+gfs_stream = None
+##gfs_stream = (
+##    ("Bx", "By"),
+##    ##("Bx", "Bz")
+##)
 
 # Streamline density in plt.streamline (default in Matplotlib is 1)
 streamline_density = 4.
@@ -101,18 +101,18 @@ input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
 planes = (
     ##"xz",
     "xy",
-    ##"xz"
+    "xz"
 )
 
 # Plot absolute values?
 abs_vals = (
     False,
-    ##False
+    False
 )
 
 
 # Iterations and initial time info
-first_it    = 1512448 ##0
+first_it    = 1368064 ##1540096 ##0
 last_it     = 1000000000  # Set this to a huge number to plot all iterations
 out2D_every = 1024 ##400
 t0          = 0.
@@ -127,7 +127,7 @@ omega     = 1.049229e-02
 # NOTE: this may take some time
 compute_min_max = (
     False,
-    ##False
+    False
 )
 # FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
 
@@ -142,9 +142,8 @@ compute_min_max = (
 # NOTE: np.array needed to facilitate slicing
 plot_extents = np.array([
      ##np.array([np.log(15.1), np.log(60.),  0., 2.*np.pi]),  #  40*sqrt(2) = 56.5685424949, 60 > 56.5685424949
-     np.array([-10., 10., -10., 10.]),
-     ##np.array([-40.,  40.,  -40.,  40.])
-     ##np.array([-200., 200., -200., 200.])
+     np.array([-40.,  40.,  -40.,  40.]),
+     np.array([-200., 200., -200., 200.])
 ])
 
 # Actual plot extent if the input coordinates are not Cartesian, i.e., what you
@@ -155,19 +154,18 @@ plot_extents = np.array([
 ##actual_plot_extents = None
 actual_plot_extents = (
     (-40.,  40.,  -40.,  40.),
-    ##(-40.,  40.,  -40.,  40.)
-    ##(-200., 200., -200., 200.)
+    (-200., 200., -200., 200.)
 )
 
 # Subplots layout
-nsubplots_x = 1
+nsubplots_x = 2 ##1
 nsubplots_y = 1
 
 # Figure size and resolution
-figsize = [12., 10.]  # Single frame with colorbar on the right 
-dpi     = 200
-##figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
-##dpi     = 100
+##figsize = [12., 10.]  # Single frame with colorbar on the right
+##dpi     = 200
+figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
+dpi     = 100
 ##figsize = [24., 10.]  # Two frames with one colorbar each
 ##dpi     = 100
 ##figsize = [33., 10.]  # Three frames with one colorbar only (on the far right)
@@ -179,13 +177,13 @@ fig_ext = ".png" ##".jpg"
 # Limit resolution (saves memory and time)?
 limit_resolution = (
     False,
-    ##False
+    True
 )
 
 # Resolution to be used if limit_resolution is True
 resolution = (
     0.125,
-    ##0.125
+    0.125
 )
 
 
@@ -197,7 +195,7 @@ resolution = (
 # Draw the apparent horizon(s)?
 draw_AH = (
     True,
-    ##True
+    True
 )
 
 # How many AH files there are per iteration, i.e. the maximum value of
@@ -213,8 +211,8 @@ N_AH_files = 2
 # containing all the AH files for the corresponding simulation restart.
 AH_dirs = (
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/AH_data",
-    ##"/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling/AH_data"
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data",
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data"
 )
 
 
@@ -234,14 +232,14 @@ logscale = (
 # desired minimum in the colorbar (see below)
 symlogscale = (
     False,
-    ##False
+    False
 )
 
 # If a linear color scale is in use (i.e. if 'logscale' is false), normalize it
 # between 0 and 1?
 linscale_norm = (
     True,
-    ##True
+    True
 )
 
 
@@ -258,40 +256,40 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 # Names of the variables to be put close to the colorbar
 varnames = (
     "$\\rho$",
-    ##"$\\rho$"
+    "$\\rho$"
 )
 
 # Titles for each subplot
 titles = (
     "",
-    ##""
+    ""
 )
 
 # Add colorbar(s)?
 add_clb = (
     True,
-    ##True
+    True
 )
 
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = True and symlogscale[i] = True)
 clb_extents = (
-    (1.e-08, 1.e-03),
-    ##(1.e-08, 3.e-02),
-    ##(1.e-12, 3.e-02)
+    ##(1.e-08, 1.e-03),
+    (1.e-08, 3.e-02),
+    (1.e-12, 3.e-02)
 )
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
 # "both")
 clb_extends = (
     "both",
-    ##"both"
+    "both"
 )
 
 # Colormap
 cmaps = (
     "plasma",
-    ##"plasma"
+    "plasma"
 )
 
 # Title options
@@ -318,8 +316,8 @@ clblabel_fontstyle  = "normal"
 
 # Iteration, time and orbits strings options
 it_pos                 = (0.35, 0.015)
-time_pos               = (0.6,  0.015)
-##time_pos               = (0.45, 0.015)
+##time_pos               = (0.6,  0.015)
+time_pos               = (0.45, 0.015)
 orb_pos                = (0.12, 0.015)
 it_time_orb_fontsize   = 20.
 ##it_time_orb_fontsize   = 25.
@@ -335,26 +333,25 @@ it_time_orb_fontstyle  = "normal"
 # Zoom in/out as time goes?
 zooms = (
     False,
-    ##False
+    False
 )
 
 # If zooming in/out, set the actual plot extents at the final time here
 actual_plot_extents_end = (
-    (-10.,  10.,  -10.,  10.),
-    ##(-40.,  40.,  -40.,  40.),
-    ##(-200., 200., -200., 200.)
+    (-40.,  40.,  -40.,  40.),
+    (-200., 200., -200., 200.)
 )
 
 
 # Iterations at which zooming in/out should begin/end
 first_its_zoom = (
     0,
-    ##0
+    0
 )
 
 last_its_zoom = (
     1,
-    ##1
+    1
 )
 
 
@@ -368,37 +365,37 @@ last_its_zoom = (
 #       mesh and not just the refinement level boundaries
 plot_grid = (
     False,
-    ##False
+    False
 )
 
 # If plot_grid is true, do you want the grid to gradually fade in/out?
 vary_grid_transparency = (
     False,
-    ##False
+    False
 )
 
 
 # Iterations at which the change in grid transparency should begin/end
 first_its_alpha_grid = (
     0,
-    ##0
+    0
 )
 
 last_its_alpha_grid = (
     1,
-    ##1
+    1
 )
 
 
 # Grid transparency values at the beginning/end
 alpha_grid_init = (
     0.,
-    ##0.
+    0.
 )
 
 alpha_grid_end = (
     1.,
-    ##1.
+    1.
 )
 
 
@@ -410,14 +407,14 @@ alpha_grid_end = (
 # Plot refinement level boundaries?
 plot_reflevels = (
     False,
-    ##False
+    False
 )
 
 # If plot_reflevels is true, do you want the refinement level boundaries to
 # gradually fade in/out?
 vary_reflevels_transparency = (
     False,
-    ##False
+    False
 )
 
 
@@ -425,24 +422,24 @@ vary_reflevels_transparency = (
 # begin/end
 first_its_alpha_reflevels = (
     0,
-    ##0
+    0
 )
 
 last_its_alpha_reflevels = (
     1,
-    ##1
+    1
 )
 
 
 # Refinement levels transparency at the beginning/end
 alpha_reflevels_init = (
     1.,
-    ##1.
+    1.
 )
 
 alpha_reflevels_end = (
     0.,
-    ##0.
+    0.
 )
 
 
@@ -451,7 +448,7 @@ alpha_reflevels_end = (
 #       some high value to plot all reflevel boundaries
 reflevel_ranges = (
     (0, 20),
-    ##(0, 20)
+    (0, 20)
 )
 
 # ***** End parameters *****
@@ -1305,11 +1302,11 @@ for it in range(first_it, last_it + 1, out2D_every):
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
-        ##if n == 0:
-        ##    ax.add_artist(plt.Circle((0., 0.), 15., fill = False, linestyle = "--", linewidth = 1., color = "black"))
-        ##    ax.add_artist(plt.Circle((0., 0.), 20., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
-        ##    ax.add_artist(plt.Circle((0., 0.), 30., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
-        ##    ax.add_artist(plt.Circle((0., 0.), 40., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+        if n == 0:
+            ax.add_artist(plt.Circle((0., 0.), 15., fill = False, linestyle = "--", linewidth = 1., color = "black"))
+            ax.add_artist(plt.Circle((0., 0.), 20., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+            ax.add_artist(plt.Circle((0., 0.), 30., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+            ax.add_artist(plt.Circle((0., 0.), 40., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
         ##elif n ==1:
         ##    ax.axvline(x = -15., linestyle = "--", linewidth = 1., color = "black")
         ##    ax.axvline(x =  15., linestyle = "--", linewidth = 1., color = "black")
@@ -1336,14 +1333,7 @@ for it in range(first_it, last_it + 1, out2D_every):
     t    = (t0 + time)*conv_fac_time
 
     fig.text(time_pos[0], time_pos[1],
-             # XXX XXX XXX XXX XXX XXX
-             # XXX XXX XXX XXX XXX XXX
-             # XXX XXX XXX XXX XXX XXX
              "t = " + str("{:.2e}".format(t)) + unit_time_str,
-             ##"t = " + str(t+99189.9) + "$\,$" + unit_time_str,
-             # XXX XXX XXX XXX XXX XXX
-             # XXX XXX XXX XXX XXX XXX
-             # XXX XXX XXX XXX XXX XXX
              color      = "red",
              fontsize   = it_time_orb_fontsize,
              fontweight = it_time_orb_fontweight,
