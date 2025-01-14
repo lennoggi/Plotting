@@ -58,8 +58,8 @@ datadirs = (
     ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
     ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling",
     ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling"
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0016/HDF5_2D",
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0016/HDF5_2D"
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0019/HDF5_2D",
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0019/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -112,7 +112,7 @@ abs_vals = (
 
 
 # Iterations and initial time info
-first_it    = 1368064 ##1540096 ##0
+first_it    = 1620992 ##1620992 ##1540096 ##1454080 ##1368064 ##0
 last_it     = 1000000000  # Set this to a huge number to plot all iterations
 out2D_every = 1024 ##400
 t0          = 0.
@@ -164,10 +164,10 @@ nsubplots_y = 1
 # Figure size and resolution
 ##figsize = [12., 10.]  # Single frame with colorbar on the right
 ##dpi     = 200
-figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
-dpi     = 100
-##figsize = [24., 10.]  # Two frames with one colorbar each
+##figsize = [22., 10.]  # Two frames with one colorbar only (on the far right)
 ##dpi     = 100
+figsize = [24., 10.]  # Two frames with one colorbar each
+dpi     = 100
 ##figsize = [33., 10.]  # Three frames with one colorbar only (on the far right)
 ##dpi     = 100
 
@@ -224,7 +224,7 @@ AH_dirs = (
 # Use a logarithmic scale?
 logscale = (
     True,
-    ##True
+    True
 )
 
 # Use a symmetric logarithmic scale? I.e., if a logarithmic scale is in use and
