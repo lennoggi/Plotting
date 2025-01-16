@@ -97,7 +97,7 @@ streamline_density = 4.
 # Apply a Gaussian smoothing to the central region of the data to reduce noise
 # before plotting them?
 smoothing = (
-    False,
+    True, ##False,
     ##False,
 )
 
@@ -105,14 +105,14 @@ smoothing = (
 # to the cell size in the region to be smoothed effectively blends information
 # between neighboring cells. A larger value produces a more aggressive smoothing.
 smoothing_sigmas = (
-    1.,
-    ##1.,
+    2.,
+    ##2.,
 )
 
 # Fraction of the central smoothed region. 0 smooths nothing, 1 applies the
 # smoothing everywhere in the image.
 smoothing_fractions = (
-    (0.2, 0.2),
+    (0.2, 0.25),
     ##(0.2, 0.2)
 )
 
@@ -1169,7 +1169,7 @@ for it in range(first_it, last_it + 1, out2D_every):
         # Apply a Gaussian filter to the central portion of the image if requested
         if smoothing[n]:
             smoothing_fraction_x = smoothing_fractions[n][0]
-            smoothing_fraction_y = smoothing_fractions[n][0]
+            smoothing_fraction_y = smoothing_fractions[n][1]
 
             filter_imin = int((1. - smoothing_fraction_x)*(Nx_new/2))
             filter_imax = int((1. + smoothing_fraction_x)*(Nx_new/2))
