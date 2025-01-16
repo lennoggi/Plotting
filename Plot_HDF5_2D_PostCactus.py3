@@ -1176,7 +1176,7 @@ for it in range(first_it, last_it + 1, out2D_every):
             filter_jmin = int((1. - smoothing_fraction_y)*(Ny_new/2))
             filter_jmax = int((1. + smoothing_fraction_y)*(Ny_new/2))
 
-            print("\nFiltering region: [" + str(xmin + deltax_min*filter_imin) + ", " + str(xmin + deltax_min*filter_imax) + "], [" + str(ymin + deltay_min*filter_jmin) + ", " + str(ymin + deltay_min*filter_jmin) + "]\n")
+            print("\nFiltering region: [" + str(xmin + deltax_min*filter_imin) + ", " + str(xmin + deltax_min*filter_imax) + "], [" + str(ymin + deltay_min*filter_jmin) + ", " + str(ymin + deltay_min*filter_jmax) + "]\n")
 
             smoothed_center = gaussian_filter(plot_data[filter_imin:filter_imax, filter_jmin:filter_jmax], sigma = smoothing_sigmas[n])
             plot_data[filter_imin:filter_imax, filter_jmin:filter_jmax] = smoothed_center
