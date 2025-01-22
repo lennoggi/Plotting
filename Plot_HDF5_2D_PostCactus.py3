@@ -56,10 +56,10 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 
 # Directories containing the files to be opened
 datadirs = (
-    ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0002/data",
-    "/work2/07825/lennoggi/frontera/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ_checkpoint/rho",
-    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0001/HDF5_2D",
-    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0001/HDF5_2D"
+    ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
+    ##"/work2/07825/lennoggi/frontera/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ_checkpoint/rho",
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0006/HDF5_2D",
+    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0006/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -70,14 +70,14 @@ skip_restarts = None
 ##)
 
 # Directory where the plots will be placed
-plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
-##plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling"
+##plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
+plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling"
 
 
 # Which grid functions to plot as field variables
 gfs = (
-    "rho",
-    ##"rho_b",
+    ##"rho",
+    "rho_b",
     ##"rho_b"
 )
 
@@ -120,14 +120,14 @@ smoothing_fractions = (
 
 
 # Input coordinates
-input_coords = "Exponential fisheye"  # "Cartesian" or "Exponential fisheye"
+input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
 
 # Which 2D slices to plot
 #   - Cartesian      coordinates: xy, xz or yz plane
 #   - Spherical-like coordinates: r-theta, r-phi or theta-phi plane
 planes = (
+    ##"xz",
     "xy",
-    ##"xy",
     ##"xz",
 )
 
@@ -139,13 +139,13 @@ abs_vals = (
 
 
 # Iterations and initial time info
-first_it    = 661266 ##133600 ##0
-last_it     = 661266 ##133600 ##0 ##1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 400 ##1024 ##400
-t0          = 0. ##99189.9
+first_it    = 499712
+last_it     = 499712 ##1000000000  # Set this to a huge number to plot all iterations
+out2D_every = 1024 ##400
+t0          = 99189.9
 
 # Binary orbit counting
-orb_count = True ##False
+orb_count = False
 omega     = 1.049229e-02
 
 # FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
@@ -170,9 +170,9 @@ compute_min_max = (
 plot_extents = np.array([
      ##np.array([np.log(15.1), np.log(60.),  0., 2.*np.pi]),  #  40*sqrt(2) = 56.5685424949, 60 > 56.5685424949
      ##np.array([np.log(15.1), np.log(300.),  0., 2.*np.pi]),  #  200*sqrt(2) = 282.842712475, 300 > 282.842712475
-     np.array([np.log(15.1), np.log(600.),  0., 2.*np.pi]),  #  400*sqrt(2) = 565.685424949, 600 > 565.685424949
+     ##np.array([np.log(15.1), np.log(600.),  0., 2.*np.pi]),  #  400*sqrt(2) = 565.685424949, 600 > 565.685424949
      ##np.array([-20.,  20.,  -20.,  20.]),
-     ##np.array([-40.,  40.,  -40.,  40.]),
+     np.array([-40.,  40.,  -40.,  40.]),
      ##np.array([-200., 200., -200., 200.]),
 ])
 
@@ -183,8 +183,8 @@ plot_extents = np.array([
 # NOTE: used as the starting plot extent if 'zoom' (see below) is True
 ##actual_plot_extents = None
 actual_plot_extents = (
-    ##(-40.,  40.,  -40.,  40.),
-    (-400., 400., -400., 400.),
+    (-40.,  40.,  -40.,  40.),
+    ##(-400., 400., -400., 400.),
 )
 
 # Subplots layout
@@ -224,7 +224,7 @@ resolution = (
 
 # Draw the apparent horizon(s)?
 draw_AH = (
-    False, ##True,
+    True,
     ##True
 )
 
@@ -304,8 +304,9 @@ add_clb = (
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = True and symlogscale[i] = True)
 clb_extents = (
-    ##(1.e-08, 3.e-02),
-    (1.e-12, 3.e-02),
+    (1.e-08, 3.e-02),
+    ##(1.e-12, 3.e-02),
+    ##(1.e-04, 1.e+02),
 )
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
@@ -1138,12 +1139,12 @@ for it in range(first_it, last_it + 1, out2D_every):
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
-            patch_plot2 = read_data[n]("rho_PhiEqualPi", it,
-                                       geom           = g,
-                                       adjust_spacing = True,
-                                       order          = 0,
-                                       outside_val    = 0.,
-                                       level_fill     = False)
+            ##patch_plot2 = read_data[n]("rho_PhiEqualPi", it,
+            ##                           geom           = g,
+            ##                           adjust_spacing = True,
+            ##                           order          = 0,
+            ##                           outside_val    = 0.,
+            ##                           level_fill     = False)
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
@@ -1177,8 +1178,8 @@ for it in range(first_it, last_it + 1, out2D_every):
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
-        if abs_vals[n]: plot_data2 = np.absolute(patch_plot2.data*conv_fac_gf)
-        else:           plot_data2 = patch_plot2.data*conv_fac_gf
+        ##if abs_vals[n]: plot_data2 = np.absolute(patch_plot2.data*conv_fac_gf)
+        ##else:           plot_data2 = patch_plot2.data*conv_fac_gf
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
@@ -1238,17 +1239,17 @@ for it in range(first_it, last_it + 1, out2D_every):
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
-            ##im = ax.pcolormesh(mx, my, np.transpose(plot_data),
-            ##                   shading = "auto", cmap = cmaps[n], norm = norms[n])
+            im = ax.pcolormesh(mx, my, np.transpose(plot_data),
+                               shading = "auto", cmap = cmaps[n], norm = norms[n])
             ##im = ax.pcolormesh(mx, my, 4.*np.pi*np.transpose(plot_data),  # XXX: useful e.g. when comparing IllinoisGRMHD::smallb2 and GRHydro::bcom_sq
             ##                   shading = "auto", cmap = cmaps[n], norm = norms[n])
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
-            im = ax.pcolormesh(my, mx, np.transpose(plot_data),
-                               shading = "auto", cmap = cmaps[n], norm = norms[n])
-            im2 = ax.pcolormesh(-my, mx, np.transpose(plot_data2),
-                                shading = "auto", cmap = cmaps[n], norm = norms[n])
+            ##im = ax.pcolormesh(my, mx, np.transpose(plot_data),
+            ##                   shading = "auto", cmap = cmaps[n], norm = norms[n])
+            ##im2 = ax.pcolormesh(-my, mx, np.transpose(plot_data2),
+            ##                    shading = "auto", cmap = cmaps[n], norm = norms[n])
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
@@ -1418,8 +1419,8 @@ for it in range(first_it, last_it + 1, out2D_every):
              # XXX XXX XXX XXX XXX XXX
              # XXX XXX XXX XXX XXX XXX
              # XXX XXX XXX XXX XXX XXX
-             "t = " + str("{:.2e}".format(t)) + unit_time_str,
-             ##"t = " + str(t) + unit_time_str,
+             ##"t = " + str("{:.2e}".format(t)) + unit_time_str,
+             "t = " + str(t) + unit_time_str,
              # XXX XXX XXX XXX XXX XXX
              # XXX XXX XXX XXX XXX XXX
              # XXX XXX XXX XXX XXX XXX
@@ -1437,7 +1438,8 @@ for it in range(first_it, last_it + 1, out2D_every):
                  fontstyle  = it_time_orb_fontstyle)
 
 
-    plt.savefig(figname + str("{:0>4d}".format(nframe)) + fig_ext)
+    figname_full = figname + str("{:0>4d}".format(nframe)) + fig_ext
+    plt.savefig(figname_full)
     plt.close()
     nframe += 1
-    print("Done\n\n\n")
+    print("File '" + figname_full + "' created successfully\n\n\n")
