@@ -56,11 +56,10 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 
 # Directories containing the files to be opened
 datadirs = (
-    ##"/scratch/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
-    ##"/scratch/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling",
-    ##"/scratch/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling"
-    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0001/HDF5_2D",
-    ##"/scratch/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0001/HDF5_2D"
+    ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0002/data",
+    "/work2/07825/lennoggi/frontera/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ_checkpoint/rho",
+    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0001/HDF5_2D",
+    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0001/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -71,24 +70,24 @@ skip_restarts = None
 ##)
 
 # Directory where the plots will be placed
-##plotdir = "/scratch/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
-plotdir = "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling"
+plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
+##plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling"
 
 
 # Which grid functions to plot as field variables
 gfs = (
-    ##"rho",
-    "rho_b",
+    "rho",
+    ##"rho_b",
     ##"rho_b"
 )
 
 # Which grid functions to plot as stream variables, i.e. integral curves of a
 # vector field ('None' plots nothing)
-##gfs_stream = None
-gfs_stream = (
-    ##("Bx", "By"),
-    ("Bx", "Bz"),
-)
+gfs_stream = None
+##gfs_stream = (
+##    ##("Bx", "By"),
+##    ("Bx", "Bz"),
+##)
 
 # Streamline density in plt.streamline (default in Matplotlib is 1)
 streamline_density = 3.
@@ -121,15 +120,15 @@ smoothing_fractions = (
 
 
 # Input coordinates
-input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
+input_coords = "Exponential fisheye"  # "Cartesian" or "Exponential fisheye"
 
 # Which 2D slices to plot
 #   - Cartesian      coordinates: xy, xz or yz plane
 #   - Spherical-like coordinates: r-theta, r-phi or theta-phi plane
 planes = (
-    ##"xz",
+    "xy",
     ##"xy",
-    "xz",
+    ##"xz",
 )
 
 # Plot absolute values?
@@ -140,13 +139,13 @@ abs_vals = (
 
 
 # Iterations and initial time info
-first_it    = 1764352 ##2378752 ##1764352 ##1972224 ##1716224 ##1907712 ##1856512 ##1779712 ##0
-last_it     = 1764352 ##2378752 ##1764352 ##1972224 ##1716224 ##1907712 ##1856512 ##1779712 ##1000000000  # Set this to a huge number to plot all iterations
-out2D_every = 1024 ##400
-t0          = 99189.9 ##0.
+first_it    = 661266 ##133600 ##0
+last_it     = 661266 ##133600 ##0 ##1000000000  # Set this to a huge number to plot all iterations
+out2D_every = 400 ##1024 ##400
+t0          = 0. ##99189.9
 
 # Binary orbit counting
-orb_count = False
+orb_count = True ##False
 omega     = 1.049229e-02
 
 # FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
@@ -170,7 +169,9 @@ compute_min_max = (
 # NOTE: np.array needed to facilitate slicing
 plot_extents = np.array([
      ##np.array([np.log(15.1), np.log(60.),  0., 2.*np.pi]),  #  40*sqrt(2) = 56.5685424949, 60 > 56.5685424949
-     np.array([-20.,  20.,  -20.,  20.]),
+     ##np.array([np.log(15.1), np.log(300.),  0., 2.*np.pi]),  #  200*sqrt(2) = 282.842712475, 300 > 282.842712475
+     np.array([np.log(15.1), np.log(600.),  0., 2.*np.pi]),  #  400*sqrt(2) = 565.685424949, 600 > 565.685424949
+     ##np.array([-20.,  20.,  -20.,  20.]),
      ##np.array([-40.,  40.,  -40.,  40.]),
      ##np.array([-200., 200., -200., 200.]),
 ])
@@ -182,8 +183,8 @@ plot_extents = np.array([
 # NOTE: used as the starting plot extent if 'zoom' (see below) is True
 ##actual_plot_extents = None
 actual_plot_extents = (
-    (-40.,  40.,  -40.,  40.),
-    ##(-200., 200., -200., 200.)
+    ##(-40.,  40.,  -40.,  40.),
+    (-400., 400., -400., 400.),
 )
 
 # Subplots layout
@@ -223,7 +224,7 @@ resolution = (
 
 # Draw the apparent horizon(s)?
 draw_AH = (
-    True,
+    False, ##True,
     ##True
 )
 
@@ -240,8 +241,8 @@ N_AH_files = 2
 # containing all the AH files for the corresponding simulation restart.
 AH_dirs = (
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data",
-    ##"/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data"
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data",
+    ##"/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data"
 )
 
 
@@ -304,11 +305,7 @@ add_clb = (
 # colorbar_extents[i][0] if logscale[i] = True and symlogscale[i] = True)
 clb_extents = (
     ##(1.e-08, 3.e-02),
-    ##(1.e-12, 3.e-02),
-    ##(1.e-06, 1.e-02),
-    (1.e-11, 1.e-02),
-    ##(0., 0.01),
-    ##(1.e-05, 5.e-03),
+    (1.e-12, 3.e-02),
 )
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
@@ -719,7 +716,7 @@ for rr in reflevel_ranges:
 if units == "arbitrary":
     conv_fac_time  = 1.
     conv_fac_space = 1.
-    unit_time_str  = "$\mathbf{M}$"
+    unit_time_str  = "$\,\mathbf{M}$"
     unit_space_str = "[$\mathbf{M}$]"
 
     # TODO: add other potentially useful conversion factors
@@ -745,7 +742,7 @@ if units == "arbitrary":
 elif units == "geometric":
     conv_fac_time  = 1.
     conv_fac_space = 1.
-    unit_time_str  = "$\mathbf{M_{\\odot}}$"
+    unit_time_str  = "$\,\mathbf{M_{\\odot}}$"
     unit_space_str = "[$\mathbf{M_{\\odot}}$]"
 
     # TODO: add other potentially useful conversion factors
@@ -780,7 +777,7 @@ elif units == "SI":
 
     conv_fac_space = 0.001*Msun_to_m  # From solar masses to kilometers
     conv_fac_time  = 1000.*Msun_to_s  # From solar masses to milliseconds
-    unit_time_str  = " $\mathbf{ms}$"
+    unit_time_str  = "$\,\mathbf{ms}$"
     unit_space_str = "[$\mathbf{km}$]"
 
     # TODO: add other potentially useful conversion factors
@@ -1138,6 +1135,19 @@ for it in range(first_it, last_it + 1, out2D_every):
                                       order          = 0,
                                       outside_val    = 0.,
                                       level_fill     = False)
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+            patch_plot2 = read_data[n]("rho_PhiEqualPi", it,
+                                       geom           = g,
+                                       adjust_spacing = True,
+                                       order          = 0,
+                                       outside_val    = 0.,
+                                       level_fill     = False)
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+            # XXX XXX XXX XXX XXX XXX
+
             if gfs_stream is not None:
                 patch_stream1 = read_data[n](gfs_stream[n][0], it,
                                              geom           = g,
@@ -1164,6 +1174,14 @@ for it in range(first_it, last_it + 1, out2D_every):
         #   the shape of patch_plot untouched.
         if abs_vals[n]: plot_data = np.absolute(patch_plot.data*conv_fac_gf)
         else:           plot_data = patch_plot.data*conv_fac_gf
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+        if abs_vals[n]: plot_data2 = np.absolute(patch_plot2.data*conv_fac_gf)
+        else:           plot_data2 = patch_plot2.data*conv_fac_gf
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
 
         Nx_new = plot_data.shape[0]
         Ny_new = plot_data.shape[1]
@@ -1220,21 +1238,17 @@ for it in range(first_it, last_it + 1, out2D_every):
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
-            im = ax.pcolormesh(mx, my, np.transpose(plot_data),
+            ##im = ax.pcolormesh(mx, my, np.transpose(plot_data),
+            ##                   shading = "auto", cmap = cmaps[n], norm = norms[n])
             ##im = ax.pcolormesh(mx, my, 4.*np.pi*np.transpose(plot_data),  # XXX: useful e.g. when comparing IllinoisGRMHD::smallb2 and GRHydro::bcom_sq
+            ##                   shading = "auto", cmap = cmaps[n], norm = norms[n])
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
+            im = ax.pcolormesh(my, mx, np.transpose(plot_data),
                                shading = "auto", cmap = cmaps[n], norm = norms[n])
-            # XXX XXX XXX XXX XXX XXX
-            # XXX XXX XXX XXX XXX XXX
-            # XXX XXX XXX XXX XXX XXX
-            ##if n == 0:
-            ##    im = ax.pcolormesh(mx, my, np.transpose(plot_data),
-            ##                       shading = "auto", cmap = cmaps[n], norm = norms[n])
-            ##else:
-            ##    im = ax.pcolormesh(my, mx, np.transpose(plot_data),
-            ##                       shading = "auto", cmap = cmaps[n], norm = norms[n])
+            im2 = ax.pcolormesh(-my, mx, np.transpose(plot_data2),
+                                shading = "auto", cmap = cmaps[n], norm = norms[n])
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
@@ -1404,8 +1418,8 @@ for it in range(first_it, last_it + 1, out2D_every):
              # XXX XXX XXX XXX XXX XXX
              # XXX XXX XXX XXX XXX XXX
              # XXX XXX XXX XXX XXX XXX
-             ##"t = " + str("{:.2e}".format(t)) + unit_time_str,
-             "t = " + str(t) + unit_time_str,
+             "t = " + str("{:.2e}".format(t)) + unit_time_str,
+             ##"t = " + str(t) + unit_time_str,
              # XXX XXX XXX XXX XXX XXX
              # XXX XXX XXX XXX XXX XXX
              # XXX XXX XXX XXX XXX XXX
