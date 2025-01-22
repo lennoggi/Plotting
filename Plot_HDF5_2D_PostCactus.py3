@@ -56,11 +56,11 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 
 # Directories containing the files to be opened
 datadirs = (
-    ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
-    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling",
-    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling"
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0006/HDF5_2D",
-    ##"/scratch3/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0006/HDF5_2D"
+    ##"/scratch/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
+    ##"/scratch/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling",
+    ##"/scratch/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling"
+    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0001/HDF5_2D",
+    ##"/scratch/07825/lennoggi/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/output-0001/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -71,33 +71,36 @@ skip_restarts = None
 ##)
 
 # Directory where the plots will be placed
-##plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
-plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling"
+##plotdir = "/scratch/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
+plotdir = "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling"
 
 
 # Which grid functions to plot as field variables
 gfs = (
     ##"rho",
-    "w_lorentz",
+    "rho_b",
     ##"rho_b"
 )
 
 # Which grid functions to plot as stream variables, i.e. integral curves of a
 # vector field ('None' plots nothing)
-gfs_stream = None
-##gfs_stream = (
-##    ("Bx", "By"),
-##    ##("Bx", "Bz")
-##)
+##gfs_stream = None
+gfs_stream = (
+    ##("Bx", "By"),
+    ("Bx", "Bz"),
+)
 
 # Streamline density in plt.streamline (default in Matplotlib is 1)
-streamline_density = 4.
+streamline_density = 3.
+
+# Color of the stream lines
+streamcolor = "white"
 
 
 # Apply a Gaussian smoothing to the central region of the data to reduce noise
 # before plotting them?
 smoothing = (
-    True, ##False,
+    False,
     ##False,
 )
 
@@ -137,8 +140,8 @@ abs_vals = (
 
 
 # Iterations and initial time info
-first_it    = 499712 ##396288 ##499712 ##465920 ##431104 ##106496           ##1454080 ##1620992 ##1540096 ##1454080 ##1368064 ##0
-last_it     = 499712 ##396288 ##499712 ##465920 ##431104 ##106496 ##1000000000  # Set this to a huge number to plot all iterations
+first_it    = 1764352 ##2378752 ##1764352 ##1972224 ##1716224 ##1907712 ##1856512 ##1779712 ##0
+last_it     = 1764352 ##2378752 ##1764352 ##1972224 ##1716224 ##1907712 ##1856512 ##1779712 ##1000000000  # Set this to a huge number to plot all iterations
 out2D_every = 1024 ##400
 t0          = 99189.9 ##0.
 
@@ -167,8 +170,9 @@ compute_min_max = (
 # NOTE: np.array needed to facilitate slicing
 plot_extents = np.array([
      ##np.array([np.log(15.1), np.log(60.),  0., 2.*np.pi]),  #  40*sqrt(2) = 56.5685424949, 60 > 56.5685424949
+     np.array([-20.,  20.,  -20.,  20.]),
      ##np.array([-40.,  40.,  -40.,  40.]),
-     np.array([-200., 200., -200., 200.]),
+     ##np.array([-200., 200., -200., 200.]),
 ])
 
 # Actual plot extent if the input coordinates are not Cartesian, i.e., what you
@@ -201,8 +205,8 @@ fig_ext = ".jpg" ##".png" ##".jpg"
 
 # Limit resolution (saves memory and time)?
 limit_resolution = (
-    ##False,
-    True,
+    False,
+    ##True,
 )
 
 # Resolution to be used if limit_resolution is True
@@ -236,8 +240,8 @@ N_AH_files = 2
 # containing all the AH files for the corresponding simulation restart.
 AH_dirs = (
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data",
-    ##"/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data"
+    "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data",
+    ##"/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_NonSpinning_large_TaperedCooling_NewCooling/AH_data"
 )
 
 
@@ -248,7 +252,7 @@ AH_dirs = (
 
 # Use a logarithmic scale?
 logscale = (
-    False, ##True,
+    True,
     ##True
 )
 
@@ -280,7 +284,7 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 
 # Names of the variables to be put close to the colorbar
 varnames = (
-    "$W$",
+    "$\\rho$",
     ##"$\\rho$"
 )
 
@@ -299,23 +303,24 @@ add_clb = (
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = True and symlogscale[i] = True)
 clb_extents = (
-    ##(1.e-08, 1.e-03),
     ##(1.e-08, 3.e-02),
     ##(1.e-12, 3.e-02),
+    ##(1.e-06, 1.e-02),
+    (1.e-11, 1.e-02),
     ##(0., 0.01),
-    (1., 2.),
+    ##(1.e-05, 5.e-03),
 )
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
 # "both")
 clb_extends = (
-    "max", ##"both",
+    "both",
     ##"both"
 )
 
 # Colormap
 cmaps = (
-    "YlOrRd_r",
+    "plasma",
     ##"plasma"
 )
 
@@ -1238,8 +1243,8 @@ for it in range(first_it, last_it + 1, out2D_every):
         if gfs_stream is not None:
             ##viz.plot_vectors((patch_stream1, patch_stream2))
             ax.streamplot(mx, my, np.transpose(patch_stream1.data), np.transpose(patch_stream2.data),
-                          density = streamline_density, linewidth = 0.5,
-                          color = "black", arrowsize = 1., arrowstyle = "-|>")
+                          density = streamline_density, linewidth = 1.,
+                          color = streamcolor, arrowsize = 1.5, arrowstyle = "-|>")
             ##ax.quiver(mx, my, np.transpose(patch_stream1.data), np.transpose(patch_stream2.data))
 
         if add_clb[n]:
@@ -1260,7 +1265,14 @@ for it in range(first_it, last_it + 1, out2D_every):
             # In case there are multiple files available for the same apparent
             # horizon, the following overwrites the AH that many times
             for r in range(1, N_AH_files + 1):
+                # XXX XXX XXX XXX XXX XXX
+                # XXX XXX XXX XXX XXX XXX
+                # XXX XXX XXX XXX XXX XXX
                 AH_file = ("h.t" + str(it) + ".ah" + str(r) + ".gp"
+                ##AH_file = ("h.t2138112.ah" + str(r) + ".gp"
+                # XXX XXX XXX XXX XXX XXX
+                # XXX XXX XXX XXX XXX XXX
+                # XXX XXX XXX XXX XXX XXX
                            if there_are_iters_avail[n]
                            else
                            "h.t" + str(int(last_valid_it[n])) + ".ah" + str(r) + ".gp")
@@ -1273,7 +1285,7 @@ for it in range(first_it, last_it + 1, out2D_every):
                         yhull   = AH_data[:, AHfile_cols2[n]][hull.vertices]
 
                         ax.fill(xhull*conv_fac_space, yhull*conv_fac_space,
-                                linewidth = 1., facecolor = "None", edgecolor = "black")
+                                linewidth = 2., facecolor = "None", edgecolor = "black", zorder = 3)
 
                         print("Dataset " + str(n) + ": apparent horizon " + str(r) + " drawn from AH file " + str(r))
                     else:
