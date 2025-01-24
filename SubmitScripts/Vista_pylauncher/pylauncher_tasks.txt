@@ -1,0 +1,11 @@
+# This file contains the commands to be executed by pylauncher when invoked by Vista_pylauncher.sub
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0000.py3
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0001.py3
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0002.py3
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0003.py3
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0004.py3
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0005.py3
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0006.py3
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0007.py3
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0008.py3
+cd /home1/07825/lennoggi/Git_repositories/Plotting && time python3 Plot_HDF5_2D_PostCactus_0009.py3
