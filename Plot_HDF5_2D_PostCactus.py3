@@ -56,10 +56,10 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 
 # Directories containing the files to be opened
 datadirs = (
-    ##"/scratch/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
+    ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
     ##"/work2/07825/lennoggi/frontera/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ_checkpoint/rho",
-    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0011/HDF5_2D",
-    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0011/HDF5_2D"
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0011/HDF5_2D",
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0011/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -70,8 +70,8 @@ skip_restarts = None
 ##)
 
 # Directory where the plots will be placed
-##plotdir = "/scratch/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
-plotdir = "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/rho_b_xy_rho_b_xz"
+##plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
+plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/rho_b_xy_rho_b_xz"
 
 
 # Which grid functions to plot as field variables
@@ -241,8 +241,8 @@ N_AH_files = 2
 # containing all the AH files for the corresponding simulation restart.
 AH_dirs = (
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data",
-    "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data"
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data",
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data"
 )
 
 
@@ -727,10 +727,14 @@ if units == "arbitrary":
             unit_gf_str = "$\,\left[\mathbf{M}^{-2}\\right]$"
         elif gf == "press" or gf == "P":
             conv_fac_gf = 1.
-            unit_gf_str = "$\,\left[\mathbf{M}^{2}\\right]$"
-        elif gf == "eps":
+            unit_gf_str = "$\,\left[\mathbf{M}^{-2}\\right]$"
+        elif gf == "smallb2" or gf == "b2small" or gf == "bcom_sq":
             conv_fac_gf = 1.
-            unit_gf_str = "$\,\left[\mathbf{M}\\right]$"
+            unit_gf_str = "$\,\left[\mathbf{M}^{-2}\\right]$"
+        elif gf == "Bvec[0]" or gf == "Bvec[1]" or gf == "Bvec[2]"\
+          or gf == "Bx"      or gf == "By"      or gf == "Bz":
+            conv_fac_gf = 1.
+            unit_gf_str = "$\,\left[\mathbf{M}^{-1}\\right]$"
         elif gf == "smallb2" or gf == "b2small" or gf == "bcom_sq":
             conv_fac_gf = 1.
             unit_gf_str = "$\,\left[\mathbf{M}^{-1}\\right]$"
@@ -753,10 +757,14 @@ elif units == "geometric":
             unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}^{-2}\\right]$"
         elif gf == "press" or gf == "P":
             conv_fac_gf = 1.
-            unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}^{2}\\right]$"
-        elif gf == "eps":
+            unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}^{-2}\\right]$"
+        elif gf == "smallb2" or gf == "b2small" or gf == "bcom_sq":
             conv_fac_gf = 1.
-            unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}\\right]$"
+            unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}^{-2}\\right]$"
+        elif gf == "Bvec[0]" or gf == "Bvec[1]" or gf == "Bvec[2]"\
+          or gf == "Bx"      or gf == "By"      or gf == "Bz":
+            conv_fac_gf = 1.
+            unit_gf_str = "$\,\left[\mathbf{M_{\\odot}}^{-1}\\right]$"
         else:
             conv_fac_gf = 1.
             unit_gf_str = ""
