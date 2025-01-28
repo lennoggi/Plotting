@@ -58,8 +58,8 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 datadirs = (
     ##"/scratch/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
     ##"/work2/07825/lennoggi/frontera/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ_checkpoint/rho",
-    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0000/HDF5_2D",
-    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0000/HDF5_2D"
+    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0011/HDF5_2D",
+    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0011/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -139,7 +139,7 @@ abs_vals = (
 
 
 # Iterations and initial time info
-first_it    = 745472 ##0
+first_it    = 2054144 ##0
 last_it     = 1000000000  # Set this to a huge number to plot all iterations
 out2D_every = 2048 ##1024 ##400
 t0          = 0. ##99189.9
@@ -1189,6 +1189,16 @@ for it in range(first_it, last_it + 1, out2D_every):
 
         if Nx_new != Nx or Ny_new != Ny:
             warnings.warn("Dataset " + str(n) + ": grid reshaped from (" + str(Nx) + ", " + str(Ny) + ") to (" + str(Nx_new) + ", " + str(Ny_new) + ")")
+
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+        # XXX: bad hack to avoid a tiny phi-cutout around phi=0 with spherical-like coordinates
+        ##plot_data[:, -1] = 0.5*(plot_data[:, 0] + plot_data[:, -2])
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+        # XXX XXX XXX XXX XXX XXX
+
 
         # Apply a Gaussian filter to the central portion of the image if requested
         if smoothing[n]:
