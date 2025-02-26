@@ -56,10 +56,10 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 
 # Directories containing the files to be opened
 datadirs = (
-    ##"/scratch/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
+    ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
     ##"/work2/07825/lennoggi/frontera/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ_checkpoint/rho",
-    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0001/HDF5_3D",
-    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0001/HDF5_2D"
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0001/HDF5_3D",
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0001/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -70,23 +70,23 @@ skip_restarts = None
 ##)
 
 # Directory where the plots will be placed
-##plotdir = "/scratch/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
-plotdir = "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling"
+##plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
+plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling"
 
 
 # Which grid functions to plot as field variables
 gfs = (
     ##"rho",
-    "rho_b",
-    "rho_b"
+    "smallb2",
+    "Pmag_over_P"
 )
 
 # Which grid functions to plot as stream variables, i.e. integral curves of a
 # vector field ('None' plots nothing)
 ##gfs_stream = None
 gfs_stream = (
-    ("Bx", "By"),
     ("Bx", "Bz"),
+    ("Bx", "By"),
 )
 
 # Streamline density in plt.streamline (default in Matplotlib is 1)
@@ -109,8 +109,8 @@ abs_vals = (
 # Read 3D data instead of 2D data? Typically useful to visualize data off the
 # usual x=0, y=0, or z-0 planes
 read3D = (
-    True,
-    False
+    False,
+    True
 )
 
 # Which 2D slices to plot
@@ -118,15 +118,15 @@ read3D = (
 #   - Spherical-like coordinates: r-theta, r-phi or theta-phi plane
 planes = (
     ##"xz",
-    "xy",
-    "xz"
+    "xz",
+    "xy"
 )
 
 # If read3D is True, this is the constant coordinate value where the 3D data are
 # sliced
 read3D_slice_coords = (
-    100.,
-    0.
+    0.,
+    100.
 )
 
 
@@ -190,7 +190,7 @@ plot_extents = np.array([
      ##np.array([-40.,  40.,  -40.,  40.]),
      ##np.array([-100., 100., -100., 100.]),
      np.array([-200., 200., -200., 200.]),
-     np.array([-200., 200., -200., 200.])
+     np.array([-60., 60., -60., 60.])
 ])
 
 # Actual plot extent if the input coordinates are not Cartesian, i.e., what you
@@ -258,8 +258,8 @@ N_AH_files = 2
 # containing all the AH files for the corresponding simulation restart.
 AH_dirs = (
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data",
-    "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data"
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data",
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data"
 )
 
 
@@ -302,8 +302,8 @@ units = "arbitrary"  # "arbitrary", "geometric" or "SI"
 
 # Names of the variables to be put close to the colorbar
 varnames = (
-    "$\\rho$",
-    "$\\rho$"
+    "$b^2/2P$",
+    "$b^2/2P$"
 )
 
 # Titles for each subplot
@@ -321,8 +321,8 @@ add_clb = (
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = True and symlogscale[i] = True)
 clb_extents = (
-    (1.e-12, 1.e-02),
-    (1.e-12, 1.e-02),
+    (1.e-04, 1.e+01),
+    (1.e-04, 1.e+01),
     ##(1.e-05, 5.e-03),
 )
 
@@ -335,8 +335,8 @@ clb_extends = (
 
 # Colormap
 cmaps = (
-    "plasma",
-    "plasma"
+    "gnuplot2",
+    "gnuplot2"
 )
 
 # Title options
@@ -1194,10 +1194,10 @@ for it in range(first_it, last_it + 1, out2D_every):
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
-            ##patch_plot2 = read_data[n]("rho_PhiEqualPi", it, geom = g, adjust_spacing = True,
-            ##                           order = 0, outside_val= 0., level_fill = False)
-            ##if abs_vals[n]: plot_data2 = np.absolute(patch_plot2.data*conv_fac_gf)
-            ##else:           plot_data2 = patch_plot2.data*conv_fac_gf
+            patch_plot2 = read_data[n]("P", it, geom = g, adjust_spacing = True,
+                                       order = 0, outside_val= 0., level_fill = False)
+            if abs_vals[n]: plot_data2 = np.absolute(patch_plot2.data*conv_fac_gf)
+            else:           plot_data2 = patch_plot2.data*conv_fac_gf
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
@@ -1227,8 +1227,8 @@ for it in range(first_it, last_it + 1, out2D_every):
                 assert plot_data.shape[2] == 3  # NOTE: reshaped from 2 to 3
                 plot_data = plot_data[:, :, 1]  # Make the 3D slice an acual 2D NumPy array by just selecting element 1 along z
                 # XXX XXX XXX XXX XXX XXX
-                ##assert plot_data2.shape == (Nx_new, Ny_new, 3)  # NOTE: reshaped from 2 to 3
-                ##plot_data2 = plot_data2[:, :, 0]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along z
+                assert plot_data2.shape == (Nx_new, Ny_new, 3)  # NOTE: reshaped from 2 to 3
+                plot_data2 = plot_data2[:, :, 0]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along z
                 # XXX XXX XXX XXX XXX XXX
                 if gfs_stream is not None:
                     assert stream1_data.shape == (Nx_new, Ny_new, 3)  # NOTE: reshaped from 2 to 3
@@ -1241,8 +1241,8 @@ for it in range(first_it, last_it + 1, out2D_every):
                 assert plot_data.shape[1] == 3  # NOTE: reshaped from 2 to 3
                 plot_data = plot_data[:, 1, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 1 along y
                 # XXX XXX XXX XXX XXX XXX
-                ##assert plot_data2.shape == (Nx_new, 3, Ny_new)  # NOTE: reshaped from 2 to 3
-                ##plot_data2 = plot_data2[:, 1, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 1 along y
+                assert plot_data2.shape == (Nx_new, 3, Ny_new)  # NOTE: reshaped from 2 to 3
+                plot_data2 = plot_data2[:, 1, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 1 along y
                 # XXX XXX XXX XXX XXX XXX
                 if gfs_stream is not None:
                     assert stream1_data.shape == (Nx_new, 3, Ny_new)  # NOTE: reshaped from 2 to 3
@@ -1255,8 +1255,8 @@ for it in range(first_it, last_it + 1, out2D_every):
                 assert plot_data.shape[0] == 3  # NOTE: reshaped from 2 to 3
                 plot_data = plot_data[1, :, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along x
                 # XXX XXX XXX XXX XXX XXX
-                ##assert plot_data2.shape == (3, Nx_new, Ny_new)  # NOTE: reshaped from 2 to 3
-                ##plot_data2 = plot_data2[1, :, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along x
+                assert plot_data2.shape == (3, Nx_new, Ny_new)  # NOTE: reshaped from 2 to 3
+                plot_data2 = plot_data2[1, :, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along x
                 # XXX XXX XXX XXX XXX XXX
                 if gfs_stream is not None:
                     assert stream1_data.shape == (3, Nx_new, Ny_new)  # NOTE: reshaped from 2 to 3
@@ -1267,7 +1267,7 @@ for it in range(first_it, last_it + 1, out2D_every):
 
             assert plot_data.shape == (Nx_new, Ny_new)
             # XXX XXX XXX XXX XXX XXX
-            ##assert plot_data2.shape == (Nx_new, Ny_new)
+            assert plot_data2.shape == (Nx_new, Ny_new)
             # XXX XXX XXX XXX XXX XXX
             if gfs_stream is not None:
                 assert stream1_data.shape == (Nx_new, Ny_new)
@@ -1338,8 +1338,8 @@ for it in range(first_it, last_it + 1, out2D_every):
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
-            im = ax.pcolormesh(mx, my, np.transpose(plot_data),
-                               shading = "auto", cmap = cmaps[n], norm = norms[n])
+            ##im = ax.pcolormesh(mx, my, np.transpose(plot_data),
+            ##                   shading = "auto", cmap = cmaps[n], norm = norms[n])
             ##im = ax.pcolormesh(mx, my, 4.*np.pi*np.transpose(plot_data),  # XXX: useful e.g. when comparing IllinoisGRMHD::smallb2 and GRHydro::bcom_sq
             ##                   shading = "auto", cmap = cmaps[n], norm = norms[n])
             # XXX XXX XXX XXX XXX XXX
@@ -1349,6 +1349,10 @@ for it in range(first_it, last_it + 1, out2D_every):
             ##                   shading = "auto", cmap = cmaps[n], norm = norms[n])
             ##im2 = ax.pcolormesh(-my, mx, np.transpose(plot_data2),
             ##                    shading = "auto", cmap = cmaps[n], norm = norms[n])
+            if n == 1: im = ax.pcolormesh(mx, my, np.transpose(0.5*plot_data/plot_data2),  # XXX: combine two datasets
+                                          shading = "auto", cmap = cmaps[n], norm = norms[n])
+            else       im = ax.pcolormesh(mx, my, np.transpose(plot_data),
+                                          shading = "auto", cmap = cmaps[n], norm = norms[n])
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
@@ -1486,11 +1490,13 @@ for it in range(first_it, last_it + 1, out2D_every):
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
-        ##if n == 0:
+        if n == 0:
         ##    ax.add_artist(plt.Circle((0., 0.), 15., fill = False, linestyle = "--", linewidth = 1., color = "black"))
         ##    ax.add_artist(plt.Circle((0., 0.), 20., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
         ##    ax.add_artist(plt.Circle((0., 0.), 30., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
         ##    ax.add_artist(plt.Circle((0., 0.), 40., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+            ax.text(0.01, 0.02, "$z=$" + str(read3D_slice_coords) + "$\,M$",
+                    color = "black", fontsize = 10., fontweigth = "bold")
         ##elif n ==1:
         ##    ax.axvline(x = -15., linestyle = "--", linewidth = 1., color = "black")
         ##    ax.axvline(x =  15., linestyle = "--", linewidth = 1., color = "black")
