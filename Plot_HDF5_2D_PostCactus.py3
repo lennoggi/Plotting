@@ -56,10 +56,10 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 
 # Directories containing the files to be opened
 datadirs = (
-    ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
+    ##"/scratch/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
     ##"/work2/07825/lennoggi/frontera/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ_checkpoint/rho",
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista/output-0000/HDF5_3D",
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista/output-0000/HDF5_2D"
+    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0001/HDF5_3D",
+    "/scratch/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0001/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -70,8 +70,8 @@ skip_restarts = None
 ##)
 
 # Directory where the plots will be placed
-##plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
-plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista"
+##plotdir = "/scratch/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
+plotdir = "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling"
 
 
 # Which grid functions to plot as field variables
@@ -154,8 +154,8 @@ smoothing_fractions = (
 
 
 # Iterations and initial time info
-first_it    = 4153344 ##0
-last_it     = 4153344 ##1000000000  # Set this to a huge number to plot all iterations
+first_it    = 999424 ##0
+last_it     = 999424 ##1000000000  # Set this to a huge number to plot all iterations
 out2D_every = 2048 ##1024 ##400
 t0          = 99189.9 ##0. ##99189.9
 
@@ -258,8 +258,8 @@ N_AH_files = 2
 # containing all the AH files for the corresponding simulation restart.
 AH_dirs = (
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista/AH_data",
-    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista/AH_data"
+    "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data",
+    "/scratch/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data"
 )
 
 
@@ -1383,9 +1383,9 @@ for it in range(first_it, last_it + 1, out2D_every):
                 # XXX XXX XXX XXX XXX XXX
                 # XXX XXX XXX XXX XXX XXX
                 # XXX XXX XXX XXX XXX XXX
-                #AH_file = ("h.t" + str(it) + ".ah" + str(r) + ".gp"
+                AH_file = ("h.t" + str(it) + ".ah" + str(r) + ".gp"
                 ##AH_file = ("h.t2138112.ah" + str(r) + ".gp"
-                AH_file = ("h.t4087808.ah" + str(r) + ".gp"
+                ##AH_file = ("h.t4087808.ah" + str(r) + ".gp"
                 # XXX XXX XXX XXX XXX XXX
                 # XXX XXX XXX XXX XXX XXX
                 # XXX XXX XXX XXX XXX XXX
