@@ -58,8 +58,8 @@ rcParams["mathtext.fontset"] = "dejavuserif"
 datadirs = (
     ##"/scratch3/07825/lennoggi/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ/output-0012/data",
     ##"/work2/07825/lennoggi/frontera/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ_checkpoint/rho",
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0011/HDF5_2D",
-    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/output-0011/HDF5_2D"
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista/output-0000/HDF5_3D",
+    "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista/output-0000/HDF5_2D"
 )
 
 # Simulation restarts to be skipped (set to 'None' to go over all of them)
@@ -71,7 +71,7 @@ skip_restarts = None
 
 # Directory where the plots will be placed
 ##plotdir = "/scratch3/07825/lennoggi/Movies/CBD_prod_MPWZ9_724_140_280_rmin_15_rmax_2e4_q_1_d_20_NZ_FZ"
-plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/rho_b_xy_rho_b_xz"
+plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista"
 
 
 # Which grid functions to plot as field variables
@@ -83,17 +83,51 @@ gfs = (
 
 # Which grid functions to plot as stream variables, i.e. integral curves of a
 # vector field ('None' plots nothing)
-gfs_stream = None
-##gfs_stream = (
-##    ##("Bx", "By"),
-##    ("Bx", "Bz"),
-##)
+##gfs_stream = None
+gfs_stream = (
+    ("Bx", "By"),
+    ("Bx", "Bz"),
+)
 
 # Streamline density in plt.streamline (default in Matplotlib is 1)
 streamline_density = 3.
 
 # Color of the stream lines
 streamcolor = "white"
+
+
+# Input coordinates
+input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
+
+# Plot absolute values?
+abs_vals = (
+    False,
+    False
+)
+
+
+# Read 3D data instead of 2D data? Typically useful to visualize data off the
+# usual x=0, y=0, or z-0 planes
+read3D = (
+    True,
+    False
+)
+
+# Which 2D slices to plot
+#   - Cartesian      coordinates: xy, xz or yz plane
+#   - Spherical-like coordinates: r-theta, r-phi or theta-phi plane
+planes = (
+    ##"xz",
+    "xy",
+    "xz"
+)
+
+# If read3D is True, this is the constant coordinate value where the 3D data are
+# sliced
+read3D_slice_coords = (
+    100.,
+    0.
+)
 
 
 # Apply a Gaussian smoothing to the central region of the data to reduce noise
@@ -119,30 +153,11 @@ smoothing_fractions = (
 )
 
 
-# Input coordinates
-input_coords = "Cartesian"  # "Cartesian" or "Exponential fisheye"
-
-# Which 2D slices to plot
-#   - Cartesian      coordinates: xy, xz or yz plane
-#   - Spherical-like coordinates: r-theta, r-phi or theta-phi plane
-planes = (
-    ##"xz",
-    "xy",
-    "xz"
-)
-
-# Plot absolute values?
-abs_vals = (
-    False,
-    False
-)
-
-
 # Iterations and initial time info
-first_it    = 2054144 ##0
-last_it     = 1000000000  # Set this to a huge number to plot all iterations
+first_it    = 4153344 ##0
+last_it     = 4153344 ##1000000000  # Set this to a huge number to plot all iterations
 out2D_every = 2048 ##1024 ##400
-t0          = 0. ##99189.9
+t0          = 99189.9 ##0. ##99189.9
 
 # Binary orbit counting
 orb_count = False
@@ -172,7 +187,9 @@ plot_extents = np.array([
      ##np.array([np.log(15.1), np.log(300.),  0., 2.*np.pi]),  #  200*sqrt(2) = 282.842712475, 300 > 282.842712475
      ##np.array([np.log(15.1), np.log(600.),  0., 2.*np.pi]),  #  400*sqrt(2) = 565.685424949, 600 > 565.685424949
      ##np.array([-20.,  20.,  -20.,  20.]),
-     np.array([-40.,  40.,  -40.,  40.]),
+     ##np.array([-40.,  40.,  -40.,  40.]),
+     ##np.array([-100., 100., -100., 100.]),
+     np.array([-200., 200., -200., 200.]),
      np.array([-200., 200., -200., 200.])
 ])
 
@@ -206,7 +223,7 @@ fig_ext = ".png" ##".jpg"
 
 # Limit resolution (saves memory and time)?
 limit_resolution = (
-    False,
+    True,
     True
 )
 
@@ -241,8 +258,8 @@ N_AH_files = 2
 # containing all the AH files for the corresponding simulation restart.
 AH_dirs = (
     ##"/lagoon/lennoggi/Snapshots/CBD_handoff_IGM_McLachlan_Spinning_aligned08_RadCool_OrbSep10M/AH_data",
-    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data",
-    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling/AH_data"
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista/AH_data",
+    "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_AfterVista/AH_data"
 )
 
 
@@ -304,9 +321,9 @@ add_clb = (
 # Extent of the color scales (note that the actual scale may extend below
 # colorbar_extents[i][0] if logscale[i] = True and symlogscale[i] = True)
 clb_extents = (
-    (1.e-08, 3.e-02),
-    (1.e-12, 3.e-02),
-    ##(1.e-11, 1.e-02),
+    (1.e-12, 1.e-02),
+    (1.e-12, 1.e-02),
+    ##(1.e-05, 5.e-03),
 )
 
 # Type of colorbar extension outside its limits ("neither", "max", "min" or
@@ -501,6 +518,25 @@ if gfs_stream is not None:
     for gf_stream in gfs_stream:
         assert len(gf_stream) == 2
 
+
+assert input_coords == "Cartesian" or input_coords == "Exponential fisheye"
+
+assert len(abs_vals) == nplots
+for abs_val in abs_vals:
+    assert abs_val or not abs_val
+
+
+assert len(read3D) == nplots
+for r3D in read3D:
+    assert r3D or not r3D
+
+assert len(planes) == nplots
+for plane in planes:
+    assert plane == "xy" or plane == "xz" or plane == "yz"
+
+assert len(read3D_slice_coords) == nplots
+
+
 assert len(smoothing) == nplots
 for sm in smoothing:
     assert sm or not sm
@@ -515,15 +551,6 @@ for sm_fracs in smoothing_fractions:
     for sm_frac in sm_fracs:
         assert sm_frac >= 0. and sm_frac <= 1.
 
-assert input_coords == "Cartesian" or input_coords == "Exponential fisheye"
-
-assert len(planes) == nplots
-for plane in planes:
-    assert plane == "xy" or plane == "xz" or plane == "yz"
-
-assert len(abs_vals) == nplots
-for abs_val in abs_vals:
-    assert abs_val or not abs_val
 
 assert first_it    >= 0
 assert last_it     >= first_it
@@ -856,7 +883,9 @@ for n in range(nplots):
         simdirs[n].dirs = [d for d in simdirs[n].dirs if not any(skip_restart in d for skip_restart in skip_restarts[n])]
 
     if planes[n] == "xy":
-        read_data.append(simdirs[n].grid.hdf5.xy.read)
+        if read3D[n]: read_data.append(simdirs[n].grid.hdf5.xyz.read)
+        else:         read_data.append(simdirs[n].grid.hdf5.xy.read)
+
         AHfile_cols1[n] = 3
         AHfile_cols2[n] = 4
 
@@ -868,7 +897,9 @@ for n in range(nplots):
             ylabels.append("z$\,$" + unit_space_str)
 
     elif planes[n] == "xz":
-        read_data.append(simdirs[n].grid.hdf5.xz.read)
+        if read3D[n]: read_data.append(simdirs[n].grid.hdf5.xyz.read)
+        else:         read_data.append(simdirs[n].grid.hdf5.xz.read)
+
         AHfile_cols1[n] = 3
         AHfile_cols2[n] = 5
 
@@ -880,7 +911,9 @@ for n in range(nplots):
             ylabels.append("y$\,$" + unit_space_str)
 
     elif planes[n] == "yz":
-        read_data.append(simdirs[n].grid.hdf5.yz.read)
+        if read3D[n]: read_data.append(simdirs[n].grid.hdf5.xyz.read)
+        else:         read_data.append(simdirs[n].grid.hdf5.yz.read)
+
         AHfile_cols1[n] = 4
         AHfile_cols2[n] = 5
 
@@ -999,13 +1032,11 @@ for n in range(nplots):
 # ====
 nframe = int(first_it/out2D_every)
 
-# Toy grid used to check whether an iteration is available for a given dataset
+# Extent Toy grids used to check whether an iteration is available for a given dataset
 xmin_largest = plot_extents[:, 0].max()
 xmax_largest = plot_extents[:, 1].max()
 ymin_largest = plot_extents[:, 2].max()
 ymax_largest = plot_extents[:, 3].max()
-g_toy = gd.RegGeom([2, 2], [xmin_largest, ymin_largest],
-                      x1 = [xmax_largest, ymax_largest])
 
 # Array storing the times of each dataset. Used to figure out the largest time
 # between two dataset in case any of them is not evolving anymore.
@@ -1044,8 +1075,16 @@ for it in range(first_it, last_it + 1, out2D_every):
 
         # Try to read data on a small, "toy" grid just to make sure the current
         # iteration is available for the current dataset
+        if read3D[n]:
+            if   planes[n] == "xy": gtoy = gd.RegGeom([2, 2, 1], [xmin_largest, ymin_largest, read3D_slice_coords[n]], x1 = [xmax_largest, ymax_largest, read3D_slice_coords[n]])
+            elif planes[n] == "xz": gtoy = gd.RegGeom([2, 1, 2], [xmin_largest, read3D_slice_coords[n], ymin_largest], x1 = [xmax_largest, read3D_slice_coords[n], ymax_largest])
+            elif planes[n] == "yz": gtoy = gd.RegGeom([1, 2, 2], [read3D_slice_coords[n], xmin_largest, ymin_largest], x1 = [read3D_slice_coords[n], xmax_largest, ymax_largest])
+            else: raise RuntimeError("Unrecognized plane \"" + planes[n] + "\"")
+        else:
+            gtoy = gd.RegGeom([2, 2], [xmin_largest, ymin_largest], x1 = [xmax_largest, ymax_largest])
+
         patch_toy = read_data[n](gfs[n], it,
-                                 geom           = g_toy,
+                                 geom           = gtoy,
                                  adjust_spacing = True,
                                  order          = 0,
                                  outside_val    = 0.,
@@ -1070,106 +1109,106 @@ for it in range(first_it, last_it + 1, out2D_every):
                 raise StopIteration  # Dirty hack to break a nested loop
 
             else: 
-                patch_plot = read_data[n](gfs[n], last_valid_it[n],
-                                          geom           = last_valid_g[n],
-                                          adjust_spacing = True,
-                                          order          = 0,
-                                          outside_val    = 0.,
-                                          level_fill     = False)
+                patch_plot = read_data[n](gfs[n], last_valid_it[n], geom = last_valid_g[n], adjust_spacing = True,
+                                          order = 0, outside_val = 0., level_fill = False)
                 if gfs_stream is not None:
-                    patch_stream1 = read_data[n](gfs_stream[n][0], last_valid_it[n],
-                                                 geom           = last_valid_g[n],
-                                                 adjust_spacing = True,
-                                                 order          = 0,
-                                                 outside_val    = 0.,
-                                                 level_fill     = False)
-                    patch_stream2 = read_data[n](gfs_stream[n][1], last_valid_it[n],
-                                                 geom           = last_valid_g[n],
-                                                 adjust_spacing = True,
-                                                 order          = 0,
-                                                 outside_val    = 0.,
-                                                 level_fill     = False)
+                    patch_stream1 = read_data[n](gfs_stream[n][0], last_valid_it[n], geom = last_valid_g[n], adjust_spacing = True,
+                                                 order = 0, outside_val = 0., level_fill = False)
+                    patch_stream2 = read_data[n](gfs_stream[n][1], last_valid_it[n], geom = last_valid_g[n], adjust_spacing = True,
+                                                 order = 0, outside_val = 0., level_fill = False)
 
         else:
             # Build an object containing the grid hierarchy, i.e. a list of
             # objects each containing information about the grid patch (size,
             # resolution, time, iteration, refinement level, number of ghost
             # cells, etc.) and the associated data 
-            patches = read_data[n](gfs[n], it,
-                                   geom           = None,
-                                   adjust_spacing = True,
-                                   order          = 0,
-                                   outside_val    = 0.,
-                                   level_fill     = False)
+            patches = read_data[n](gfs[n], it, geom = None, adjust_spacing = True,
+                                   order = 0, outside_val = 0., level_fill = False)
 
             if limit_resolution[n]:
                 deltax_min = resolution[n]
                 deltay_min = resolution[n]
-                print("Dataset " + str(n) + ": grid spacing limited to ("
-                      + str(deltax_min) + ", " + str(deltay_min) + ")")
+                if read3D[n]:
+                    deltaz_min = resolution[n]
+                    print("Dataset " + str(n) + ": grid spacing limited to (" +
+                          str(deltax_min) + ", " + str(deltay_min) + ", " + str(deltaz_min) + ")")
+                else:
+                    print("Dataset " + str(n) + ": grid spacing limited to (" +
+                          str(deltax_min) + ", " + str(deltay_min) + ")")
             else:
                 for i in range(len(patches)):
                     geom   = patches[i].geom()
                     deltas = geom.dx()
                     dx     = deltas[0]
                     dy     = deltas[1]
+                    if read3D[n]:
+                        dz = deltas[2]
 
                     if i == 0:
                         deltax_min = dx
                         deltay_min = dy
+                        if read3D[n]: deltaz_min = dz
                     else:
                         if dx < deltax_min: deltax_min = dx
                         if dy < deltay_min: deltay_min = dy
+                        if read3D[n] and dz < deltaz_min: deltaz_min = dz
 
-                print("Dataset " + str(n) + ": finest grid spacing is ("
-                      + str(deltax_min) + ", " + str(deltay_min) + ")")
+                if read3D[n]:
+                    print("Dataset " + str(n) + ": finest grid spacing is (" +
+                          str(deltax_min) + ", " + str(deltay_min) + ", " + str(deltay_min) + ")")
+                else:
+                    print("Dataset " + str(n) + ": finest grid spacing is (" +
+                          str(deltax_min) + ", " + str(deltay_min) + ")")
 
 
-            xmin  = plot_extents[n][0]
-            xmax  = plot_extents[n][1]
-            ymin  = plot_extents[n][2]
-            ymax  = plot_extents[n][3]
-
+            xmin, xmax, ymin, ymax = plot_extents[n]
             Nx = int((xmax - xmin)/deltax_min)
             Ny = int((ymax - ymin)/deltay_min)
 
-            g = gd.RegGeom([Nx, Ny], [xmin, ymin], x1 = [xmax, ymax])
+            if read3D[n]:
+                if planes[n] == "xy":
+                    hdz = 0.5*deltaz_min
+                    g   = gd.RegGeom([Nx, Ny, 2], [xmin, ymin, read3D_slice_coords[n] - hdz],
+                                             x1 = [xmax, ymax, read3D_slice_coords[n] + hdz])  # Thin 3D slice with 2 cells along x (using only one cell is not supported)
+                elif planes[n] == "xz":
+                    hdy = 0.5*deltay_min
+                    g   = gd.RegGeom([Nx, 2, Ny], [xmin, read3D_slice_coords[n] - hdy, ymin],
+                                             x1 = [xmax, read3D_slice_coords[n] + hdy, ymax])  # Thin 3D slice with 2 cells along y (using only one cell is not supported)
+                elif planes[n] == "yz":
+                    hdx = 0.5*deltax_min
+                    g   = gd.RegGeom([2, Nx, Ny], [read3D_slice_coords[n] - hdy, xmin, ymin],
+                                             x1 = [read3D_slice_coords[n] + hdy, xmax, ymax])  # Thin 3D slice with 2 cells along z (using only one cell is not supported)
+                else: raise RuntimeError("Unrecognized plane \"" + planes[n] + "\"")
+            else:
+                g = gd.RegGeom([Nx, Ny], [xmin, ymin], x1 = [xmax, ymax])
+
 
             # Build the field and stream patches to be plotted, which are
             # resampled to a uniform grid (with the finest or custom grid
             # spacing)
-            patch_plot = read_data[n](gfs[n], it,
-                                      geom           = g,
-                                      adjust_spacing = True,
-                                      order          = 0,
-                                      outside_val    = 0.,
-                                      level_fill     = False)
+            patch_plot = read_data[n](gfs[n], it, geom = g, adjust_spacing = True,
+                                      order = 0, outside_val = 0., level_fill = False)
+            if abs_vals[n]: plot_data = np.absolute(patch_plot.data*conv_fac_gf)
+            else:           plot_data = patch_plot.data*conv_fac_gf
+
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
-            ##patch_plot2 = read_data[n]("rho_PhiEqualPi", it,
-            ##                           geom           = g,
-            ##                           adjust_spacing = True,
-            ##                           order          = 0,
-            ##                           outside_val    = 0.,
-            ##                           level_fill     = False)
+            ##patch_plot2 = read_data[n]("rho_PhiEqualPi", it, geom = g, adjust_spacing = True,
+            ##                           order = 0, outside_val= 0., level_fill = False)
+            ##if abs_vals[n]: plot_data2 = np.absolute(patch_plot2.data*conv_fac_gf)
+            ##else:           plot_data2 = patch_plot2.data*conv_fac_gf
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
 
             if gfs_stream is not None:
-                patch_stream1 = read_data[n](gfs_stream[n][0], it,
-                                             geom           = g,
-                                             adjust_spacing = True,
-                                             order          = 0,
-                                             outside_val    = 0.,
-                                             level_fill     = False)
-                patch_stream2 = read_data[n](gfs_stream[n][1], it,
-                                             geom           = g,
-                                             adjust_spacing = True,
-                                             order          = 0,
-                                             outside_val    = 0.,
-                                             level_fill     = False)
+                patch_stream1 = read_data[n](gfs_stream[n][0], it, geom = g, adjust_spacing = True,
+                                             order = 0, outside_val = 0., level_fill = False)
+                patch_stream2 = read_data[n](gfs_stream[n][1], it, geom = g, adjust_spacing = True,
+                                             order = 0, outside_val = 0., level_fill = False)
+                stream1_data = patch_stream1.data
+                stream2_data = patch_stream2.data
 
 
         # The option 'adjust_spacing = True' above may reshape patch_plot.data
@@ -1181,19 +1220,61 @@ for it in range(first_it, last_it + 1, out2D_every):
         # NOTE: alternatively, one could specify 'adjust_spacing = False' and
         #   PostCactus wouldn't snap to the finest available resolution, leaving
         #   the shape of patch_plot untouched.
-        if abs_vals[n]: plot_data = np.absolute(patch_plot.data*conv_fac_gf)
-        else:           plot_data = patch_plot.data*conv_fac_gf
-        # XXX XXX XXX XXX XXX XXX
-        # XXX XXX XXX XXX XXX XXX
-        # XXX XXX XXX XXX XXX XXX
-        ##if abs_vals[n]: plot_data2 = np.absolute(patch_plot2.data*conv_fac_gf)
-        ##else:           plot_data2 = patch_plot2.data*conv_fac_gf
-        # XXX XXX XXX XXX XXX XXX
-        # XXX XXX XXX XXX XXX XXX
-        # XXX XXX XXX XXX XXX XXX
+        if read3D[n]:
+            if planes[n] == "xy":
+                Nx_new = plot_data.shape[0]
+                Ny_new = plot_data.shape[1]
+                assert plot_data.shape[2] == 3  # NOTE: reshaped from 2 to 3
+                plot_data = plot_data[:, :, 1]  # Make the 3D slice an acual 2D NumPy array by just selecting element 1 along z
+                # XXX XXX XXX XXX XXX XXX
+                ##assert plot_data2.shape == (Nx_new, Ny_new, 3)  # NOTE: reshaped from 2 to 3
+                ##plot_data2 = plot_data2[:, :, 0]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along z
+                # XXX XXX XXX XXX XXX XXX
+                if gfs_stream is not None:
+                    assert stream1_data.shape == (Nx_new, Ny_new, 3)  # NOTE: reshaped from 2 to 3
+                    assert stream2_data.shape == (Nx_new, Ny_new, 3)  # NOTE: reshaped from 2 to 3
+                    stream1_data = stream1_data[:, :, 1]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along z
+                    stream2_data = stream2_data[:, :, 1]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along z
+            elif planes[n] == "xz":
+                Nx_new = plot_data.shape[0]
+                Ny_new = plot_data.shape[2]
+                assert plot_data.shape[1] == 3  # NOTE: reshaped from 2 to 3
+                plot_data = plot_data[:, 1, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 1 along y
+                # XXX XXX XXX XXX XXX XXX
+                ##assert plot_data2.shape == (Nx_new, 3, Ny_new)  # NOTE: reshaped from 2 to 3
+                ##plot_data2 = plot_data2[:, 1, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 1 along y
+                # XXX XXX XXX XXX XXX XXX
+                if gfs_stream is not None:
+                    assert stream1_data.shape == (Nx_new, 3, Ny_new)  # NOTE: reshaped from 2 to 3
+                    assert stream2_data.shape == (Nx_new, 3, Ny_new)  # NOTE: reshaped from 2 to 3
+                    stream1_data = stream1_data[:, 1, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 1 along y
+                    stream2_data = stream2_data[:, 1, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 1 along y
+            elif planes[n] == "yz":
+                Nx_new = plot_data.shape[1]
+                Ny_new = plot_data.shape[2]
+                assert plot_data.shape[0] == 3  # NOTE: reshaped from 2 to 3
+                plot_data = plot_data[1, :, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along x
+                # XXX XXX XXX XXX XXX XXX
+                ##assert plot_data2.shape == (3, Nx_new, Ny_new)  # NOTE: reshaped from 2 to 3
+                ##plot_data2 = plot_data2[1, :, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along x
+                # XXX XXX XXX XXX XXX XXX
+                if gfs_stream is not None:
+                    assert stream1_data.shape == (3, Nx_new, Ny_new)  # NOTE: reshaped from 2 to 3
+                    assert stream2_data.shape == (3, Nx_new, Ny_new)  # NOTE: reshaped from 2 to 3
+                    stream1_data = stream1_data[1, :, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along x
+                    stream2_data = stream2_data[1, :, :]  # Make the 3D slice an acual 2D NumPy array by just selecting element 0/1 along x
+            else: raise RuntimeError("Unrecognized plane \"" + planes[n] + "\"")
 
-        Nx_new = plot_data.shape[0]
-        Ny_new = plot_data.shape[1]
+            assert plot_data.shape == (Nx_new, Ny_new)
+            # XXX XXX XXX XXX XXX XXX
+            ##assert plot_data2.shape == (Nx_new, Ny_new)
+            # XXX XXX XXX XXX XXX XXX
+            if gfs_stream is not None:
+                assert stream1_data.shape == (Nx_new, Ny_new)
+                assert stream2_data.shape == (Nx_new, Ny_new)
+        else:
+            Nx_new = plot_data.shape[0]
+            Ny_new = plot_data.shape[1]
 
         if Nx_new != Nx or Ny_new != Ny:
             warnings.warn("Dataset " + str(n) + ": grid reshaped from (" + str(Nx) + ", " + str(Ny) + ") to (" + str(Nx_new) + ", " + str(Ny_new) + ")")
@@ -1272,10 +1353,11 @@ for it in range(first_it, last_it + 1, out2D_every):
             # XXX XXX XXX XXX XXX XXX
             # XXX XXX XXX XXX XXX XXX
 
+
         # Build the stream plot if necessary
         if gfs_stream is not None:
             ##viz.plot_vectors((patch_stream1, patch_stream2))
-            ax.streamplot(mx, my, np.transpose(patch_stream1.data), np.transpose(patch_stream2.data),
+            ax.streamplot(mx, my, np.transpose(stream1_data), np.transpose(stream2_data),
                           density = streamline_density, linewidth = 1.,
                           color = streamcolor, arrowsize = 1.5, arrowstyle = "-|>")
             ##ax.quiver(mx, my, np.transpose(patch_stream1.data), np.transpose(patch_stream2.data))
@@ -1301,8 +1383,9 @@ for it in range(first_it, last_it + 1, out2D_every):
                 # XXX XXX XXX XXX XXX XXX
                 # XXX XXX XXX XXX XXX XXX
                 # XXX XXX XXX XXX XXX XXX
-                AH_file = ("h.t" + str(it) + ".ah" + str(r) + ".gp"
+                #AH_file = ("h.t" + str(it) + ".ah" + str(r) + ".gp"
                 ##AH_file = ("h.t2138112.ah" + str(r) + ".gp"
+                AH_file = ("h.t4087808.ah" + str(r) + ".gp"
                 # XXX XXX XXX XXX XXX XXX
                 # XXX XXX XXX XXX XXX XXX
                 # XXX XXX XXX XXX XXX XXX
@@ -1403,11 +1486,11 @@ for it in range(first_it, last_it + 1, out2D_every):
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
         # XXX XXX XXX XXX XXX XXX
-        if n == 0:
-            ax.add_artist(plt.Circle((0., 0.), 15., fill = False, linestyle = "--", linewidth = 1., color = "black"))
-            ax.add_artist(plt.Circle((0., 0.), 20., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
-            ax.add_artist(plt.Circle((0., 0.), 30., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
-            ax.add_artist(plt.Circle((0., 0.), 40., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+        ##if n == 0:
+        ##    ax.add_artist(plt.Circle((0., 0.), 15., fill = False, linestyle = "--", linewidth = 1., color = "black"))
+        ##    ax.add_artist(plt.Circle((0., 0.), 20., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+        ##    ax.add_artist(plt.Circle((0., 0.), 30., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
+        ##    ax.add_artist(plt.Circle((0., 0.), 40., fill = False, linestyle = "-",  linewidth = 1., color = "black"))
         ##elif n ==1:
         ##    ax.axvline(x = -15., linestyle = "--", linewidth = 1., color = "black")
         ##    ax.axvline(x =  15., linestyle = "--", linewidth = 1., color = "black")
@@ -1434,14 +1517,7 @@ for it in range(first_it, last_it + 1, out2D_every):
     t    = (t0 + time)*conv_fac_time
 
     fig.text(time_pos[0], time_pos[1],
-             # XXX XXX XXX XXX XXX XXX
-             # XXX XXX XXX XXX XXX XXX
-             # XXX XXX XXX XXX XXX XXX
-             "t = " + str("{:.2e}".format(t)) + unit_time_str,
-             ##"t = " + str(t) + unit_time_str,
-             # XXX XXX XXX XXX XXX XXX
-             # XXX XXX XXX XXX XXX XXX
-             # XXX XXX XXX XXX XXX XXX
+             "t = " + str(t) + unit_time_str,
              color      = "red",
              fontsize   = it_time_orb_fontsize,
              fontweight = it_time_orb_fontweight,
