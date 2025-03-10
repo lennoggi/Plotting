@@ -12,44 +12,55 @@ from matplotlib import pyplot as plt
 ######################### USER-DEFINED PARAMETERS ##############################
 
 filenames_x1 = (
-    "pt_loc_x[0].asc"
-##    "pt_loc_x[0]_old.asc"
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_NonSpinning_large_TaperedCooling_NewCooling/pt_loc_x[0]_NonSpinning_large_TaperedCooling_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pp08_large_14rl_NewCooling/pt_loc_x[0]_pp08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pm08_large_14rl_NewCooling/pt_loc_x[0]_pm08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_mm08_large_14rl_NewCooling/pt_loc_x[0]_mm08_large_14rl_NewCooling.asc"
 )
 
 filenames_y1 = (
-    "pt_loc_y[0].asc"
-##    "pt_loc_y[0]_old.asc"
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_NonSpinning_large_TaperedCooling_NewCooling/pt_loc_y[0]_NonSpinning_large_TaperedCooling_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pp08_large_14rl_NewCooling/pt_loc_y[0]_pp08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pm08_large_14rl_NewCooling/pt_loc_y[0]_pm08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_mm08_large_14rl_NewCooling/pt_loc_y[0]_mm08_large_14rl_NewCooling.asc"
 )
 
 filenames_z1 = (
-    "pt_loc_z[0].asc"
-##    "pt_loc_z[0]_old.asc"
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_NonSpinning_large_TaperedCooling_NewCooling/pt_loc_z[0]_NonSpinning_large_TaperedCooling_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pp08_large_14rl_NewCooling/pt_loc_z[0]_pp08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pm08_large_14rl_NewCooling/pt_loc_z[0]_pm08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_mm08_large_14rl_NewCooling/pt_loc_z[0]_mm08_large_14rl_NewCooling.asc"
 )
 
-
 filenames_x2 = (
-    "pt_loc_x[1].asc"
-##    "pt_loc_x[1]_old.asc"
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_NonSpinning_large_TaperedCooling_NewCooling/pt_loc_x[1]_NonSpinning_large_TaperedCooling_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pp08_large_14rl_NewCooling/pt_loc_x[1]_pp08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pm08_large_14rl_NewCooling/pt_loc_x[1]_pm08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_mm08_large_14rl_NewCooling/pt_loc_x[1]_mm08_large_14rl_NewCooling.asc"
 )
 
 filenames_y2 = (
-    "pt_loc_y[1].asc"
-##    "pt_loc_y[1]_old.asc"
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_NonSpinning_large_TaperedCooling_NewCooling/pt_loc_y[1]_NonSpinning_large_TaperedCooling_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pp08_large_14rl_NewCooling/pt_loc_y[1]_pp08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pm08_large_14rl_NewCooling/pt_loc_y[1]_pm08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_mm08_large_14rl_NewCooling/pt_loc_y[1]_mm08_large_14rl_NewCooling.asc"
 )
 
 filenames_z2 = (
-    "pt_loc_z[1].asc"
-##    "pt_loc_z[1]_old.asc"
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_NonSpinning_large_TaperedCooling_NewCooling/pt_loc_z[1]_NonSpinning_large_TaperedCooling_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pp08_large_14rl_NewCooling/pt_loc_z[1]_pp08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_pm08_large_14rl_NewCooling/pt_loc_z[1]_pm08_large_14rl_NewCooling.asc",
+    "/home1/07825/lennoggi/Git_repositories/CactusAnalysis/Utils/data_mm08_large_14rl_NewCooling/pt_loc_z[1]_mm08_large_14rl_NewCooling.asc"
 )
 
 
-t_cols     = (8, 8)
-coord_cols = (12, 12)
+t_cols     = (8, 8, 8, 8)
+coord_cols = (12, 12, 12, 12)
 
-colors = ("dodgerblue") ##, "red")
+colors = ("dodgerblue", "indianred", "forestgreen", "magenta")
 
 labels = (
-    "New" ##, "Old"
+    "Non-spinning", "++0.8", "+-0.8", "--0.8"
 )
 
 figname = "Coordinate_separation.pdf"
@@ -70,7 +81,7 @@ assert len(colors) == N
 assert len(labels) == N
 
 
-plt.figure()
+plt.figure() ##(figsize = (10., 4.))
 plt.xlabel("$t\,\left[M\\right]$", fontsize = 12.)
 plt.ylabel("$a\,\left[M\\right]$", fontsize = 12.)
 
@@ -106,12 +117,19 @@ for n in range(N):
     sep_z = z2 - z1
 
     sep = np.sqrt(sep_x*sep_x + sep_y*sep_y + sep_z*sep_z)
+    # XXX
+    ##if n == 0: print(sep[np.where(t >= 13784.)])
+    ##if n == 1: print(t[np.where(sep <= 9.23729585e+00)])
+    # XXX
 
     plt.grid(linestyle = "--", linewidth = 0.5, alpha = 0.5)
 
-    plt.plot(t, sep, linestyle = "-", linewidth = 1., marker = "", color = colors[n], label = labels[n])
+    # XXX
+    ##plt.plot(t, sep, linestyle = "-", linewidth = 1., marker = "", color = colors[n], label = labels[n])
+    plt.plot(99189.9 + t, sep, linestyle = "-", linewidth = 1., marker = "", color = colors[n], label = labels[n])
+    # XXX
 
-##plt.legend()
+plt.legend()
 plt.tight_layout()
 plt.savefig(figname)
 plt.close()
