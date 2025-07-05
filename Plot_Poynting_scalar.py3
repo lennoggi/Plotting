@@ -7,13 +7,20 @@ from scipy.spatial import ConvexHull
 import os
 import warnings
 
+from matplotlib import rc
+from matplotlib import rcParams
+##rc("mathtext", usetex = True)
+##rc("font",**{"family":"sans-serif","sans-serif":["Avant Garde"]})
+##rcParams["text.latex.preamble"] = [r"\usepackage{amsmath}"]
+rcParams["mathtext.fontset"] = "dejavuserif"
+
 
 # ===== Parameters =====
 
-simdir  = "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_ANALYSIS/output-0029/HDF5_2D"
+simdir  = "/scratch3/07825/lennoggi/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_ANALYSIS/output-0009/HDF5_2D"
 plotdir = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_ANALYSIS"
 
-it          = 3753984 ##999424
+it          = 999424 ##4284416 ##3022848 ##3753984 ##999424
 out2D_every = 2048 ##1024 ##400
 t0          = 99189.9 ##0.
 
@@ -31,7 +38,7 @@ draw_AH   = True
 N_AHfiles = 2
 AH_dir    = "/scratch3/07825/lennoggi/Movies/BBH_handoff_McLachlan_pp08_large_14rl_NewCooling_ANALYSIS/AH_data"
 
-Bstream = False ##True
+Bstream = True
 
 figsize = (11., 10.)
 dpi     = 200
@@ -45,25 +52,22 @@ sd = SimDir(simdir)
 
 if plane == "xy":
     read_data   = sd.grid.hdf5.xy.read
-    x1label     = "$x\,\left[M\\right]$"
-    x2label     = "$y\,\left[M\\right]$"
+    x1label     = "x$\,\left[\mathbf{M}\\right]$"
+    x2label     = "y$\,\left[\mathbf{M}\\right]$"
     AHfile_col1 = 3
     AHfile_col2 = 4
-    figname     = f"{plotdir}/Smag_{plane}_{int(it/out2D_every):04}.{fig_ext}"
 elif plane == "xz":
     read_data   = sd.grid.hdf5.xz.read
-    x1label     = "$x\,\left[M\\right]$"
-    x2label     = "$z\,\left[M\\right]$"
+    x1label     = "x$\,\left[\mathbf{M}\\right]$"
+    x2label     = "z$\,\left[\mathbf{M}\\right]$"
     AHfile_col1 = 3
     AHfile_col2 = 5
-    figname     = f"{plotdir}/Smag_{plane}_{int(it/out2D_every):04}.{fig_ext}"
 elif plane == "yz":
     read_data   = sd.grid.hdf5.yz.read
-    x1label     = "$y\,\left[M\\right]$"
-    x2label     = "$z\,\left[M\\right]$"
+    x1label     = "y$\,\left[\mathbf{M}\\right]$"
+    x2label     = "z$\,\left[\mathbf{M}\\right]$"
     AHfile_col1 = 4
     AHfile_col2 = 5
-    figname     = f"{plotdir}/Smag_{plane}_{int(it/out2D_every):04}.{fig_ext}"
 else:
     raise RuntimeError(f"Invalid plane '{plane}'")
 
@@ -172,8 +176,8 @@ fig, ax = plt.subplots(figsize = figsize, dpi = dpi)
 fig.set_tight_layout(True)
 ax.set_box_aspect(1)  # Square snapshots
 
-ax.set_xlabel(x1label, fontsize = 20.)
-ax.set_ylabel(x2label, fontsize = 20.)
+ax.set_xlabel(x1label, fontsize = 25.) ##, labelpad = 3.)
+ax.set_ylabel(x2label, fontsize = 25., labelpad = 20.)
 
 ax.tick_params(labelsize = 20.)
 ax.set_xlim(x1min, x1max)
@@ -187,7 +191,7 @@ im = ax.pcolormesh(mx1, mx2, np.transpose(Smag),
                    shading = "auto", cmap = cmap, norm = norm)
 
 clb = fig.colorbar(im, ax = ax, extend = "both", fraction = 0.05)
-clb.ax.set_title("$S$", pad = 40., fontsize = 25.) ##, fontweight = "bold", fontstyle  = "normal")
+clb.ax.set_title("$S\,\left[\mathbf{M}^{-1}\\right]$", pad = 40., fontsize = 25.) ##, pad = 40.) ##, fontweight = "bold", fontstyle  = "normal")
 clb.ax.tick_params(labelsize = 20.)
 
 
@@ -239,7 +243,8 @@ if draw_AH:
 
 
 # Finish up with the plot
-fig.text(0.6, 0.02, f"t = {t} M", fontsize = 20., fontweight = "bold", color = "red")
+fig.text(0.6, 0.02, f"t = {t}" + "$\,\mathbf{M}$", fontsize = 20., fontweight = "bold", color = "red")
+figname = f"{plotdir}/Smag_{plane}_{int(it/out2D_every):04}.{fig_ext}"
 plt.savefig(figname)
 plt.close()
 print(f"File '{figname}' generated successfully")
